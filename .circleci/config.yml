@@ -4,7 +4,7 @@ jobs:
   node:
     working_directory: ~/podcaster/app/frontend/
     docker:
-      - image: circleci/node:8
+      - image: node:8
     steps:
       - checkout
 
@@ -42,7 +42,7 @@ jobs:
   android-test:
     working_directory: ~/podcaster/app/frontend/android
     docker:
-      - image: circleci/android:api-28-node8-alpha
+      - image: android:api-28-node8-alpha
     steps:
       - checkout:
           path: ~/podcaster/app/frontend/
