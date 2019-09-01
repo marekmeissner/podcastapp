@@ -1,0 +1,31 @@
+version: "3.2"
+
+services:
+  backend:
+    build:
+      context: ./app/backend
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+      - ./app/backend/.env
+    volumes:
+      - ./app/backend:/usr/src/app
+    depends_on:
+      - mongo
+    environment:
+      NODE_ENV: ${APP_ENV}
+    command: /usr/src/app/entrypoint.sh
+    expose:
+      - 3001
+  mongo:
+    image: mongo:4
+    logging:
+      driver: ${MONGO_LOGS}
+    volumes:
+      - mongo-data:/data/db
+    expose:
+      - 27017
+
+# Define all the external volumes.
+volumes:
+  mongo-data: ~

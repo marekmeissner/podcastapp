@@ -1,0 +1,25 @@
+version: "3.2"
+
+services:
+  backend:
+    command: bash -c "cd ../app && bash entrypoint.sh --dev"
+  mongo:
+    ports:
+      - 27017:27017
+  api-documentation:
+    build: ./app/docs
+    environment:
+      BASE_URL: localhost:${APP_PORT}
+    volumes:
+      - ./app/docs:/usr/src/docs
+    expose:
+      - 3002
+    command: /usr/src/docs/entrypoint.sh
+  nginx:
+    build: ./nginx
+    depends_on:
+      - backend
+      - api-documentation
+    ports:
+      - ${APP_PORT}:80
+

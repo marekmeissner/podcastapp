@@ -1,0 +1,9 @@
+swagger: "2.0"
+
+info:
+  version: 1.0.0
+  title: Podcaster
+  description: API for Podcaster application
+
+host: localhost:3000
+basePath: /api
