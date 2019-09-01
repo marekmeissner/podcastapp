@@ -10,10 +10,10 @@ version: 2
 jobs:
   backend-docker:
     machine: true
-    working_directory: ~/tattoo-platform
+    working_directory: ~/podcaster
     steps:
       - checkout:
-          path: ~/tattoo-platform
+          path: ~/podcaster
       - run:
           name: Create docker env variables
           command: echo -e "APP_PORT=$APP_PORT" > .env
@@ -34,7 +34,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout:
-          path: ~/tattoo-platform
+          path: ~/podcaster
 
       - restore_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
