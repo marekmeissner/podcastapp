@@ -13,7 +13,7 @@
     "appcenter-crashes": "2.3.0",
     "react": "16.8.6",
     "react-native": "0.60.5",
-    "typescript": "^3.5.3"
+    "typescript": "^3.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
