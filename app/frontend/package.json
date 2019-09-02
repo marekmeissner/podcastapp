@@ -4,8 +4,11 @@
   "private": true,
   "scripts": {
     "start": "react-native start",
-    "test": "jest",
-    "lint": "eslint ."
+    "test": "jest test",
+    "test:watch": "jest test --watchAll",
+    "lint": "eslint src -c .eslintrc --ext .ts,.tsx",
+    "format": "prettier \"**/*.+(ts|tsx)\" --write --list-different",
+    "storybook": "start-storybook -p 6006"
   },
   "dependencies": {
     "appcenter": "2.3.0",
@@ -23,6 +26,17 @@
     "eslint": "^6.3.0",
     "jest": "^24.9.0",
     "metro-react-native-babel-preset": "^0.56.0",
+    "@storybook/react-native": "^5.1.11",
+    "@storybook/react-native-server": "^5.1.11",
+    "@types/node": "^12.7.3",
+    "@types/react-native": "^0.60.10",
+    "@typescript-eslint/eslint-plugin": "^2.1.0",
+    "@typescript-eslint/parser": "^2.1.0",
+    "eslint-config-prettier": "^6.1.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react-native": "^3.7.0",
+    "prettier": "^1.18.2"
     "react-test-renderer": "16.9.0"
   },
   "jest": {
