@@ -1,0 +1,18 @@
+export const COLORS = {
+  WHITE: '#fff',
+  BLACK: '#000',
+  PRIMARY: '#00adef',
+  LIGHT_BLUE: 'rgb(234, 249, 255)',
+  GREY_BG: '#a5a5a5',
+  GREY_BORDER: 'rgba(255, 255, 255, 0.3)',
+  GREY_BORDER_LIGHT: 'rgb(235, 235, 235)',
+  PLACEHOLDER: '#bbbb',
+  LABEL: '#696969',
+  IMAGE_PICKER_BG: '#f2f2f2',
+  GREY: 'rgb(116, 116, 116)',
+  GREEN: '#4cc642',
+  RED: 'rgb(248, 51, 60)',
+  ORANGE: 'rgb(224, 150, 42)',
+  PAGE_BG: '#fafafa',
+  LIST_BORDER: 'rgb(235, 235, 235)',
+};

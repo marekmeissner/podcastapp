@@ -1,1 +1,1 @@
-declare module '@storybook/react-natives';
+declare module '@storybook/react-native';
