@@ -1,6 +1,10 @@
 name: Frontend
 
-on: [commit_comment, push, pull_request, create]
+on: 
+  push:
+    branches:    
+      - master
+      - 'pp-*'
 
 jobs:
   lint:
