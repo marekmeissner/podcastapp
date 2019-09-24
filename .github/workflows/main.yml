@@ -10,7 +10,10 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Run lint
-      run: yarn lint
+      run: |
+        cd app/frontend
+        yarn
+        yarn lint
         
   test:
 
@@ -19,4 +22,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Run tests
-      run: yarn test
+      run: |
+        cd app/frontend
+        yarn
+        yarn test
