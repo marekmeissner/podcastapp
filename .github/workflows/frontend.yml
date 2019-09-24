@@ -1,10 +1,6 @@
-name: CI
+name: Frontend
 
-on:
-  push:
-    branches:
-    - master
-    - release/*
+on: [commit_comment, push, pull_request]
 
 jobs:
   lint:
