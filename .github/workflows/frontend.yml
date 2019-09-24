@@ -1,6 +1,6 @@
 name: Frontend
 
-on: [commit_comment, push, pull_request]
+on: [commit_comment, push, pull_request, create]
 
 jobs:
   lint:
