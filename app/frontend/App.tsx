@@ -7,28 +7,26 @@
  */
 
 import React, {Fragment} from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  StyleSheet
-} from 'react-native';
+import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
 
-import Login from './src/screens/Auth/Login/Login'
+import Login from './src/screens/Auth/Login/Login';
+
+const styles = StyleSheet.create({
+  app: {
+    backgroundColor: '#333333',
+    height: '100%',
+  },
+});
 
 const App: React.FC = () => {
   return (
     <Fragment>
       <StatusBar barStyle="light-content" />
-      <SafeAreaView style={styles.app}><Login /></SafeAreaView>
+      <SafeAreaView style={styles.app}>
+        <Login />
+      </SafeAreaView>
     </Fragment>
   );
 };
 
 export default App;
-
-const styles = StyleSheet.create({  
-  app: {
-    backgroundColor: '#333333',
-    height: '100%'
-  }
-})
