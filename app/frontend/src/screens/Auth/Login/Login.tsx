@@ -82,7 +82,7 @@ class Login extends React.Component {
                         color="#ffffff"
                       />
                     ) : (
-                      <Text>Login</Text>
+                      <Text>Logiiin</Text>
                     )}
                   </Button>
                 </Form>
