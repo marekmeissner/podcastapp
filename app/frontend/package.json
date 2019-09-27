@@ -29,7 +29,7 @@
     "@storybook/react-native-server": "^5.1.11",
     "@types/node": "^12.7.3",
     "@types/react": "^16.9.2",
-    "@types/react-native": "^0.60.10",
+    "@types/react-native": "^0.60.16",
     "@types/yup": "^0.26.24",
     "@typescript-eslint/parser": "^2.3.1",
     "@typescript-eslint/eslint-plugin": "^2.3.1",
