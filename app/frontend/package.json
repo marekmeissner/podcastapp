@@ -17,7 +17,7 @@
     "formik": "^1.5.8",
     "native-base": "^2.13.8",
     "react": "16.8.6",
-    "react-native": "0.60.5",
+    "react-native": "0.60.6",
     "typescript": "^3.6.2",
     "yup": "^0.27.0"
   },
