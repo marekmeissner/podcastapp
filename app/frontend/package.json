@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "appcenter": "2.4.0",
-    "appcenter-analytics": "2.3.0",
+    "appcenter-analytics": "2.4.0",
     "appcenter-crashes": "2.3.0",
     "formik": "^1.5.8",
     "native-base": "^2.13.8",

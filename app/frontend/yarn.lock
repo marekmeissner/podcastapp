@@ -2026,11 +2026,11 @@ app-root-dir@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/app-root-dir/-/app-root-dir-1.0.2.tgz#38187ec2dea7577fff033ffcb12172692ff6e118"
 
-appcenter-analytics@2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/appcenter-analytics/-/appcenter-analytics-2.3.0.tgz#2a1f650a380016b129725cfb75cb299aa3f88f4f"
+appcenter-analytics@2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/appcenter-analytics/-/appcenter-analytics-2.4.0.tgz#2b20047a72e2e469890359ab3ae26b791c4e1921"
   dependencies:
-    appcenter "2.3.0"
+    appcenter "2.4.0"
 
 appcenter-crashes@2.3.0:
   version "2.3.0"
