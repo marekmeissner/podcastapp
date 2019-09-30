@@ -2032,11 +2032,11 @@ appcenter-analytics@2.4.0:
   dependencies:
     appcenter "2.4.0"
 
-appcenter-crashes@2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/appcenter-crashes/-/appcenter-crashes-2.3.0.tgz#b8cfedd90156a084f9321e73b2b5c11b418f026e"
+appcenter-crashes@2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/appcenter-crashes/-/appcenter-crashes-2.4.0.tgz#95d1e4f8c50b760411d211061f2e323c57c2a09d"
   dependencies:
-    appcenter "2.3.0"
+    appcenter "2.4.0"
 
 appcenter-link-scripts@2.3.0:
   version "2.3.0"
