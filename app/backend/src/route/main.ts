@@ -1,0 +1,22 @@
+import { Router } from 'express';
+import helmet from 'helmet';
+import { corsMiddleware } from '../middleware/cors';
+import { SentryMiddleware } from '../middleware/sentry';
+import { bodyParser } from '../middleware/body_parser';
+import { initializePassportStrategies } from '../api/Auth/Auth.strategies';
+import { errorHandler } from '../middleware/error_handler';
+import { notFound } from '../middleware/not_found';
+import { sendResponse } from '../middleware/send_response';
+import { appRouter } from './app/main';
+
+export const router = Router();
+router.use(helmet());
+corsMiddleware(router);
+router.use(SentryMiddleware.requestHandler());
+router.use(bodyParser);
+router.use(initializePassportStrategies());
+router.use(appRouter);
+router.use(SentryMiddleware.errorHandler());
+router.use(errorHandler);
+router.use(notFound);
+router.use(sendResponse);
