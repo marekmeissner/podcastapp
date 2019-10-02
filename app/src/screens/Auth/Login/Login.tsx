@@ -5,17 +5,38 @@ import {UserCredentials} from '../types';
 import {Formik, FormikActions} from 'formik';
 import * as Yup from 'yup';
 import {EMAIL_REGEX} from '../../../utils/constants';
+import {
+  EmailPasswordSignIn,
+  GoogleSignIn,
+} from '../../../../firebase/auth/signIn';
 
 class Login extends React.Component {
-  handleLogin = (
+  handleLogin = async (
     {email, password}: UserCredentials,
     {setSubmitting, setStatus}: FormikActions<UserCredentials>,
-  ) => setSubmitting(false);
+  ) => {
+    try {
+      await EmailPasswordSignIn({email, password});
+    } catch ({message}) {
+      setStatus(message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  handleGoogleLogin = async () => {
+    try {
+      await GoogleSignIn();
+    } catch ({message}) {
+      console.warn(message);
+    }
+  };
 
   validationSchema = Yup.object().shape({
     email: Yup.string()
       .matches(EMAIL_REGEX, 'Email address provided is invalid')
-      .required('Required'),
+      .required('Required!'),
+    password: Yup.string().required('Required!'),
   });
 
   render() {
@@ -53,28 +74,29 @@ class Login extends React.Component {
                         autoCapitalize="none"
                       />
                     </Item>
-                    {errors.email && (
+                    {errors.email && touched.email && (
                       <Text testID={'emailError'}>{errors.email}</Text>
                     )}
                   </View>
+                  <View>
+                    <Item>
+                      <Input
+                        placeholder="PASSWORD"
+                        testID={'password'}
+                        onChangeText={handleChange('password')}
+                        value={values.password}
+                        textContentType="password"
+                        secureTextEntry
+                        onBlur={() => setFieldTouched('password')}
+                        autoCapitalize="none"
+                      />
+                    </Item>
+                    {errors.password && touched.password && (
+                      <Text testID={'passwordError'}>{errors.password}</Text>
+                    )}
+                  </View>
 
-                  <Item>
-                    <Input
-                      placeholder="PASSWORD"
-                      testID={'password'}
-                      onChangeText={handleChange('password')}
-                      value={values.password}
-                      textContentType="password"
-                      secureTextEntry
-                      onBlur={() => setFieldTouched('password')}
-                      autoCapitalize="none"
-                    />
-                  </Item>
-                  <Button
-                    testID={'submit'}
-                    rounded
-                    onPress={handleSubmit}
-                    disabled={!isValid}>
+                  <Button testID={'submit'} rounded onPress={handleSubmit}>
                     {isSubmitting ? (
                       <ActivityIndicator
                         testID={'loader'}
@@ -82,8 +104,14 @@ class Login extends React.Component {
                         color="#ffffff"
                       />
                     ) : (
-                      <Text>Login</Text>
+                      <Text>Sign in</Text>
                     )}
+                  </Button>
+                  <Button
+                    testID={'button'}
+                    rounded
+                    onPress={this.handleGoogleLogin}>
+                    <Text>Sign in with google</Text>
                   </Button>
                 </Form>
               );
