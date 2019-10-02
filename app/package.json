@@ -11,7 +11,6 @@
     "storybook": "start-storybook -p 6006"
   },
   "dependencies": {
-    "@types/firebase": "^3.2.1",
     "appcenter": "2.4.0",
     "appcenter-analytics": "2.4.0",
     "appcenter-crashes": "2.4.0",
@@ -35,6 +34,7 @@
     "@types/yup": "^0.26.24",
     "@typescript-eslint/eslint-plugin": "^2.3.1",
     "@typescript-eslint/parser": "^2.3.1",
+    "@types/firebase": "^3.2.1",
     "babel-jest": "^24.9.0",
     "eslint": "^6.5.0",
     "eslint-config-prettier": "^6.1.0",
