@@ -11,6 +11,11 @@ import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
 
 import Login from './src/screens/Auth/Login/Login';
 
+import * as firebase from 'firebase';
+import {firebaseConfig} from './firebase/config/firebaseConfig';
+
+firebase.initializeApp(firebaseConfig);
+
 const styles = StyleSheet.create({
   app: {
     backgroundColor: '#333333',
