@@ -5,10 +5,7 @@ import {UserCredentials} from '../types';
 import {Formik, FormikActions} from 'formik';
 import * as Yup from 'yup';
 import {EMAIL_REGEX} from '../../../utils/constants';
-import {
-  EmailPasswordSignIn,
-  GoogleSignIn,
-} from '../../../../firebase/auth/signIn';
+import {EmailPasswordSignIn} from '../../../../firebase/auth/signIn';
 
 class Login extends React.Component {
   handleLogin = async (
@@ -21,14 +18,6 @@ class Login extends React.Component {
       setStatus(message);
     } finally {
       setSubmitting(false);
-    }
-  };
-
-  handleGoogleLogin = async () => {
-    try {
-      await GoogleSignIn();
-    } catch ({message}) {
-      console.warn(message);
     }
   };
 
@@ -106,12 +95,6 @@ class Login extends React.Component {
                     ) : (
                       <Text>Sign in</Text>
                     )}
-                  </Button>
-                  <Button
-                    testID={'button'}
-                    rounded
-                    onPress={this.handleGoogleLogin}>
-                    <Text>Sign in with google</Text>
                   </Button>
                 </Form>
               );
