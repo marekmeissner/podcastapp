@@ -1,4 +1,4 @@
-import * as firebase from 'firebase';
+import firebase from 'react-native-firebase';
 import {UserCredentials} from '../../src/screens/Auth/types';
 
 const EmailPasswordSignIn = async ({email, password}: UserCredentials) => {
@@ -9,18 +9,4 @@ const EmailPasswordSignIn = async ({email, password}: UserCredentials) => {
   }
 };
 
-const provider = new firebase.auth.GoogleAuthProvider();
-provider.addScope(
-  'https://www.googleapis.com/auth/admin.directory.customer.readonly',
-);
-
-const GoogleSignIn = async () => {
-  try {
-    const response = await firebase.auth().signInWithPopup(provider);
-    return response.user;
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
-export {EmailPasswordSignIn, GoogleSignIn};
+export {EmailPasswordSignIn};

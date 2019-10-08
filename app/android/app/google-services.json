@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "154445937697",
+    "firebase_url": "https://podcaster-c6cba.firebaseio.com",
+    "project_id": "podcaster-c6cba",
+    "storage_bucket": "podcaster-c6cba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:154445937697:android:9d95a1a86e4e8aa73e7760",
+        "android_client_info": {
+          "package_name": "com.podcastapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "154445937697-r1gijo72m90dcuo7tno3kdr97io4s3qc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA14RoZ44L0MouGrOHIr7ODI2nJimfaSHo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "154445937697-r1gijo72m90dcuo7tno3kdr97io4s3qc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "154445937697-l83hn72piki08mt5el1vq0kkknbo9v2m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.podcastapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
