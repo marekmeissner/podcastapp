@@ -15,7 +15,7 @@ class Login extends React.Component {
     try {
       await EmailPasswordSignIn({email, password});
     } catch ({message}) {
-      setStatus(message);
+      console.warn(message);
     } finally {
       setSubmitting(false);
     }
