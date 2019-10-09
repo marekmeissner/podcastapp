@@ -1,6 +1,15 @@
 import React from 'react';
 import {View, ActivityIndicator} from 'react-native';
-import {Container, Content, Item, Input, Button, Text, Form} from 'native-base';
+import {
+  Container,
+  Content,
+  Item,
+  Input,
+  Button,
+  Text,
+  Form,
+  Label,
+} from 'native-base';
 import {UserCredentials} from '../types';
 import {Formik, FormikActions} from 'formik';
 import * as Yup from 'yup';
@@ -31,6 +40,7 @@ class Login extends React.Component {
   render() {
     return (
       <Container>
+        <Content></Content>
         <Content>
           <Formik
             initialValues={{
@@ -50,11 +60,11 @@ class Login extends React.Component {
               isSubmitting,
             }) => {
               return (
-                <Form>
-                  <View>
-                    <Item error={touched.email && !!errors.email}>
+                <Form style={{padding: 20}}>
+                  <Content style={{height: 80, paddingTop: 10}}>
+                    <Item floatingLabel error={touched.email && !!errors.email}>
+                      <Label>Email</Label>
                       <Input
-                        placeholder="EMAIL"
                         testID={'email'}
                         keyboardType="email-address"
                         onChangeText={handleChange('email')}
@@ -64,13 +74,17 @@ class Login extends React.Component {
                       />
                     </Item>
                     {errors.email && touched.email && (
-                      <Text testID={'emailError'}>{errors.email}</Text>
+                      <Text
+                        style={{fontSize: 12, paddingTop: 5}}
+                        testID={'emailError'}>
+                        {errors.email}
+                      </Text>
                     )}
-                  </View>
-                  <View>
-                    <Item>
+                  </Content>
+                  <Content style={{height: 80, paddingTop: 10}}>
+                    <Item floatingLabel error={touched.email && !!errors.email}>
+                      <Label>Password</Label>
                       <Input
-                        placeholder="PASSWORD"
                         testID={'password'}
                         onChangeText={handleChange('password')}
                         value={values.password}
@@ -81,11 +95,20 @@ class Login extends React.Component {
                       />
                     </Item>
                     {errors.password && touched.password && (
-                      <Text testID={'passwordError'}>{errors.password}</Text>
+                      <Text
+                        style={{fontSize: 12, paddingTop: 5}}
+                        testID={'passwordError'}>
+                        {errors.password}
+                      </Text>
                     )}
-                  </View>
+                  </Content>
 
-                  <Button testID={'submit'} rounded onPress={handleSubmit}>
+                  <Button
+                    testID={'submit'}
+                    rounded
+                    large
+                    onPress={handleSubmit}
+                    style={{marginTop: 40}}>
                     {isSubmitting ? (
                       <ActivityIndicator
                         testID={'loader'}
