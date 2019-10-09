@@ -1,2 +1,0 @@
-9d52ba4f45bff750dda53ac213a068b6
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = function () {var rightTheme = { 'NativeBase.Button': { alignSelf: null }, flex: 1, alignSelf: 'center', alignItems: 'flex-end' };return rightTheme;};

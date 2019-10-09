@@ -1,2 +1,0 @@
-1003d1e554d1eb4cafcfbeaf2b1dedcd
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = function () {var contentTheme = { flex: 1, backgroundColor: 'transparent', 'NativeBase.Segment': { borderWidth: 0, backgroundColor: 'transparent' } };return contentTheme;};

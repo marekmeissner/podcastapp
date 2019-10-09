@@ -1,7 +1,6 @@
 # OSX
 #
 .DS_Store
-.jest
 # Xcode
 #
 build/
@@ -35,7 +34,6 @@ local.properties
 node_modules/
 npm-debug.log
 yarn-error.log
-\.jest/
 
 # BUCK
 buck-out/
@@ -55,7 +53,6 @@ buck-out/
 
 # Bundle artifact
 *.jsbundle
-*.jest
 
 # CocoaPods
 /ios/Pods/

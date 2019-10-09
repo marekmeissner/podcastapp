@@ -1,2 +1,0 @@
-b228add0a3d93bdd4c76e148427da215
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = function () {var bodyTheme = { flex: 1, alignItems: 'center', alignSelf: 'center' };return bodyTheme;};
