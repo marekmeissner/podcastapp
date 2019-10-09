@@ -1,8 +1,0 @@
-f5a094af3af63c806f0aee6eb88252dc
-"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));var _NativeError = _interopRequireDefault(require("../../common/NativeError"));var
-SnapshotError = function (_NativeError) {(0, _inherits2.default)(SnapshotError, _NativeError);
-  function SnapshotError(nativeErrorMap) {var _this;(0, _classCallCheck2.default)(this, SnapshotError);
-    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(SnapshotError).call(this, nativeErrorMap.error));
-    _this.path = nativeErrorMap.path;
-    _this.appName = nativeErrorMap.appName;return _this;
-  }return SnapshotError;}(_NativeError.default);exports.default = SnapshotError;
