@@ -1,0 +1,2 @@
+b072ee8d51acc0d70bbeb19e323baee2
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = function () {var switchTheme = { marginVertical: -5 };return switchTheme;};

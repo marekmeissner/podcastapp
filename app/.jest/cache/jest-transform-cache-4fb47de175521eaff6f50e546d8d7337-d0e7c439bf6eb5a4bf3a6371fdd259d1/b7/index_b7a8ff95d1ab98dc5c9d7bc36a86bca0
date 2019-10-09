@@ -1,0 +1,80 @@
+706a26e83aebeb17c2a54f4ce0ded068
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.statics = exports.default = exports.NAMESPACE = exports.MODULE_NAME = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+
+
+var _Trace = _interopRequireDefault(require("./Trace"));
+var _HttpMetric = _interopRequireDefault(require("./HttpMetric"));
+var _ModuleBase = _interopRequireDefault(require("../../utils/ModuleBase"));
+var _native = require("../../utils/native");
+var MODULE_NAME = 'RNFirebasePerformance';exports.MODULE_NAME = MODULE_NAME;
+var NAMESPACE = 'perf';exports.NAMESPACE = NAMESPACE;
+var HTTP_METHODS = {
+  CONNECT: true,
+  DELETE: true,
+  GET: true,
+  HEAD: true,
+  OPTIONS: true,
+  PATCH: true,
+  POST: true,
+  PUT: true,
+  TRACE: true };var
+
+PerformanceMonitoring = function (_ModuleBase) {(0, _inherits2.default)(PerformanceMonitoring, _ModuleBase);
+  function PerformanceMonitoring(app) {(0, _classCallCheck2.default)(this, PerformanceMonitoring);return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(PerformanceMonitoring).call(this,
+    app, {
+      moduleName: MODULE_NAME,
+      hasMultiAppSupport: false,
+      hasCustomUrlSupport: false,
+      namespace: NAMESPACE }));
+
+  }(0, _createClass2.default)(PerformanceMonitoring, [{ key: "setPerformanceCollectionEnabled", value: function setPerformanceCollectionEnabled(
+
+
+
+
+
+
+
+    enabled) {
+      if (typeof enabled !== 'boolean') {
+        throw new Error('firebase.perf().setPerformanceCollectionEnabled() requires a boolean value');
+      }
+
+      return (0, _native.getNativeModule)(this).setPerformanceCollectionEnabled(enabled);
+    } }, { key: "newTrace", value: function newTrace(
+
+
+
+
+
+
+    trace) {
+      if (typeof trace !== 'string') {
+        throw new Error('firebase.perf().newTrace() requires a string value');
+      }
+
+      return new _Trace.default(this, trace);
+    } }, { key: "newHttpMetric", value: function newHttpMetric(
+
+
+
+
+
+
+
+
+    url, httpMethod) {
+      if (typeof url !== 'string' || typeof httpMethod !== 'string') {
+        throw new Error('firebase.perf().newHttpMetric() requires url and httpMethod string values');
+      }
+
+      if (!HTTP_METHODS[httpMethod]) {
+        throw new Error("firebase.perf().newHttpMetric() httpMethod should be one of " + Object.keys(HTTP_METHODS).join(', '));
+      }
+
+      return new _HttpMetric.default(this, url, httpMethod);
+    } }]);return PerformanceMonitoring;}(_ModuleBase.default);exports.default = PerformanceMonitoring;
+
+
+var statics = {};exports.statics = statics;

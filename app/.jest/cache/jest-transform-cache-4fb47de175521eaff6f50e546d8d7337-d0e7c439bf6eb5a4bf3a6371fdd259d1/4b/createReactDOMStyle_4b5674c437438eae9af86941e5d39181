@@ -1,0 +1,212 @@
+da8d336ae87a925a5eb7d2a41713f0f5
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+
+
+
+
+var _normalizeValueWithProperty = _interopRequireDefault(require("./normalizeValueWithProperty"));
+
+function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var emptyObject = {};
+var supportsCSS3TextDecoration = !require("fbjs/lib/ExecutionEnvironment").canUseDOM || window.CSS != null && window.CSS.supports != null && (window.CSS.supports('text-decoration-line', 'none') || window.CSS.supports('-webkit-text-decoration-line', 'none'));
+
+
+
+
+
+
+var mapTransform = function mapTransform(transform) {
+  var type = Object.keys(transform)[0];
+  var value = (0, _normalizeValueWithProperty.default)(transform[type], type);
+  return type + "(" + value + ")";
+};
+
+
+var convertTransformMatrix = function convertTransformMatrix(transformMatrix) {
+  var matrix = transformMatrix.join(',');
+  return "matrix3d(" + matrix + ")";
+};
+
+var resolveTransform = function resolveTransform(resolvedStyle, style) {
+  var transform = style.transform;
+
+  if (Array.isArray(style.transform)) {
+    transform = style.transform.map(mapTransform).join(' ');
+  } else if (style.transformMatrix) {
+    transform = convertTransformMatrix(style.transformMatrix);
+  }
+
+  resolvedStyle.transform = transform;
+};
+
+
+
+
+
+var createReactDOMStyle = function createReactDOMStyle(style) {
+  if (!style) {
+    return emptyObject;
+  }
+
+  var resolvedStyle = {};
+  Object.keys(style).sort().forEach(function (prop) {
+    var value = (0, _normalizeValueWithProperty.default)(style[prop], prop);
+
+    if (value == null) {
+      return;
+    }
+
+    switch (prop) {
+
+      case 'aspectRatio':
+      case 'elevation':
+      case 'overlayColor':
+      case 'resizeMode':
+      case 'tintColor':
+        {
+          break;
+        }
+
+
+
+      case 'backgroundClip':
+        {
+          if (value === 'text') {
+            resolvedStyle.backgroundClip = value;
+            resolvedStyle.WebkitBackgroundClip = value;
+          }
+
+          break;
+        }
+
+
+
+      case 'flex':
+        {
+          if (value > 0) {
+            resolvedStyle.flexGrow = value;
+            resolvedStyle.flexShrink = 1;
+            resolvedStyle.flexBasis = '0%';
+          } else if (value === 0) {
+            resolvedStyle.flexGrow = 0;
+            resolvedStyle.flexShrink = 0;
+            resolvedStyle.flexBasis = '0%';
+          } else if (value === -1) {
+            resolvedStyle.flexGrow = 0;
+            resolvedStyle.flexShrink = 1;
+            resolvedStyle.flexBasis = 'auto';
+          }
+
+          break;
+        }
+
+      case 'font':
+        {
+          resolvedStyle[prop] = value.replace('System', require("./constants").SYSTEM_FONT_STACK);
+          break;
+        }
+
+      case 'fontFamily':
+        {
+          if (value.indexOf('System') > -1) {
+            var stack = value.split(/,\s*/);
+            stack[stack.indexOf('System')] = require("./constants").SYSTEM_FONT_STACK;
+            resolvedStyle[prop] = stack.join(',');
+          } else if (value === 'monospace') {
+            resolvedStyle[prop] = require("./constants").MONOSPACE_FONT_STACK;
+          } else {
+            resolvedStyle[prop] = value;
+          }
+
+          break;
+        }
+
+      case 'fontVariant':
+        {
+          if (Array.isArray(value) && value.length > 0) {
+            resolvedStyle.fontVariant = value.join(' ');
+          }
+
+          break;
+        }
+
+      case 'textAlignVertical':
+        {
+          resolvedStyle.verticalAlign = value === 'center' ? 'middle' : value;
+          break;
+        }
+
+      case 'textDecorationLine':
+        {
+
+
+          if (!supportsCSS3TextDecoration) {
+            resolvedStyle.textDecoration = value;
+          } else {
+            resolvedStyle.textDecorationLine = value;
+          }
+
+          break;
+        }
+
+      case 'transform':
+      case 'transformMatrix':
+        {
+          resolveTransform(resolvedStyle, style);
+          break;
+        }
+
+      case 'writingDirection':
+        {
+          resolvedStyle.direction = value;
+          break;
+        }
+
+      default:
+        {
+          var longFormProperties = require("./constants").STYLE_SHORT_FORM_EXPANSIONS[prop];
+
+          if (longFormProperties) {
+            longFormProperties.forEach(function (longForm, i) {
+
+
+              if (typeof style[longForm] === 'undefined') {
+                resolvedStyle[longForm] = value;
+              }
+            });
+          } else {
+            resolvedStyle[prop] = Array.isArray(value) ? value.join(',') : value;
+          }
+        }}
+
+  });
+  return resolvedStyle;
+};
+
+var _default = createReactDOMStyle;
+exports.default = _default;
+module.exports = exports.default;

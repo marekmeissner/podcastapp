@@ -1,0 +1,25 @@
+74ec564542f1d79f6d2af14e533aea33
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+
+
+
+
+
+
+
+
+var buttonLikeRoles = {
+
+  button: true,
+
+
+
+  menuitem: true };
+
+var _default = buttonLikeRoles;
+exports.default = _default;
+module.exports = exports.default;

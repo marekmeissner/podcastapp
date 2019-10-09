@@ -1,0 +1,49 @@
+cd6f0b46841e3d99669ba1cc0dee0036
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var
+
+
+
+
+
+
+
+Path = function () {
+  function Path(pathComponents) {(0, _classCallCheck2.default)(this, Path);
+    this._parts = pathComponents;
+  }(0, _createClass2.default)(Path, [{ key: "child", value: function child(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    relativePath) {
+      return new Path(this._parts.concat(relativePath.split('/')));
+    } }, { key: "parent", value: function parent()
+
+    {
+      return this._parts.length > 1 ? new Path(this._parts.slice(0, this._parts.length - 1)) : null;
+    } }, { key: "id", get: function get() {return this._parts.length ? this._parts[this._parts.length - 1] : '';} }, { key: "isDocument", get: function get() {return this._parts.length % 2 === 0;} }, { key: "isCollection", get: function get() {return this._parts.length % 2 === 1;} }, { key: "relativeName", get: function get() {return this._parts.join('/');} }], [{ key: "fromName", value: function fromName(
+
+
+
+
+
+
+    name) {
+      if (!name) return new Path([]);
+      var parts = name.split('/');
+      return new Path(parts);
+    } }]);return Path;}();exports.default = Path;

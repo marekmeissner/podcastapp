@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, ActivityIndicator} from 'react-native';
+import {View, ActivityIndicator, Image} from 'react-native';
 import {
   Container,
   Content,
@@ -15,8 +15,9 @@ import {Formik, FormikActions} from 'formik';
 import * as Yup from 'yup';
 import {EMAIL_REGEX} from '../../../utils/constants';
 import {EmailPasswordSignIn} from '../../../../firebase/auth/signIn';
+import InputError from '../../../components/InputError/InputError';
 
-class Login extends React.Component {
+export class Login extends React.Component {
   handleLogin = async (
     {email, password}: UserCredentials,
     {setSubmitting, setStatus}: FormikActions<UserCredentials>,
@@ -40,7 +41,13 @@ class Login extends React.Component {
   render() {
     return (
       <Container>
-        <Content></Content>
+        <View
+          style={{height: 300, justifyContent: 'center', alignItems: 'center'}}>
+          <Image
+            style={{width: '50%', height: '50%', marginBottom: -50}}
+            source={require('../../../assets/logo.png')}
+          />
+        </View>
         <Content>
           <Formik
             initialValues={{
@@ -74,15 +81,15 @@ class Login extends React.Component {
                       />
                     </Item>
                     {errors.email && touched.email && (
-                      <Text
-                        style={{fontSize: 12, paddingTop: 5}}
-                        testID={'emailError'}>
+                      <InputError style={{paddingTop: 5}} testID={'emailError'}>
                         {errors.email}
-                      </Text>
+                      </InputError>
                     )}
                   </Content>
                   <Content style={{height: 80, paddingTop: 10}}>
-                    <Item floatingLabel error={touched.email && !!errors.email}>
+                    <Item
+                      floatingLabel
+                      error={touched.password && !!errors.password}>
                       <Label>Password</Label>
                       <Input
                         testID={'password'}
@@ -95,11 +102,11 @@ class Login extends React.Component {
                       />
                     </Item>
                     {errors.password && touched.password && (
-                      <Text
-                        style={{fontSize: 12, paddingTop: 5}}
+                      <InputError
+                        style={{paddingTop: 5}}
                         testID={'passwordError'}>
                         {errors.password}
-                      </Text>
+                      </InputError>
                     )}
                   </Content>
 
@@ -119,6 +126,19 @@ class Login extends React.Component {
                       <Text>Sign in</Text>
                     )}
                   </Button>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      paddingTop: 15,
+                    }}>
+                    <Button transparent small>
+                      <Text>Forgot password?</Text>
+                    </Button>
+                    <Button transparent small>
+                      <Text>Don't have account?</Text>
+                    </Button>
+                  </View>
                 </Form>
               );
             }}

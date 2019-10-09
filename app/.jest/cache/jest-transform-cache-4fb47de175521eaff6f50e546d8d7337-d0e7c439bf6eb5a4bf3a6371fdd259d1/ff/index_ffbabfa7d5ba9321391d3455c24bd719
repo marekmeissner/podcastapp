@@ -1,0 +1,101 @@
+97c548e5e9609e45371dfe0e87ce4608
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.statics = exports.default = exports.NAMESPACE = exports.MODULE_NAME = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+
+
+var _reactNative = require("react-native");
+var _DynamicLink = _interopRequireDefault(require("./DynamicLink"));
+var _events = require("../../utils/events");
+var _log = require("../../utils/log");
+var _ModuleBase = _interopRequireDefault(require("../../utils/ModuleBase"));
+var _native = require("../../utils/native");
+var NATIVE_EVENTS = ['links_link_received'];
+var MODULE_NAME = 'RNFirebaseLinks';exports.MODULE_NAME = MODULE_NAME;
+var NAMESPACE = 'links';exports.NAMESPACE = NAMESPACE;var
+
+
+
+
+Links = function (_ModuleBase) {(0, _inherits2.default)(Links, _ModuleBase);
+  function Links(app) {var _this;(0, _classCallCheck2.default)(this, Links);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Links).call(this, app, {
+      events: NATIVE_EVENTS,
+      moduleName: MODULE_NAME,
+      hasMultiAppSupport: false,
+      hasCustomUrlSupport: false,
+      namespace: NAMESPACE }));
+
+    _events.SharedEventEmitter.addListener(
+
+    'links_link_received', function (link) {
+      _events.SharedEventEmitter.emit('onLink', link);
+    });
+
+    if (_reactNative.Platform.OS === 'ios') {
+      (0, _native.getNativeModule)((0, _assertThisInitialized2.default)(_this)).jsInitialised();
+    }return _this;
+  }(0, _createClass2.default)(Links, [{ key: "createDynamicLink", value: function createDynamicLink(
+
+
+
+
+
+
+
+    link) {
+      if (!(link instanceof _DynamicLink.default)) {
+        return Promise.reject(new Error("Links:createDynamicLink expects a 'DynamicLink' but got type " + typeof link));
+      }
+
+      try {
+        return (0, _native.getNativeModule)(this).createDynamicLink(link.build());
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    } }, { key: "createShortDynamicLink", value: function createShortDynamicLink(
+
+
+
+
+
+
+
+    link, type) {
+      if (!(link instanceof _DynamicLink.default)) {
+        return Promise.reject(new Error("Links:createShortDynamicLink expects a 'DynamicLink' but got type " + typeof link));
+      }
+
+      try {
+        return (0, _native.getNativeModule)(this).createShortDynamicLink(link.build(), type);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    } }, { key: "getInitialLink", value: function getInitialLink()
+
+
+
+
+
+
+    {
+      return (0, _native.getNativeModule)(this).getInitialLink();
+    } }, { key: "onLink", value: function onLink(
+
+
+
+
+
+
+
+    listener) {var _this2 = this;
+      (0, _log.getLogger)(this).info('Creating onLink listener');
+      _events.SharedEventEmitter.addListener('onLink', listener);
+      return function () {
+        (0, _log.getLogger)(_this2).info('Removing onLink listener');
+        _events.SharedEventEmitter.removeListener('onLink', listener);
+      };
+    } }]);return Links;}(_ModuleBase.default);exports.default = Links;
+
+
+var statics = {
+  DynamicLink: _DynamicLink.default };exports.statics = statics;

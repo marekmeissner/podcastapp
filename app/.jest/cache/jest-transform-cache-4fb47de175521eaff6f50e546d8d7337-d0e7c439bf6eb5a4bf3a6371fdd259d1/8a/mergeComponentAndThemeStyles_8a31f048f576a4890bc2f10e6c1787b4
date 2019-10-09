@@ -1,0 +1,14 @@
+eb377eceef149ff883b40bb1aaf48cd8
+"use strict";var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");Object.defineProperty(exports, "__esModule", { value: true });exports.default = mergeComponentAndThemeStyles;var _ = _interopRequireWildcard(require("lodash"));
+
+function mergeComponentAndThemeStyles(
+componentStyle, themeComponentStyle, themeStyle) {
+  var componentThemedStyle = _.merge({}, componentStyle, themeComponentStyle);
+
+
+
+  var intersectedRootThemeStyle = _.pick(themeStyle, _.keys(componentThemedStyle));
+
+
+  return _.merge({}, intersectedRootThemeStyle, componentThemedStyle);
+}

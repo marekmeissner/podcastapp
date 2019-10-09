@@ -1,0 +1,30 @@
+167635fd2eeda7437db738f6578a4682
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+
+
+
+
+
+
+
+
+
+
+
+var findNodeHandle = function findNodeHandle(component) {
+  var node;
+
+  try {
+    node = (0, require("react-dom").findDOMNode)(component);
+  } catch (e) {}
+
+  return node;
+};
+
+var _default = findNodeHandle;
+exports.default = _default;
+module.exports = exports.default;

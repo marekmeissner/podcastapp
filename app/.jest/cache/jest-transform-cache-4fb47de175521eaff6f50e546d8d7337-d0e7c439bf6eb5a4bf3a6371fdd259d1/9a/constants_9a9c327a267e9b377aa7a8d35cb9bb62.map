@@ -1,0 +1,1 @@
+{"version":3,"sources":["/private/var/www/Hillcode/podcastapp/app/src/utils/constants.ts"],"names":[],"mappings":";;;;AAAO,IAAM,WAAW,GAAG,kDAApB;;AACA,IAAM,cAAc,GAAG,iDAAvB","sourcesContent":["export const EMAIL_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$/;\nexport const PASSWORD_REGEX = /^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;\n"]}

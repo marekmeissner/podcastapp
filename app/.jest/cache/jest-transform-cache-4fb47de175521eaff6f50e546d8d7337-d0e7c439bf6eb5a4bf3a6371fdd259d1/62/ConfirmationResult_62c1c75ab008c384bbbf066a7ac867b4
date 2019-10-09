@@ -1,0 +1,30 @@
+dd6046ace89543b2d861f9dcccfb7eaf
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+
+
+var _native = require("../../../utils/native");var
+ConfirmationResult = function () {
+
+
+
+
+
+  function ConfirmationResult(auth, verificationId) {(0, _classCallCheck2.default)(this, ConfirmationResult);
+    this._auth = auth;
+    this._verificationId = verificationId;
+  }(0, _createClass2.default)(ConfirmationResult, [{ key: "confirm", value: function confirm(
+
+
+
+
+
+
+
+    verificationCode) {var _this = this;
+      return (0, _native.getNativeModule)(this._auth)._confirmVerificationCode(verificationCode).then(function (user) {return _this._auth._setUser(user);});
+    } }, { key: "verificationId", get: function get()
+
+    {
+      return this._verificationId;
+    } }]);return ConfirmationResult;}();exports.default = ConfirmationResult;

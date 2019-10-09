@@ -1,0 +1,2 @@
+5df5fb2768eb26b6676a915b7bf62825
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = function () {var labelTheme = { '.focused': { width: 0 }, fontSize: 17 };return labelTheme;};

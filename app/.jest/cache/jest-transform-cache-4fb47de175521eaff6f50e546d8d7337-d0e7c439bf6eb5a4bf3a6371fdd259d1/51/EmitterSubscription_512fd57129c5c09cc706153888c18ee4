@@ -1,0 +1,68 @@
+b490c81d383bd154e4c7215c94820b9e
+
+
+
+
+
+
+
+
+
+'use strict';
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _EventSubscription2 = _interopRequireDefault(require("./EventSubscription"));
+
+function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+function _inheritsLoose(subClass, superClass) {subClass.prototype = Object.create(superClass.prototype);subClass.prototype.constructor = subClass;subClass.__proto__ = superClass;}
+
+
+
+
+var EmitterSubscription =
+
+function (_EventSubscription) {
+  _inheritsLoose(EmitterSubscription, _EventSubscription);
+
+
+
+
+
+
+
+
+
+
+
+  function EmitterSubscription(emitter, subscriber, listener, context) {
+    var _this;
+
+    _this = _EventSubscription.call(this, subscriber) || this;
+    _this.emitter = emitter;
+    _this.listener = listener;
+    _this.context = context;
+    return _this;
+  }
+
+
+
+
+
+
+
+
+  var _proto = EmitterSubscription.prototype;
+
+  _proto.remove = function remove() {
+    this.emitter.removeSubscription(this);
+  };
+
+  return EmitterSubscription;
+}(_EventSubscription2.default);
+
+var _default = EmitterSubscription;
+exports.default = _default;
+module.exports = exports.default;

@@ -1,0 +1,94 @@
+5fa9565988b60f72dcf18ec468581fbe
+"use strict";var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.statics = exports.default = exports.NAMESPACE = exports.MODULE_NAME = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+
+
+var _events = require("../../utils/events");
+var _log = require("../../utils/log");
+var _native = require("../../utils/native");
+var _ModuleBase = _interopRequireDefault(require("../../utils/ModuleBase"));
+var _Interstitial = _interopRequireDefault(require("./Interstitial"));
+var _RewardedVideo = _interopRequireDefault(require("./RewardedVideo"));
+var _AdRequest = _interopRequireDefault(require("./AdRequest"));
+var _VideoOptions = _interopRequireDefault(require("./VideoOptions"));
+var _Banner = _interopRequireDefault(require("./Banner"));
+var _NativeExpress = _interopRequireDefault(require("./NativeExpress"));
+var _EventTypes = _interopRequireWildcard(require("./EventTypes"));
+var NATIVE_EVENTS = ['interstitial_event', 'rewarded_video_event'];
+var MODULE_NAME = 'RNFirebaseAdMob';exports.MODULE_NAME = MODULE_NAME;
+var NAMESPACE = 'admob';exports.NAMESPACE = NAMESPACE;var
+AdMob = function (_ModuleBase) {(0, _inherits2.default)(AdMob, _ModuleBase);
+  function AdMob(app) {var _this;(0, _classCallCheck2.default)(this, AdMob);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(AdMob).call(this, app, {
+      events: NATIVE_EVENTS,
+      moduleName: MODULE_NAME,
+      hasMultiAppSupport: false,
+      hasCustomUrlSupport: false,
+      namespace: NAMESPACE }));
+
+    _this._initialized = false;
+    _this._appId = null;
+    _events.SharedEventEmitter.addListener('interstitial_event', _this._onInterstitialEvent.bind((0, _assertThisInitialized2.default)(_this)));
+    _events.SharedEventEmitter.addListener('rewarded_video_event', _this._onRewardedVideoEvent.bind((0, _assertThisInitialized2.default)(_this)));return _this;
+  }(0, _createClass2.default)(AdMob, [{ key: "_onInterstitialEvent", value: function _onInterstitialEvent(
+
+    event) {var
+
+      adUnit =
+      event.adUnit;
+      var jsEventType = "interstitial_" + adUnit;
+
+      if (_events.SharedEventEmitter.listeners(jsEventType).length === 0) {
+      }
+
+      _events.SharedEventEmitter.emit(jsEventType, event);
+    } }, { key: "_onRewardedVideoEvent", value: function _onRewardedVideoEvent(
+
+    event) {var
+
+      adUnit =
+      event.adUnit;
+      var jsEventType = "rewarded_video_" + adUnit;
+
+      if (_events.SharedEventEmitter.listeners(jsEventType).length === 0) {
+      }
+
+      _events.SharedEventEmitter.emit(jsEventType, event);
+    } }, { key: "initialize", value: function initialize(
+
+    appId) {
+      if (this._initialized) {
+        (0, _log.getLogger)(this).warn('AdMob has already been initialized!');
+      } else {
+        this._initialized = true;
+        this._appId = appId;
+        (0, _native.getNativeModule)(this).initialize(appId);
+      }
+    } }, { key: "openDebugMenu", value: function openDebugMenu()
+
+    {
+      if (!this._initialized) {
+        (0, _log.getLogger)(this).warn('AdMob needs to be initialized before opening the dev menu!');
+      } else {
+        (0, _log.getLogger)(this).info('Opening debug menu');
+        (0, _native.getNativeModule)(this).openDebugMenu(this._appId);
+      }
+    } }, { key: "interstitial", value: function interstitial(
+
+    adUnit) {
+      return new _Interstitial.default(this, adUnit);
+    } }, { key: "rewarded", value: function rewarded(
+
+    adUnit) {
+      return new _RewardedVideo.default(this, adUnit);
+    } }]);return AdMob;}(_ModuleBase.default);exports.default = AdMob;
+
+
+var statics = {
+  Banner: _Banner.default,
+  NativeExpress: _NativeExpress.default,
+  AdRequest: _AdRequest.default,
+  VideoOptions: _VideoOptions.default,
+  EventTypes: _EventTypes.default,
+  RewardedVideoEventTypes: _EventTypes.RewardedVideoEventTypes,
+  NativeExpressEventTypes: _EventTypes.NativeExpressEventTypes };exports.statics = statics;

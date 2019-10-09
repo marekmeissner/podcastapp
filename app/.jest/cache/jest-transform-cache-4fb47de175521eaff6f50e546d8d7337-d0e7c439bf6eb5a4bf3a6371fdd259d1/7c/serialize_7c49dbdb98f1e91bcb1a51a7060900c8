@@ -1,0 +1,235 @@
+058c1db5549f3355862e5bfdcad11962
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.parseNativeMap = exports.buildTypeMap = exports.buildNativeArray = exports.buildNativeMap = void 0;var _DocumentReference = _interopRequireDefault(require("../DocumentReference"));
+var _Blob = _interopRequireDefault(require("../Blob"));
+var _FieldPath = require("../FieldPath");
+var _FieldValue = _interopRequireDefault(require("../FieldValue"));
+var _GeoPoint = _interopRequireDefault(require("../GeoPoint"));
+var _Path = _interopRequireDefault(require("../Path"));
+var _utils = require("../../../utils");
+var _Timestamp = _interopRequireDefault(require("../Timestamp"));
+
+
+
+
+
+
+var buildNativeMap = function buildNativeMap(data) {
+  var nativeData = {};
+
+  if (data) {
+    Object.keys(data).forEach(function (key) {
+      var typeMap = buildTypeMap(data[key]);
+
+      if (typeMap) {
+        nativeData[key] = typeMap;
+      }
+    });
+  }
+
+  return nativeData;
+};exports.buildNativeMap = buildNativeMap;
+var buildNativeArray = function buildNativeArray(array) {
+  var nativeArray = [];
+
+  if (array) {
+    array.forEach(function (value) {
+      var typeMap = buildTypeMap(value);
+
+      if (typeMap) {
+        nativeArray.push(typeMap);
+      }
+    });
+  }
+
+  return nativeArray;
+};exports.buildNativeArray = buildNativeArray;
+var buildTypeMap = function buildTypeMap(value) {
+  var type = (0, _utils.typeOf)(value);
+
+  if (Number.isNaN(value)) {
+    return {
+      type: 'nan',
+      value: null };
+
+  }
+
+  if (value === Infinity) {
+    return {
+      type: 'infinity',
+      value: null };
+
+  }
+
+  if (value === null || value === undefined) {
+    return {
+      type: 'null',
+      value: null };
+
+  }
+
+  if (value === _FieldPath.DOCUMENT_ID) {
+    return {
+      type: 'documentid',
+      value: null };
+
+  }
+
+  if (type === 'boolean' || type === 'number' || type === 'string') {
+    return {
+      type: type,
+      value: value };
+
+  }
+
+  if (type === 'array') {
+    return {
+      type: type,
+      value: buildNativeArray(value) };
+
+  }
+
+  if (type === 'object') {
+    if (value instanceof _DocumentReference.default) {
+      return {
+        type: 'reference',
+        value: value.path };
+
+    }
+
+    if (value instanceof _GeoPoint.default) {
+      return {
+        type: 'geopoint',
+        value: {
+          latitude: value.latitude,
+          longitude: value.longitude } };
+
+
+    }
+
+    if (value instanceof _Timestamp.default) {
+      return {
+        type: 'timestamp',
+        value: {
+          seconds: value.seconds,
+          nanoseconds: value.nanoseconds } };
+
+
+    }
+
+    if (value instanceof Date) {
+      return {
+        type: 'date',
+        value: value.getTime() };
+
+    }
+
+    if (value instanceof _Blob.default) {
+      return {
+        type: 'blob',
+        value: value.toBase64() };
+
+    }
+
+
+    if (value instanceof _FieldValue.default) {
+      return {
+        type: 'fieldvalue',
+        value: {
+          elements: value.elements,
+          type: value.type } };
+
+
+    }
+
+    return {
+      type: 'object',
+      value: buildNativeMap(value) };
+
+  }
+
+  console.warn("Unknown data type received " + type);
+  return null;
+};exports.buildTypeMap = buildTypeMap;
+
+
+
+
+
+var parseNativeMap = function parseNativeMap(firestore, nativeData) {
+  var data;
+
+  if (nativeData) {
+    data = {};
+    Object.keys(nativeData).forEach(function (key) {
+      data[key] = parseTypeMap(firestore, nativeData[key]);
+    });
+  }
+
+  return data;
+};exports.parseNativeMap = parseNativeMap;
+
+var parseNativeArray = function parseNativeArray(firestore, nativeArray) {
+  var array = [];
+
+  if (nativeArray) {
+    nativeArray.forEach(function (typeMap) {
+      array.push(parseTypeMap(firestore, typeMap));
+    });
+  }
+
+  return array;
+};
+
+var parseTypeMap = function parseTypeMap(firestore, typeMap) {var
+
+  type =
+
+  typeMap.type,value = typeMap.value;
+
+  if (type === 'null') {
+    return null;
+  }
+
+  if (type === 'boolean' || type === 'number' || type === 'string') {
+    return value;
+  }
+
+  if (type === 'array') {
+    return parseNativeArray(firestore, value);
+  }
+
+  if (type === 'object') {
+    return parseNativeMap(firestore, value);
+  }
+
+  if (type === 'reference') {
+    return new _DocumentReference.default(firestore, _Path.default.fromName(value));
+  }
+
+  if (type === 'geopoint') {
+    return new _GeoPoint.default(value.latitude, value.longitude);
+  }
+
+  if (type === 'timestamp') {
+    return new _Timestamp.default(value.seconds, value.nanoseconds);
+  }
+
+  if (type === 'date') {
+    return new Date(value);
+  }
+
+  if (type === 'blob') {
+    return _Blob.default.fromBase64String(value);
+  }
+
+  if (type === 'infinity') {
+    return Infinity;
+  }
+
+  if (type === 'nan') {
+    return NaN;
+  }
+
+  console.warn("Unknown data type received " + type);
+  return value;
+};

@@ -1,0 +1,67 @@
+4ecc7e2ee211a42f66a7c85cc6cdf0c3
+"use strict";Object.defineProperty(exports, "__esModule", { value: true });exports.Visibility = exports.SemanticAction = exports.Priority = exports.Importance = exports.GroupAlert = exports.Defaults = exports.Category = exports.BadgeIconType = void 0;var BadgeIconType = {
+  Large: 2,
+  None: 0,
+  Small: 1 };exports.BadgeIconType = BadgeIconType;
+
+var Category = {
+  Alarm: 'alarm',
+  Call: 'call',
+  Email: 'email',
+  Error: 'err',
+  Event: 'event',
+  Message: 'msg',
+  Progress: 'progress',
+  Promo: 'promo',
+  Recommendation: 'recommendation',
+  Reminder: 'reminder',
+  Service: 'service',
+  Social: 'social',
+  Status: 'status',
+  System: 'system',
+  Transport: 'transport' };exports.Category = Category;
+
+var Defaults = {
+  All: -1,
+  Lights: 4,
+  Sound: 1,
+  Vibrate: 2 };exports.Defaults = Defaults;
+
+var GroupAlert = {
+  All: 0,
+  Children: 2,
+  Summary: 1 };exports.GroupAlert = GroupAlert;
+
+var Importance = {
+  Default: 3,
+  High: 4,
+  Low: 2,
+  Max: 5,
+  Min: 1,
+  None: 0,
+  Unspecified: -1000 };exports.Importance = Importance;
+
+var Priority = {
+  Default: 0,
+  High: 1,
+  Low: -1,
+  Max: 2,
+  Min: -2 };exports.Priority = Priority;
+
+var SemanticAction = {
+  Archive: 5,
+  Call: 10,
+  Delete: 4,
+  MarkAsRead: 2,
+  MarkAsUnread: 3,
+  Mute: 6,
+  None: 0,
+  Reply: 1,
+  ThumbsDown: 9,
+  ThumbsUp: 8,
+  Unmute: 7 };exports.SemanticAction = SemanticAction;
+
+var Visibility = {
+  Private: 0,
+  Public: 1,
+  Secret: -1 };exports.Visibility = Visibility;

@@ -1,0 +1,114 @@
+7efb2d598a4232139b53f36c61af31ee
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.utils = exports.storage = exports.perf = exports.notifications = exports.messaging = exports.links = exports.iid = exports.functions = exports.firestore = exports.database = exports.crashlytics = exports.config = exports.auth = exports.analytics = exports.admob = exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var _reactNative = require("react-native");
+var _apps = _interopRequireDefault(require("../../utils/apps"));
+var _internals = _interopRequireDefault(require("../../utils/internals"));
+var _app = _interopRequireDefault(require("./app"));
+var _version = _interopRequireDefault(require("../../version"));
+
+var _admob = require("../admob");
+var _auth = require("../auth");
+var _analytics = require("../analytics");
+var _config = require("../config");
+var _crashlytics = require("../crashlytics");
+var _database = require("../database");
+var _firestore = require("../firestore");
+var _functions = require("../functions");
+var _iid = require("../iid");
+var _links = require("../links");
+var _messaging = require("../messaging");
+var _notifications = require("../notifications");
+var _perf = require("../perf");
+var _storage = require("../storage");
+var _utils = require("../utils");
+var FirebaseCoreModule = _reactNative.NativeModules.RNFirebase;var
+
+Firebase = function () {
+  function Firebase() {(0, _classCallCheck2.default)(this, Firebase);
+    if (!FirebaseCoreModule) {
+      throw new Error(_internals.default.STRINGS.ERROR_MISSING_CORE);
+    }
+
+    _apps.default.initializeNativeApps();
+
+    this.admob = _apps.default.moduleAndStatics('admob', _admob.statics, _admob.MODULE_NAME);
+    this.analytics = _apps.default.moduleAndStatics('analytics', _analytics.statics, _analytics.MODULE_NAME);
+    this.auth = _apps.default.moduleAndStatics('auth', _auth.statics, _auth.MODULE_NAME);
+    this.config = _apps.default.moduleAndStatics('config', _config.statics, _config.MODULE_NAME);
+    this.crashlytics = _apps.default.moduleAndStatics('crashlytics', _crashlytics.statics, _crashlytics.MODULE_NAME);
+    this.database = _apps.default.moduleAndStatics('database', _database.statics, _database.MODULE_NAME);
+    this.firestore = _apps.default.moduleAndStatics('firestore', _firestore.statics, _firestore.MODULE_NAME);
+    this.functions = _apps.default.moduleAndStatics('functions', _functions.statics, _functions.MODULE_NAME);
+    this.iid = _apps.default.moduleAndStatics('iid', _iid.statics, _iid.MODULE_NAME);
+    this.links = _apps.default.moduleAndStatics('links', _links.statics, _links.MODULE_NAME);
+    this.messaging = _apps.default.moduleAndStatics('messaging', _messaging.statics, _messaging.MODULE_NAME);
+    this.notifications = _apps.default.moduleAndStatics('notifications', _notifications.statics, _notifications.MODULE_NAME);
+    this.perf = _apps.default.moduleAndStatics('perf', _perf.statics, _perf.MODULE_NAME);
+    this.storage = _apps.default.moduleAndStatics('storage', _storage.statics, _storage.MODULE_NAME);
+    this.utils = _apps.default.moduleAndStatics('utils', _utils.statics, _utils.MODULE_NAME);
+  }(0, _createClass2.default)(Firebase, [{ key: "initializeApp", value: function initializeApp(
+
+
+
+
+
+
+
+
+
+    options, name) {
+      return _apps.default.initializeApp(options, name);
+    } }, { key: "app", value: function app(
+
+
+
+
+
+
+
+
+
+
+
+    name) {
+      return _apps.default.app(name);
+    } }, { key: "apps", get: function get()
+
+
+
+
+
+
+    {
+      return _apps.default.apps();
+    } }, { key: "SDK_VERSION", get: function get()
+
+
+
+
+
+
+    {
+      return _version.default;
+    } }]);return Firebase;}();
+
+
+
+var firebaseApp = new Firebase();var _default =
+firebaseApp;exports.default = _default;var
+
+admob =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+firebaseApp.admob,analytics = firebaseApp.analytics,auth = firebaseApp.auth,config = firebaseApp.config,crashlytics = firebaseApp.crashlytics,database = firebaseApp.database,firestore = firebaseApp.firestore,functions = firebaseApp.functions,iid = firebaseApp.iid,links = firebaseApp.links,messaging = firebaseApp.messaging,notifications = firebaseApp.notifications,perf = firebaseApp.perf,storage = firebaseApp.storage,utils = firebaseApp.utils;exports.utils = utils;exports.storage = storage;exports.perf = perf;exports.notifications = notifications;exports.messaging = messaging;exports.links = links;exports.iid = iid;exports.functions = functions;exports.firestore = firestore;exports.database = database;exports.crashlytics = crashlytics;exports.config = config;exports.auth = auth;exports.analytics = analytics;exports.admob = admob;

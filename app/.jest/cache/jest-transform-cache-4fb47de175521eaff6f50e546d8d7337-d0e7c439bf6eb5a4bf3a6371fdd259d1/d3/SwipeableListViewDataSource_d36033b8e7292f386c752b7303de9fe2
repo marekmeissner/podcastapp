@@ -1,0 +1,103 @@
+fbef14433b24a4f697c0f476d7a9163e
+
+
+
+
+
+
+
+
+'use strict';
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _ListViewDataSource = _interopRequireDefault(require("../ListView/ListViewDataSource"));
+
+function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+
+
+
+
+
+
+
+
+var SwipeableListViewDataSource =
+
+function () {
+  function SwipeableListViewDataSource(params) {
+    var _this = this;
+
+    this._dataSource = new _ListViewDataSource.default({
+      getRowData: params.getRowData,
+      getSectionHeaderData: params.getSectionHeaderData,
+      rowHasChanged: function rowHasChanged(row1, row2) {
+
+
+
+
+        return row1.id !== _this._previousOpenRowID && row2.id === _this._openRowID || row1.id === _this._previousOpenRowID && row2.id !== _this._openRowID || params.rowHasChanged(row1, row2);
+      },
+      sectionHeaderHasChanged: params.sectionHeaderHasChanged });
+
+  }
+
+  var _proto = SwipeableListViewDataSource.prototype;
+
+  _proto.cloneWithRowsAndSections = function cloneWithRowsAndSections(dataBlob, sectionIdentities, rowIdentities) {
+    this._dataSource = this._dataSource.cloneWithRowsAndSections(dataBlob, sectionIdentities, rowIdentities);
+    this._dataBlob = dataBlob;
+    this.rowIdentities = this._dataSource.rowIdentities;
+    this.sectionIdentities = this._dataSource.sectionIdentities;
+    return this;
+  };
+
+
+  _proto.getDataSource = function getDataSource() {
+    return this._dataSource;
+  };
+
+  _proto.getOpenRowID = function getOpenRowID() {
+    return this._openRowID;
+  };
+
+  _proto.getFirstRowID = function getFirstRowID() {
+
+
+
+
+
+    if (this.rowIdentities) {
+      return this.rowIdentities[0] && this.rowIdentities[0][0];
+    }
+
+    return Object.keys(this._dataBlob)[0];
+  };
+
+  _proto.getLastRowID = function getLastRowID() {
+    if (this.rowIdentities && this.rowIdentities.length) {
+      var lastSection = this.rowIdentities[this.rowIdentities.length - 1];
+
+      if (lastSection && lastSection.length) {
+        return lastSection[lastSection.length - 1];
+      }
+    }
+
+    return Object.keys(this._dataBlob)[this._dataBlob.length - 1];
+  };
+
+  _proto.setOpenRowID = function setOpenRowID(rowID) {
+    this._previousOpenRowID = this._openRowID;
+    this._openRowID = rowID;
+    this._dataSource = this._dataSource.cloneWithRowsAndSections(this._dataBlob, this.sectionIdentities, this.rowIdentities);
+    return this;
+  };
+
+  return SwipeableListViewDataSource;
+}();
+
+var _default = SwipeableListViewDataSource;
+exports.default = _default;
+module.exports = exports.default;

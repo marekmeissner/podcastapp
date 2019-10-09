@@ -1,0 +1,21 @@
+1aea31539d1b1fcae08f3862cbdaba43
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.DOCUMENT_ID = exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var
+
+
+
+
+
+
+
+FieldPath = function () {
+  function FieldPath() {(0, _classCallCheck2.default)(this, FieldPath);for (var _len = arguments.length, segments = new Array(_len), _key = 0; _key < _len; _key++) {segments[_key] = arguments[_key];}
+
+    this._segments = segments;
+  }(0, _createClass2.default)(FieldPath, null, [{ key: "documentId", value: function documentId()
+
+    {
+      return DOCUMENT_ID;
+    } }]);return FieldPath;}();exports.default = FieldPath;
+
+
+var DOCUMENT_ID = new FieldPath('__name__');exports.DOCUMENT_ID = DOCUMENT_ID;

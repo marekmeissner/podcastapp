@@ -1,0 +1,35 @@
+5716126d975593854146f09bccac1abc
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _PooledClass = _interopRequireDefault(require("../../vendor/react-native/PooledClass"));
+
+function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+
+
+
+
+
+
+
+
+var twoArgumentPooler = _PooledClass.default.twoArgumentPooler;
+
+function Position(left, top) {
+  this.left = left;
+  this.top = top;
+}
+
+Position.prototype.destructor = function () {
+  this.left = null;
+  this.top = null;
+};
+
+_PooledClass.default.addPoolingTo(Position, twoArgumentPooler);
+
+var _default = Position;
+exports.default = _default;
+module.exports = exports.default;

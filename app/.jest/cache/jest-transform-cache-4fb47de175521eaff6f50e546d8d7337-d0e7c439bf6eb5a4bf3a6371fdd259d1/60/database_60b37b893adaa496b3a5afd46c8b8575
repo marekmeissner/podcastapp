@@ -1,0 +1,9 @@
+208678c6e8c8276c865266c78e52d250
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _SyncTree = _interopRequireDefault(require("../../utils/SyncTree"));var _default =
+{
+
+
+
+  cleanup: function cleanup() {
+    _SyncTree.default.removeListenersForRegistrations(Object.keys(_SyncTree.default._reverseLookup));
+  } };exports.default = _default;

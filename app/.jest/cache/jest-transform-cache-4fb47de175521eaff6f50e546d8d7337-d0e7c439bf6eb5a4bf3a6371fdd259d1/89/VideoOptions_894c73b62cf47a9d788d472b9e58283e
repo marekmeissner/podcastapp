@@ -1,0 +1,16 @@
+3206cfd9af61e30677fdbf68731cf962
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var VideoOptions = function () {
+  function VideoOptions() {(0, _classCallCheck2.default)(this, VideoOptions);
+    this._props = {
+      startMuted: true };
+
+  }(0, _createClass2.default)(VideoOptions, [{ key: "build", value: function build()
+
+    {
+      return this._props;
+    } }, { key: "setStartMuted", value: function setStartMuted()
+
+    {var muted = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      this._props.startMuted = muted;
+      return this;
+    } }]);return VideoOptions;}();exports.default = VideoOptions;

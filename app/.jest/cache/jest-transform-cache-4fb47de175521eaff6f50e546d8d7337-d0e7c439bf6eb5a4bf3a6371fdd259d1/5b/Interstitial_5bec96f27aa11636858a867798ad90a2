@@ -1,0 +1,106 @@
+10b4bdb577a1de3b741d94da82f8ed9b
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var _reactNative = require("react-native");
+var _ = require("./");
+var _AdRequest = _interopRequireDefault(require("./AdRequest"));
+var _events = require("../../utils/events");
+var _native = require("../../utils/native");
+var _utils = require("../../utils");
+var subscriptions = [];var
+Interstitial = function () {
+  function Interstitial(admob, adUnit) {var _this = this;(0, _classCallCheck2.default)(this, Interstitial);this.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    _onInterstitialEvent = function (event) {
+      var eventType = "interstitial:" + _this.adUnit + ":" + event.type;
+      var emitData = (0, _extends2.default)({}, event);
+
+      switch (event.type) {
+        case 'onAdLoaded':
+          _this.loaded = true;
+          break;
+
+        case 'onAdFailedToLoad':
+          emitData = (0, _utils.nativeToJSError)(event.payload.code, event.payload.message);
+          emitData.type = event.type;
+          break;
+
+        default:}
+
+
+      _events.SharedEventEmitter.emit(eventType, emitData);
+      _events.SharedEventEmitter.emit("interstitial:" + _this.adUnit + ":*", emitData);
+    };if (_reactNative.Platform.OS === 'ios') {(0, _native.getNativeModule)(admob).clearInterstitial(adUnit);}for (var i = 0, len = subscriptions.length; i < len; i++) {subscriptions[i].remove();}subscriptions = [];this._admob = admob;this.adUnit = adUnit;this.loaded = false;_events.SharedEventEmitter.removeAllListeners("interstitial_" + adUnit);_events.SharedEventEmitter.addListener("interstitial_" + adUnit, this._onInterstitialEvent);}(0, _createClass2.default)(Interstitial, [{ key: "loadAd", value: function loadAd(
+
+
+
+
+
+
+    request) {
+      var adRequest = request;
+
+      if (!adRequest || !Object.keys(adRequest)) {
+        adRequest = new _AdRequest.default().addTestDevice().build();
+      }
+
+      return (0, _native.getNativeModule)(this._admob).interstitialLoadAd(this.adUnit, adRequest);
+    } }, { key: "isLoaded", value: function isLoaded()
+
+
+
+
+
+
+    {
+      return this.loaded;
+    } }, { key: "show", value: function show()
+
+
+
+
+
+
+    {
+      if (this.loaded) {
+        (0, _native.getNativeModule)(this._admob).interstitialShowAd(this.adUnit);
+      }
+    } }, { key: "on", value: function on(
+
+
+
+
+
+
+
+
+    eventType, listenerCb) {
+      if (!_.statics.EventTypes[eventType]) {
+        console.warn("Invalid event type provided, must be one of: " + Object.keys(_.statics.EventTypes).join(', '));
+        return null;
+      }
+
+      var sub = _events.SharedEventEmitter.addListener("interstitial:" + this.adUnit + ":" + eventType, listenerCb);
+      subscriptions.push(sub);
+      return sub;
+    } }]);return Interstitial;}();exports.default = Interstitial;

@@ -1,0 +1,36 @@
+088065878db5526eccbc7c9def8e9245
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+
+
+
+
+
+
+
+
+
+
+var animationDirectionEnum = ['alternate', 'alternate-reverse', 'normal', 'reverse'];
+var animationFillModeEnum = ['none', 'forwards', 'backwards', 'both'];
+var animationPlayStateEnum = ['paused', 'running'];
+var AnimationPropTypes = {
+  animationDelay: (0, require("prop-types").oneOfType)([require("prop-types").string, (0, require("prop-types").arrayOf)(require("prop-types").string)]),
+  animationDirection: (0, require("prop-types").oneOfType)([(0, require("prop-types").oneOf)(animationDirectionEnum), (0, require("prop-types").arrayOf)(animationDirectionEnum)]),
+  animationDuration: (0, require("prop-types").oneOfType)([require("prop-types").string, (0, require("prop-types").arrayOf)(require("prop-types").string)]),
+  animationFillMode: (0, require("prop-types").oneOfType)([(0, require("prop-types").oneOf)(animationFillModeEnum), (0, require("prop-types").arrayOf)(animationFillModeEnum)]),
+  animationIterationCount: (0, require("prop-types").oneOfType)([require("prop-types").number, (0, require("prop-types").oneOf)(['infinite']), (0, require("prop-types").arrayOf)((0, require("prop-types").oneOfType)([require("prop-types").number, (0, require("prop-types").oneOf)(['infinite'])]))]),
+  animationKeyframes: (0, require("prop-types").oneOfType)([require("prop-types").string, require("prop-types").object, (0, require("prop-types").arrayOf)((0, require("prop-types").oneOfType)([require("prop-types").string, require("prop-types").object]))]),
+  animationPlayState: (0, require("prop-types").oneOfType)([(0, require("prop-types").oneOf)(animationPlayStateEnum), (0, require("prop-types").arrayOf)(animationPlayStateEnum)]),
+  animationTimingFunction: (0, require("prop-types").oneOfType)([require("prop-types").string, (0, require("prop-types").arrayOf)(require("prop-types").string)]),
+  transitionDelay: (0, require("prop-types").oneOfType)([require("prop-types").string, (0, require("prop-types").arrayOf)(require("prop-types").string)]),
+  transitionDuration: (0, require("prop-types").oneOfType)([require("prop-types").string, (0, require("prop-types").arrayOf)(require("prop-types").string)]),
+  transitionProperty: (0, require("prop-types").oneOfType)([require("prop-types").string, (0, require("prop-types").arrayOf)(require("prop-types").string)]),
+  transitionTimingFunction: (0, require("prop-types").oneOfType)([require("prop-types").string, (0, require("prop-types").arrayOf)(require("prop-types").string)]) };
+
+var _default = AnimationPropTypes;
+exports.default = _default;
+module.exports = exports.default;

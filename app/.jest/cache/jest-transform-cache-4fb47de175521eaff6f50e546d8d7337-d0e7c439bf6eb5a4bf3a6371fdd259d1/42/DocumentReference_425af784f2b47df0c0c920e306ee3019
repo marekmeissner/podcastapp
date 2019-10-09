@@ -1,0 +1,196 @@
+c0c82735a2dd4703ba83316749ab0f12
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+
+
+var _SnapshotError = _interopRequireDefault(require("./SnapshotError"));
+var _DocumentSnapshot = _interopRequireDefault(require("./DocumentSnapshot"));
+var _CollectionReference = _interopRequireDefault(require("./CollectionReference"));
+var _utils = require("./utils");
+var _serialize = require("./utils/serialize");
+var _native = require("../../utils/native");
+var _utils2 = require("../../utils");
+var _events = require("../../utils/events");var
+
+
+
+
+DocumentReference = function () {
+  function DocumentReference(firestore, documentPath) {(0, _classCallCheck2.default)(this, DocumentReference);
+    this._documentPath = documentPath;
+    this._firestore = firestore;
+  }(0, _createClass2.default)(DocumentReference, [{ key: "isEqual", value: function isEqual(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    otherDocumentReference) {
+      if (!(otherDocumentReference instanceof DocumentReference)) {
+        throw new Error('firebase.firestore.DocumentReference.isEqual(*) expects an instance of DocumentReference.');
+      }
+
+
+      if (this.path !== otherDocumentReference.path) return false;
+
+      if (this._firestore.app.name !== otherDocumentReference._firestore.app.name) {
+        return false;
+      }
+
+
+
+      if (this._firestore.app.options.projectId !== otherDocumentReference._firestore.app.options.projectId) {
+        return false;
+      }
+
+      return true;
+    } }, { key: "collection", value: function collection(
+
+    collectionPath) {
+      var path = this._documentPath.child(collectionPath);
+
+      if (!path.isCollection) {
+        throw new Error('Argument "collectionPath" must point to a collection.');
+      }
+
+      return new _CollectionReference.default(this._firestore, path);
+    } }, { key: "delete", value: function _delete()
+
+    {
+      return (0, _native.getNativeModule)(this._firestore).documentDelete(this.path);
+    } }, { key: "get", value: function get(
+
+    options) {var _this = this;
+      if (options) {
+        if (!(0, _utils2.isObject)(options)) {
+          return Promise.reject(new Error('DocumentReference.get failed: First argument must be an object.'));
+        }
+
+        if (options.source && options.source !== 'default' && options.source !== 'server' && options.source !== 'cache') {
+          return Promise.reject(new Error('DocumentReference.get failed: GetOptions.source must be one of `default`, `server` or `cache`.'));
+        }
+      }
+
+      return (0, _native.getNativeModule)(this._firestore).documentGet(this.path, options).then(function (result) {return new _DocumentSnapshot.default(_this._firestore, result);});
+    } }, { key: "onSnapshot", value: function onSnapshot(
+
+    optionsOrObserverOrOnNext, observerOrOnNextOrOnError, onError) {var _this2 = this;
+      var observer;
+      var docListenOptions = {};
+
+      if ((0, _utils2.isFunction)(optionsOrObserverOrOnNext)) {
+        if (observerOrOnNextOrOnError && !(0, _utils2.isFunction)(observerOrOnNextOrOnError)) {
+          throw new Error('DocumentReference.onSnapshot failed: Second argument must be a valid function.');
+        }
+
+
+        observer = {
+          next: optionsOrObserverOrOnNext,
+          error: observerOrOnNextOrOnError };
+
+      } else if (optionsOrObserverOrOnNext && (0, _utils2.isObject)(optionsOrObserverOrOnNext)) {
+
+        if (optionsOrObserverOrOnNext.next) {
+          if ((0, _utils2.isFunction)(optionsOrObserverOrOnNext.next)) {
+            if (optionsOrObserverOrOnNext.error && !(0, _utils2.isFunction)(optionsOrObserverOrOnNext.error)) {
+              throw new Error('DocumentReference.onSnapshot failed: Observer.error must be a valid function.');
+            }
+
+
+            observer = {
+              next: optionsOrObserverOrOnNext.next,
+              error: optionsOrObserverOrOnNext.error };
+
+          } else {
+            throw new Error('DocumentReference.onSnapshot failed: Observer.next must be a valid function.');
+          }
+        } else if (Object.prototype.hasOwnProperty.call(optionsOrObserverOrOnNext, 'includeMetadataChanges')) {
+          docListenOptions = optionsOrObserverOrOnNext;
+
+          if ((0, _utils2.isFunction)(observerOrOnNextOrOnError)) {
+            if (onError && !(0, _utils2.isFunction)(onError)) {
+              throw new Error('DocumentReference.onSnapshot failed: Third argument must be a valid function.');
+            }
+
+
+            observer = {
+              next: observerOrOnNextOrOnError,
+              error: onError };
+
+          } else if (observerOrOnNextOrOnError && (0, _utils2.isObject)(observerOrOnNextOrOnError) && observerOrOnNextOrOnError.next) {
+            if ((0, _utils2.isFunction)(observerOrOnNextOrOnError.next)) {
+              if (observerOrOnNextOrOnError.error && !(0, _utils2.isFunction)(observerOrOnNextOrOnError.error)) {
+                throw new Error('DocumentReference.onSnapshot failed: Observer.error must be a valid function.');
+              }
+
+              observer = {
+                next: observerOrOnNextOrOnError.next,
+                error: observerOrOnNextOrOnError.error };
+
+            } else {
+              throw new Error('DocumentReference.onSnapshot failed: Observer.next must be a valid function.');
+            }
+          } else {
+            throw new Error('DocumentReference.onSnapshot failed: Second argument must be a function or observer.');
+          }
+        } else {
+          throw new Error('DocumentReference.onSnapshot failed: First argument must be a function, observer or options.');
+        }
+      } else {
+        throw new Error('DocumentReference.onSnapshot failed: Called with invalid arguments.');
+      }
+
+      var listenerId = (0, _utils2.firestoreAutoId)();
+
+      var listener = function listener(nativeDocumentSnapshot) {
+        var documentSnapshot = new _DocumentSnapshot.default(_this2.firestore, nativeDocumentSnapshot);
+        observer.next(documentSnapshot);
+      };
+
+
+      var snapshotSubscription = _events.SharedEventEmitter.addListener((0, _events.getAppEventName)(this._firestore, "onDocumentSnapshot:" + listenerId), listener);
+      var unsubscribe;
+
+      var errorSubscription = _events.SharedEventEmitter.addListener((0, _events.getAppEventName)(this._firestore, "onDocumentSnapshotError:" + listenerId), function (e) {
+        if (unsubscribe) unsubscribe();
+        var error = new _SnapshotError.default(e);
+        if (observer.error) observer.error(error);else _this2.firestore.log.error(error);
+      });
+
+      (0, _native.getNativeModule)(this._firestore).documentOnSnapshot(this.path, listenerId, docListenOptions);
+
+      unsubscribe = function unsubscribe() {
+        snapshotSubscription.remove();
+        errorSubscription.remove();
+
+        (0, _native.getNativeModule)(_this2._firestore).documentOffSnapshot(_this2.path, listenerId);
+      };
+
+      return unsubscribe;
+    } }, { key: "set", value: function set(
+
+    data, options) {
+      var nativeData = (0, _serialize.buildNativeMap)(data);
+      return (0, _native.getNativeModule)(this._firestore).documentSet(this.path, nativeData, options);
+    } }, { key: "update", value: function update()
+
+    {for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {args[_key] = arguments[_key];}
+      var data = (0, _utils.parseUpdateArgs)(args, 'DocumentReference.update');
+      var nativeData = (0, _serialize.buildNativeMap)(data);
+      return (0, _native.getNativeModule)(this._firestore).documentUpdate(this.path, nativeData);
+    } }, { key: "firestore", get: function get() {return this._firestore;} }, { key: "id", get: function get() {return this._documentPath.id;} }, { key: "parent", get: function get() {var parentPath = this._documentPath.parent();return new _CollectionReference.default(this._firestore, parentPath);} }, { key: "path", get: function get() {return this._documentPath.relativeName;} }]);return DocumentReference;}();exports.default = DocumentReference;

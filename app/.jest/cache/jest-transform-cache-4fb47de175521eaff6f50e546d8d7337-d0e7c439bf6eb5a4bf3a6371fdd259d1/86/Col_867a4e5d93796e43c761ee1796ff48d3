@@ -1,0 +1,52 @@
+cc83b2ac8ade7123973d568100f1952c
+'use strict';var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+var _react = _interopRequireWildcard(require("react"));
+var _reactNative = require("react-native");
+var _computeProps = _interopRequireDefault(require("../Utils/computeProps"));var _jsxFileName = "/private/var/www/Hillcode/podcastapp/app/node_modules/react-native-easy-grid/Components/Col.js";var
+
+
+ColumnNB = function (_Component) {(0, _inherits2.default)(ColumnNB, _Component);function ColumnNB() {(0, _classCallCheck2.default)(this, ColumnNB);return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(ColumnNB).apply(this, arguments));}(0, _createClass2.default)(ColumnNB, [{ key: "prepareRootProps", value: function prepareRootProps()
+    {
+
+      var flattenedStyle = _reactNative.StyleSheet.flatten(this.props.style);
+
+      var type = {
+        flexDirection: 'column',
+        flex: this.props.size ? this.props.size : flattenedStyle && flattenedStyle.width ? 0 : 1 };
+
+
+      var defaultProps = {
+        style: type };
+
+      return (0, _computeProps.default)(this.props, defaultProps);
+
+    } }, { key: "setNativeProps", value: function setNativeProps(
+
+    nativeProps) {
+      this._root.setNativeProps(nativeProps);
+    } }, { key: "render", value: function render()
+
+    {var _this = this;
+      if (this.props.onPress) {
+        return (
+          _react.default.createElement(_reactNative.TouchableOpacity, (0, _extends2.default)({ onPress: this.props.onPress },
+          this.prepareRootProps(), { __source: { fileName: _jsxFileName, lineNumber: 32 } }),
+          _react.default.createElement(_reactNative.View, (0, _extends2.default)({
+            ref: function ref(component) {return _this._root = component;} },
+          this.props,
+          this.prepareRootProps(), { __source: { fileName: _jsxFileName, lineNumber: 34 } }),
+          this.props.children)));
+
+
+      } else
+      {
+        return (
+          _react.default.createElement(_reactNative.View, (0, _extends2.default)({
+            ref: function ref(component) {return _this._root = component;} },
+          this.props,
+          this.prepareRootProps(), { __source: { fileName: _jsxFileName, lineNumber: 44 } }),
+          this.props.children));
+
+      }
+    } }]);return ColumnNB;}(_react.Component);exports.default = ColumnNB;

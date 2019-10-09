@@ -1,0 +1,46 @@
+6a33ba70e155401e677f8c579d12bc1b
+
+
+
+
+
+
+
+
+
+'use strict';
+
+exports.__esModule = true;
+exports.default = void 0;
+
+
+
+
+
+var EventSubscription =
+
+function () {
+
+
+
+
+  function EventSubscription(subscriber) {
+    this.subscriber = subscriber;
+  }
+
+
+
+
+
+  var _proto = EventSubscription.prototype;
+
+  _proto.remove = function remove() {
+    this.subscriber.removeSubscription(this);
+  };
+
+  return EventSubscription;
+}();
+
+var _default = EventSubscription;
+exports.default = _default;
+module.exports = exports.default;

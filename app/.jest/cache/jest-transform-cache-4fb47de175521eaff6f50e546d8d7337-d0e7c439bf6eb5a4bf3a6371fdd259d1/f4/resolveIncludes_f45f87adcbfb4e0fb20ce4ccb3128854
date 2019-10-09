@@ -1,0 +1,145 @@
+e0ab559be88094240c221cce5da56b29
+"use strict";var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = resolveIncludes;exports.INCLUDE = void 0;var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));var _ = _interopRequireWildcard(require("lodash"));function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(source, true).forEach(function (key) {(0, _defineProperty2.default)(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(source).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}
+var INCLUDE = '@@shoutem.theme/include';exports.INCLUDE = INCLUDE;
+
+
+
+
+
+
+
+function includeSymbolMergeHandler(objVal, srcVal) {
+  var newObjVal = objVal;
+  var include;
+
+  if (srcVal && srcVal[INCLUDE]) {
+    include = newObjVal && newObjVal[INCLUDE] ? [].concat((0, _toConsumableArray2.default)(
+    newObjVal[INCLUDE]), (0, _toConsumableArray2.default)(srcVal[INCLUDE])) : srcVal[INCLUDE];
+  }
+
+
+  if (_.isUndefined(newObjVal) && _.isPlainObject(srcVal)) {
+
+
+
+
+
+
+    var newObj = _.mergeWith({}, srcVal, function (o, s) {return s;});
+
+
+
+
+
+
+    if (include) {
+      newObj[INCLUDE] = include;
+    }
+    return newObj;
+  }
+
+
+
+  if (_.isPlainObject(newObjVal) && include) {
+    newObjVal[INCLUDE] = include;
+  }
+}
+
+
+
+
+
+
+
+function resolveIncludes(target) {var base = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  function getStyle(styleName) {
+    var defaultStyle = {};
+    var style = defaultStyle;
+
+    var baseStyle = base[styleName];
+    if (baseStyle) {
+      if (baseStyle[INCLUDE]) {
+        throw Error("Base style cannot have includes, unexpected include in " + styleName + ".");
+      }
+      style = _objectSpread({}, baseStyle);
+    }
+
+    var targetStyle = target[styleName];
+    if (targetStyle) {
+      style = _objectSpread({},
+      style, {},
+      targetStyle);
+
+    }
+
+    if (style === defaultStyle) {
+      console.warn("Including unexisting style: " + styleName);
+    }
+
+    return style;
+  }
+
+
+
+
+
+
+  function includeNodeStyles(styleNode, processingStyleNames) {
+    if (!_.isPlainObject(styleNode)) {
+      return styleNode;
+    }
+
+
+    var styleNamesToInclude = styleNode[INCLUDE];
+
+    var stylesToInclude = {};
+    if (styleNamesToInclude) {
+      if (!_.isArray(styleNamesToInclude)) {
+        throw Error('Include should be array');
+      }
+
+      for (var _iterator = styleNamesToInclude, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[typeof Symbol === "function" ? Symbol.iterator : "@@iterator"]();;) {var _ref;if (_isArray) {if (_i >= _iterator.length) break;_ref = _iterator[_i++];} else {_i = _iterator.next();if (_i.done) break;_ref = _i.value;}var _styleName = _ref;
+        if (processingStyleNames.has(_styleName)) {
+          throw Error("Circular style include, including " + _styleName);
+        }
+        processingStyleNames.add(_styleName);
+        stylesToInclude = _.mergeWith(
+        {},
+        stylesToInclude,
+        includeNodeStyles(getStyle(_styleName), processingStyleNames),
+        includeSymbolMergeHandler);
+
+        processingStyleNames.delete(_styleName);
+      }
+    }
+
+    var resultingStyle = _.mergeWith({}, stylesToInclude, styleNode, includeSymbolMergeHandler);
+    delete resultingStyle[INCLUDE];
+
+    for (var _iterator2 = _.keys(resultingStyle), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[typeof Symbol === "function" ? Symbol.iterator : "@@iterator"]();;) {var _ref2;if (_isArray2) {if (_i2 >= _iterator2.length) break;_ref2 = _iterator2[_i2++];} else {_i2 = _iterator2.next();if (_i2.done) break;_ref2 = _i2.value;}var _styleName3 = _ref2;
+      resultingStyle[_styleName3] =
+      includeNodeStyles(resultingStyle[_styleName3], processingStyleNames);
+    }
+    return resultingStyle;
+  }
+
+
+
+
+  var processingStyleNames = new Set();
+  return includeNodeStyles(target, processingStyleNames);
+}

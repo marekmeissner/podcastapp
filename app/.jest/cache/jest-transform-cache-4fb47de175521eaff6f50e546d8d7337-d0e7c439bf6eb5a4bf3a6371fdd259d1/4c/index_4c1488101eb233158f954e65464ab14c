@@ -1,0 +1,364 @@
+7e78227aabf128d67305d082ceac13cf
+
+
+
+
+
+
+
+
+
+'use strict';
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _Animated = _interopRequireDefault(require("../../../exports/Animated"));
+
+var _I18nManager = _interopRequireDefault(require("../../../exports/I18nManager"));
+
+var _PanResponder = _interopRequireDefault(require("../../../exports/PanResponder"));
+
+var _react = _interopRequireDefault(require("react"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _StyleSheet = _interopRequireDefault(require("../../../exports/StyleSheet"));
+
+var _reactTimerMixin = _interopRequireDefault(require("react-timer-mixin"));
+
+var _View = _interopRequireDefault(require("../../../exports/View"));
+
+var _createReactClass = _interopRequireDefault(require("create-react-class"));
+
+var _emptyFunction = _interopRequireDefault(require("fbjs/lib/emptyFunction"));
+
+function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+
+
+
+var isRTL = function isRTL() {
+  return _I18nManager.default.isRTL;
+};
+
+
+
+var CLOSED_LEFT_POSITION = 0;
+
+var HORIZONTAL_SWIPE_DISTANCE_THRESHOLD = 10;
+
+var HORIZONTAL_FULL_SWIPE_SPEED_THRESHOLD = 0.3;
+
+var SLOW_SPEED_SWIPE_FACTOR = 4;
+
+var SWIPE_DURATION = 300;
+
+
+
+
+
+var ON_MOUNT_BOUNCE_DELAY = 700;
+var ON_MOUNT_BOUNCE_DURATION = 400;
+
+var RIGHT_SWIPE_BOUNCE_BACK_DISTANCE = 30;
+var RIGHT_SWIPE_BOUNCE_BACK_DURATION = 300;
+
+
+
+
+
+
+var RIGHT_SWIPE_THRESHOLD = 30 * SLOW_SPEED_SWIPE_FACTOR;
+
+
+
+
+
+
+
+
+var SwipeableRow = (0, _createReactClass.default)({
+  displayName: 'SwipeableRow',
+  _panResponder: {},
+  _previousLeft: CLOSED_LEFT_POSITION,
+  mixins: [_reactTimerMixin.default],
+  propTypes: {
+    children: _propTypes.default.any,
+    isOpen: _propTypes.default.bool,
+    preventSwipeRight: _propTypes.default.bool,
+    maxSwipeDistance: _propTypes.default.number.isRequired,
+    onOpen: _propTypes.default.func.isRequired,
+    onClose: _propTypes.default.func.isRequired,
+    onSwipeEnd: _propTypes.default.func.isRequired,
+    onSwipeStart: _propTypes.default.func.isRequired,
+
+    shouldBounceOnMount: _propTypes.default.bool,
+
+
+
+
+    slideoutView: _propTypes.default.node.isRequired,
+
+
+
+
+
+
+    swipeThreshold: _propTypes.default.number.isRequired },
+
+  getInitialState: function getInitialState() {
+    return {
+      currentLeft: new _Animated.default.Value(this._previousLeft),
+
+
+
+
+
+
+
+      isSwipeableViewRendered: false,
+      rowHeight: null };
+
+  },
+  getDefaultProps: function getDefaultProps() {
+    return {
+      isOpen: false,
+      preventSwipeRight: false,
+      maxSwipeDistance: 0,
+      onOpen: _emptyFunction.default,
+      onClose: _emptyFunction.default,
+      onSwipeEnd: _emptyFunction.default,
+      onSwipeStart: _emptyFunction.default,
+      swipeThreshold: 30 };
+
+  },
+  UNSAFE_componentWillMount: function UNSAFE_componentWillMount() {
+    this._panResponder = _PanResponder.default.create({
+      onMoveShouldSetPanResponderCapture: this._handleMoveShouldSetPanResponderCapture,
+      onPanResponderGrant: this._handlePanResponderGrant,
+      onPanResponderMove: this._handlePanResponderMove,
+      onPanResponderRelease: this._handlePanResponderEnd,
+      onPanResponderTerminationRequest: this._onPanResponderTerminationRequest,
+      onPanResponderTerminate: this._handlePanResponderEnd,
+      onShouldBlockNativeResponder: function onShouldBlockNativeResponder(event, gestureState) {
+        return false;
+      } });
+
+  },
+  componentDidMount: function componentDidMount() {
+    var _this = this;
+
+    if (this.props.shouldBounceOnMount) {
+
+
+
+
+      this.setTimeout(function () {
+        _this._animateBounceBack(ON_MOUNT_BOUNCE_DURATION);
+      }, ON_MOUNT_BOUNCE_DELAY);
+    }
+  },
+  UNSAFE_componentWillReceiveProps: function UNSAFE_componentWillReceiveProps(nextProps) {
+
+
+
+
+    if (this.props.isOpen && !nextProps.isOpen) {
+      this._animateToClosedPosition();
+    }
+  },
+  render: function render() {
+
+    var slideOutView;
+
+    if (this.state.isSwipeableViewRendered && this.state.rowHeight) {
+      slideOutView = _react.default.createElement(_View.default, {
+        style: [styles.slideOutContainer, {
+          height: this.state.rowHeight }] },
+
+      this.props.slideoutView);
+    }
+
+
+    var swipeableView = _react.default.createElement(_Animated.default.View, {
+      onLayout: this._onSwipeableViewLayout,
+      style: {
+        transform: [{
+          translateX: this.state.currentLeft }] } },
+
+
+    this.props.children);
+
+    return _react.default.createElement(_View.default, this._panResponder.panHandlers, slideOutView, swipeableView);
+  },
+  close: function close() {
+    this.props.onClose();
+
+    this._animateToClosedPosition();
+  },
+  _onSwipeableViewLayout: function _onSwipeableViewLayout(event) {
+    this.setState({
+      isSwipeableViewRendered: true,
+      rowHeight: event.nativeEvent.layout.height });
+
+  },
+  _handleMoveShouldSetPanResponderCapture: function _handleMoveShouldSetPanResponderCapture(event, gestureState) {
+
+    return gestureState.dy < 10 && this._isValidSwipe(gestureState);
+  },
+  _handlePanResponderGrant: function _handlePanResponderGrant(event, gestureState) {},
+  _handlePanResponderMove: function _handlePanResponderMove(event, gestureState) {
+    if (this._isSwipingExcessivelyRightFromClosedPosition(gestureState)) {
+      return;
+    }
+
+    this.props.onSwipeStart();
+
+    if (this._isSwipingRightFromClosed(gestureState)) {
+      this._swipeSlowSpeed(gestureState);
+    } else {
+      this._swipeFullSpeed(gestureState);
+    }
+  },
+  _isSwipingRightFromClosed: function _isSwipingRightFromClosed(gestureState) {
+    var gestureStateDx = isRTL() ? -gestureState.dx : gestureState.dx;
+    return this._previousLeft === CLOSED_LEFT_POSITION && gestureStateDx > 0;
+  },
+  _swipeFullSpeed: function _swipeFullSpeed(gestureState) {
+    this.state.currentLeft.setValue(this._previousLeft + gestureState.dx);
+  },
+  _swipeSlowSpeed: function _swipeSlowSpeed(gestureState) {
+    this.state.currentLeft.setValue(this._previousLeft + gestureState.dx / SLOW_SPEED_SWIPE_FACTOR);
+  },
+  _isSwipingExcessivelyRightFromClosedPosition: function _isSwipingExcessivelyRightFromClosedPosition(gestureState) {
+
+
+
+
+
+    var gestureStateDx = isRTL() ? -gestureState.dx : gestureState.dx;
+    return this._isSwipingRightFromClosed(gestureState) && gestureStateDx > RIGHT_SWIPE_THRESHOLD;
+  },
+  _onPanResponderTerminationRequest: function _onPanResponderTerminationRequest(event, gestureState) {
+    return false;
+  },
+  _animateTo: function _animateTo(toValue, duration, callback) {
+    var _this2 = this;
+
+    if (duration === void 0) {
+      duration = SWIPE_DURATION;
+    }
+
+    if (callback === void 0) {
+      callback = _emptyFunction.default;
+    }
+
+    _Animated.default.timing(this.state.currentLeft, {
+      duration: duration,
+      toValue: toValue,
+      useNativeDriver: true }).
+    start(function () {
+      _this2._previousLeft = toValue;
+      callback();
+    });
+  },
+  _animateToOpenPosition: function _animateToOpenPosition() {
+    var maxSwipeDistance = isRTL() ? -this.props.maxSwipeDistance : this.props.maxSwipeDistance;
+
+    this._animateTo(-maxSwipeDistance);
+  },
+  _animateToOpenPositionWith: function _animateToOpenPositionWith(speed, distMoved) {
+
+
+
+
+    speed = speed > HORIZONTAL_FULL_SWIPE_SPEED_THRESHOLD ? speed : HORIZONTAL_FULL_SWIPE_SPEED_THRESHOLD;
+
+
+
+
+
+    var duration = Math.abs((this.props.maxSwipeDistance - Math.abs(distMoved)) / speed);
+    var maxSwipeDistance = isRTL() ? -this.props.maxSwipeDistance : this.props.maxSwipeDistance;
+
+    this._animateTo(-maxSwipeDistance, duration);
+  },
+  _animateToClosedPosition: function _animateToClosedPosition(duration) {
+    if (duration === void 0) {
+      duration = SWIPE_DURATION;
+    }
+
+    this._animateTo(CLOSED_LEFT_POSITION, duration);
+  },
+  _animateToClosedPositionDuringBounce: function _animateToClosedPositionDuringBounce() {
+    this._animateToClosedPosition(RIGHT_SWIPE_BOUNCE_BACK_DURATION);
+  },
+  _animateBounceBack: function _animateBounceBack(duration) {
+
+
+
+
+    var swipeBounceBackDistance = isRTL() ? -RIGHT_SWIPE_BOUNCE_BACK_DISTANCE : RIGHT_SWIPE_BOUNCE_BACK_DISTANCE;
+
+    this._animateTo(-swipeBounceBackDistance, duration, this._animateToClosedPositionDuringBounce);
+  },
+
+  _isValidSwipe: function _isValidSwipe(gestureState) {
+    if (this.props.preventSwipeRight && this._previousLeft === CLOSED_LEFT_POSITION && gestureState.dx > 0) {
+      return false;
+    }
+
+    return Math.abs(gestureState.dx) > HORIZONTAL_SWIPE_DISTANCE_THRESHOLD;
+  },
+  _shouldAnimateRemainder: function _shouldAnimateRemainder(gestureState) {
+
+
+
+
+    return Math.abs(gestureState.dx) > this.props.swipeThreshold || gestureState.vx > HORIZONTAL_FULL_SWIPE_SPEED_THRESHOLD;
+  },
+  _handlePanResponderEnd: function _handlePanResponderEnd(event, gestureState) {
+    var horizontalDistance = isRTL() ? -gestureState.dx : gestureState.dx;
+
+    if (this._isSwipingRightFromClosed(gestureState)) {
+      this.props.onOpen();
+
+      this._animateBounceBack(RIGHT_SWIPE_BOUNCE_BACK_DURATION);
+    } else if (this._shouldAnimateRemainder(gestureState)) {
+      if (horizontalDistance < 0) {
+
+        this.props.onOpen();
+
+        this._animateToOpenPositionWith(gestureState.vx, horizontalDistance);
+      } else {
+
+        this.props.onClose();
+
+        this._animateToClosedPosition();
+      }
+    } else {
+      if (this._previousLeft === CLOSED_LEFT_POSITION) {
+        this._animateToClosedPosition();
+      } else {
+        this._animateToOpenPosition();
+      }
+    }
+
+    this.props.onSwipeEnd();
+  } });
+
+
+var styles = _StyleSheet.default.create({
+  slideOutContainer: {
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0 } });
+
+
+
+var _default = SwipeableRow;
+exports.default = _default;
+module.exports = exports.default;

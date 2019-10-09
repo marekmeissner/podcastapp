@@ -1,0 +1,52 @@
+809cff62af27e77e3f151fe2873df34d
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+
+
+var _native = require("../../utils/native");var
+HttpMetric = function () {
+  function HttpMetric(perf, url, httpMethod) {(0, _classCallCheck2.default)(this, HttpMetric);
+    this._perf = perf;
+    this.url = url;
+    this.httpMethod = httpMethod;
+  }(0, _createClass2.default)(HttpMetric, [{ key: "getAttribute", value: function getAttribute(
+
+    attribute) {
+      return (0, _native.getNativeModule)(this._perf).getHttpMetricAttribute(this.url, this.httpMethod, attribute);
+    } }, { key: "getAttributes", value: function getAttributes()
+
+    {
+      return (0, _native.getNativeModule)(this._perf).getHttpMetricAttributes(this.url, this.httpMethod);
+    } }, { key: "putAttribute", value: function putAttribute(
+
+    attribute, value) {
+      return (0, _native.getNativeModule)(this._perf).putHttpMetricAttribute(this.url, this.httpMethod, attribute, value);
+    } }, { key: "removeAttribute", value: function removeAttribute(
+
+    attribute) {
+      return (0, _native.getNativeModule)(this._perf).removeHttpMetricAttribute(this.url, this.httpMethod, attribute);
+    } }, { key: "setHttpResponseCode", value: function setHttpResponseCode(
+
+    code) {
+      return (0, _native.getNativeModule)(this._perf).setHttpMetricResponseCode(this.url, this.httpMethod, code);
+    } }, { key: "setRequestPayloadSize", value: function setRequestPayloadSize(
+
+    bytes) {
+      return (0, _native.getNativeModule)(this._perf).setHttpMetricRequestPayloadSize(this.url, this.httpMethod, bytes);
+    } }, { key: "setResponseContentType", value: function setResponseContentType(
+
+    type) {
+      return (0, _native.getNativeModule)(this._perf).setHttpMetricResponseContentType(this.url, this.httpMethod, type);
+    } }, { key: "setResponsePayloadSize", value: function setResponsePayloadSize(
+
+    bytes) {
+      return (0, _native.getNativeModule)(this._perf).setHttpMetricResponsePayloadSize(this.url, this.httpMethod, bytes);
+    } }, { key: "start", value: function start()
+
+    {
+      return (0, _native.getNativeModule)(this._perf).startHttpMetric(this.url, this.httpMethod);
+    } }, { key: "stop", value: function stop()
+
+    {
+      return (0, _native.getNativeModule)(this._perf).stopHttpMetric(this.url, this.httpMethod);
+    } }]);return HttpMetric;}();exports.default = HttpMetric;

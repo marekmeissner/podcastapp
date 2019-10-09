@@ -1,0 +1,314 @@
+a9f286e7b6290986a0c9279b06e64714
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var _reactNative = require("react-native");
+var _events = require("./events");
+var _DataSnapshot = _interopRequireDefault(require("../modules/database/DataSnapshot"));
+var _Reference = _interopRequireDefault(require("../modules/database/Reference"));
+var _ = require("./");var
+
+
+
+
+
+SyncTree = function () {
+  function SyncTree() {(0, _classCallCheck2.default)(this, SyncTree);
+    this._tree = {};
+    this._reverseLookup = {};
+
+    if (_reactNative.NativeModules.RNFirebaseDatabase) {
+      this._nativeEmitter = new _reactNative.NativeEventEmitter(_reactNative.NativeModules.RNFirebaseDatabase);
+
+      this._nativeEmitter.addListener('database_sync_event', this._handleSyncEvent.bind(this));
+    }
+  }(0, _createClass2.default)(SyncTree, [{ key: "_handleSyncEvent", value: function _handleSyncEvent(
+
+
+
+
+
+
+
+    event) {
+      if (event.error) {
+        this._handleErrorEvent(event);
+      } else {
+        this._handleValueEvent(event);
+      }
+    } }, { key: "_handleValueEvent", value: function _handleValueEvent(
+
+
+
+
+
+
+
+
+
+
+    event) {var _event$registration =
+
+
+
+
+      event.registration,key = _event$registration.key,eventRegistrationKey = _event$registration.eventRegistrationKey;
+      var registration = this.getRegistration(eventRegistrationKey);
+
+      if (!registration) {
+
+
+
+
+        return _reactNative.NativeModules.RNFirebaseDatabase.off(key, eventRegistrationKey);
+      }var _event$data =
+
+
+
+
+      event.data,snapshot = _event$data.snapshot,previousChildName = _event$data.previousChildName;
+
+      return _events.SharedEventEmitter.emit(eventRegistrationKey, new _DataSnapshot.default(registration.ref, snapshot), previousChildName);
+    } }, { key: "_handleErrorEvent", value: function _handleErrorEvent(
+
+
+
+
+
+
+
+
+    event) {var _event$error =
+
+
+
+
+      event.error,code = _event$error.code,message = _event$error.message;var _event$registration2 =
+
+
+
+      event.registration,eventRegistrationKey = _event$registration2.eventRegistrationKey,registrationCancellationKey = _event$registration2.registrationCancellationKey;
+      var registration = this.getRegistration(registrationCancellationKey);
+
+      if (registration) {
+
+
+        var error = (0, _.nativeToJSError)(code, message, {
+          ref: registration.ref });
+
+
+        _events.SharedEventEmitter.emit(registrationCancellationKey, error);
+
+
+        this.removeRegistration(eventRegistrationKey);
+      }
+    } }, { key: "getRegistration", value: function getRegistration(
+
+
+
+
+
+
+
+
+    registration) {
+      return this._reverseLookup[registration] ? (0, _extends2.default)({}, this._reverseLookup[registration]) : null;
+    } }, { key: "removeListenersForRegistrations", value: function removeListenersForRegistrations(
+
+
+
+
+
+
+
+
+    registrations) {
+      if ((0, _.isString)(registrations)) {
+        this.removeRegistration(registrations);
+        _events.SharedEventEmitter.removeAllListeners(registrations);
+        return 1;
+      }
+
+      if (!Array.isArray(registrations)) return 0;
+
+      for (var i = 0, len = registrations.length; i < len; i++) {
+        this.removeRegistration(registrations[i]);
+        _events.SharedEventEmitter.removeAllListeners(registrations[i]);
+      }
+
+      return registrations.length;
+    } }, { key: "removeListenerRegistrations", value: function removeListenerRegistrations(
+
+
+
+
+
+
+
+
+
+    listener, registrations) {
+      if (!Array.isArray(registrations)) return [];
+      var removed = [];
+
+      for (var i = 0, len = registrations.length; i < len; i++) {
+        var registration = registrations[i];
+
+        var subscriptions = _events.SharedEventEmitter._subscriber.getSubscriptionsForType(registration);
+
+        if (subscriptions) {
+          for (var j = 0, l = subscriptions.length; j < l; j++) {
+            var subscription = subscriptions[j];
+
+
+            if (subscription && subscription.listener === listener) {
+              subscription.remove();
+              removed.push(registration);
+              this.removeRegistration(registration);
+            }
+          }
+        }
+      }
+
+      return removed;
+    } }, { key: "getRegistrationsByPath", value: function getRegistrationsByPath(
+
+
+
+
+
+
+
+
+    path) {
+      var out = [];
+      var eventKeys = Object.keys(this._tree[path] || {});
+
+      for (var i = 0, len = eventKeys.length; i < len; i++) {
+        Array.prototype.push.apply(out, Object.keys(this._tree[path][eventKeys[i]]));
+      }
+
+      return out;
+    } }, { key: "getRegistrationsByPathEvent", value: function getRegistrationsByPathEvent(
+
+
+
+
+
+
+
+
+
+    path, eventType) {
+      if (!this._tree[path]) return [];
+      if (!this._tree[path][eventType]) return [];
+      return Object.keys(this._tree[path][eventType]);
+    } }, { key: "getOneByPathEventListener", value: function getOneByPathEventListener(
+
+
+
+
+
+
+
+
+
+
+    path, eventType, listener) {
+      if (!this._tree[path]) return null;
+      if (!this._tree[path][eventType]) return null;
+      var registrationsForPathEvent = Object.entries(this._tree[path][eventType]);
+
+      for (var i = 0; i < registrationsForPathEvent.length; i++) {
+        var registration = registrationsForPathEvent[i];
+        if (registration[1] === listener) return registration[0];
+      }
+
+      return null;
+    } }, { key: "addRegistration", value: function addRegistration(
+
+
+
+
+
+
+
+
+
+    registration) {var
+
+      eventRegistrationKey =
+
+
+
+
+      registration.eventRegistrationKey,eventType = registration.eventType,listener = registration.listener,once = registration.once,path = registration.path;
+      if (!this._tree[path]) this._tree[path] = {};
+      if (!this._tree[path][eventType]) this._tree[path][eventType] = {};
+      this._tree[path][eventType][eventRegistrationKey] = listener;
+      this._reverseLookup[eventRegistrationKey] = registration;
+
+      if (once) {
+        _events.SharedEventEmitter.once(eventRegistrationKey, this._onOnceRemoveRegistration(eventRegistrationKey, listener));
+      } else {
+        _events.SharedEventEmitter.addListener(eventRegistrationKey, listener);
+      }
+
+      return eventRegistrationKey;
+    } }, { key: "removeRegistration", value: function removeRegistration(
+
+
+
+
+
+
+
+
+
+    registration) {
+      if (!this._reverseLookup[registration]) return false;var _this$_reverseLookup$ =
+
+
+
+
+      this._reverseLookup[registration],path = _this$_reverseLookup$.path,eventType = _this$_reverseLookup$.eventType,once = _this$_reverseLookup$.once;
+
+      if (!this._tree[path]) {
+        delete this._reverseLookup[registration];
+        return false;
+      }
+
+      if (!this._tree[path][eventType]) {
+        delete this._reverseLookup[registration];
+        return false;
+      }
+
+
+
+      var registrationObj = this._reverseLookup[registration];
+
+      if (registrationObj && !once) {
+        _reactNative.NativeModules.RNFirebaseDatabase.off(registrationObj.key, registration);
+      }
+
+      delete this._tree[path][eventType][registration];
+      delete this._reverseLookup[registration];
+      return !!registrationObj;
+    } }, { key: "_onOnceRemoveRegistration", value: function _onOnceRemoveRegistration(
+
+
+
+
+
+
+
+
+
+
+    registration, listener) {var _this = this;
+      return function () {
+        _this.removeRegistration(registration);
+        listener.apply(void 0, arguments);
+      };
+    } }]);return SyncTree;}();var _default =
+
+
+
+new SyncTree();exports.default = _default;

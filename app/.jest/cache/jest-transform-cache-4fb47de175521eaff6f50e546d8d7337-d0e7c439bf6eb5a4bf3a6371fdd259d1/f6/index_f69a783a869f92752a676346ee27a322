@@ -1,0 +1,27 @@
+05cddad508384942295136713c038e02
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _createStrictShapeTypeChecker = _interopRequireDefault(require("../../modules/createStrictShapeTypeChecker"));
+
+
+
+function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+
+
+
+
+
+
+
+
+var PointPropType = (0, _createStrictShapeTypeChecker.default)({
+  x: require("prop-types").number,
+  y: require("prop-types").number });
+
+var _default = PointPropType;
+exports.default = _default;
+module.exports = exports.default;

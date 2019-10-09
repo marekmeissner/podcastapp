@@ -1,0 +1,2 @@
+2a69d92bb56cd7cb8acab5342328b269
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = function () {var tabTheme = { flex: 1, backgroundColor: '#FFF' };return tabTheme;};

@@ -1,0 +1,33 @@
+6fd069b46793da22583c5f96c1f85a3d
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+
+
+var _DocumentSnapshot = _interopRequireDefault(require("./DocumentSnapshot"));var
+
+
+
+
+DocumentChange = function () {
+  function DocumentChange(firestore, nativeData) {(0, _classCallCheck2.default)(this, DocumentChange);
+    this._document = new _DocumentSnapshot.default(firestore, nativeData.document);
+    this._newIndex = nativeData.newIndex;
+    this._oldIndex = nativeData.oldIndex;
+    this._type = nativeData.type;
+  }(0, _createClass2.default)(DocumentChange, [{ key: "doc", get: function get()
+
+    {
+      return this._document;
+    } }, { key: "newIndex", get: function get()
+
+    {
+      return this._newIndex;
+    } }, { key: "oldIndex", get: function get()
+
+    {
+      return this._oldIndex;
+    } }, { key: "type", get: function get()
+
+    {
+      return this._type;
+    } }]);return DocumentChange;}();exports.default = DocumentChange;

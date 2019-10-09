@@ -1,0 +1,54 @@
+33aad93861d5949b03c373a5f28812f5
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.TypeFieldValueTimestamp = exports.TypeFieldValueUnion = exports.TypeFieldValueRemove = exports.TypeFieldValueIncrement = exports.TypeFieldValueDelete = exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+
+
+var _any = _interopRequireDefault(require("./utils/any"));
+var _serialize = require("./utils/serialize");var
+
+FieldValue = function () {
+  function FieldValue(type, elements) {(0, _classCallCheck2.default)(this, FieldValue);
+    this._type = type;
+    this._elements = elements;
+  }(0, _createClass2.default)(FieldValue, [{ key: "type", get: function get()
+
+    {
+      return this._type;
+    } }, { key: "elements", get: function get()
+
+    {
+      return this._elements;
+    } }], [{ key: "delete", value: function _delete()
+
+    {
+      return new FieldValue(TypeFieldValueDelete);
+    } }, { key: "increment", value: function increment(
+
+    n) {
+      return new FieldValue(TypeFieldValueIncrement, n);
+    } }, { key: "serverTimestamp", value: function serverTimestamp()
+
+    {
+      return new FieldValue(TypeFieldValueTimestamp);
+    } }, { key: "arrayUnion", value: function arrayUnion()
+
+    {for (var _len = arguments.length, elements = new Array(_len), _key = 0; _key < _len; _key++) {elements[_key] = arguments[_key];}
+
+
+
+      return new FieldValue(TypeFieldValueUnion, (0, _serialize.buildNativeArray)(elements));
+    } }, { key: "arrayRemove", value: function arrayRemove()
+
+    {for (var _len2 = arguments.length, elements = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {elements[_key2] = arguments[_key2];}
+
+
+
+      return new FieldValue(TypeFieldValueRemove, (0, _serialize.buildNativeArray)(elements));
+    } }]);return FieldValue;}();exports.default = FieldValue;
+
+
+var TypeFieldValueDelete = 'delete';exports.TypeFieldValueDelete = TypeFieldValueDelete;
+var TypeFieldValueIncrement = 'increment';exports.TypeFieldValueIncrement = TypeFieldValueIncrement;
+var TypeFieldValueRemove = 'remove';exports.TypeFieldValueRemove = TypeFieldValueRemove;
+var TypeFieldValueUnion = 'union';exports.TypeFieldValueUnion = TypeFieldValueUnion;
+var TypeFieldValueTimestamp = 'timestamp';exports.TypeFieldValueTimestamp = TypeFieldValueTimestamp;

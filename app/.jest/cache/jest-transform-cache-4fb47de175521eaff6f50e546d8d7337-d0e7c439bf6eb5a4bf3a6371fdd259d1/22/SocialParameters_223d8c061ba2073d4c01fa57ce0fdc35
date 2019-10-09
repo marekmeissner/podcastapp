@@ -1,0 +1,50 @@
+a409aca9f0b7dbd3d529ddf3d86f463a
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var
+
+
+
+SocialParameters = function () {
+  function SocialParameters(link) {(0, _classCallCheck2.default)(this, SocialParameters);
+    this._link = link;
+  }(0, _createClass2.default)(SocialParameters, [{ key: "setDescriptionText", value: function setDescriptionText(
+
+
+
+
+
+
+
+    descriptionText) {
+      this._descriptionText = descriptionText;
+      return this._link;
+    } }, { key: "setImageUrl", value: function setImageUrl(
+
+
+
+
+
+
+
+    imageUrl) {
+      this._imageUrl = imageUrl;
+      return this._link;
+    } }, { key: "setTitle", value: function setTitle(
+
+
+
+
+
+
+
+    title) {
+      this._title = title;
+      return this._link;
+    } }, { key: "build", value: function build()
+
+    {
+      return {
+        descriptionText: this._descriptionText,
+        imageUrl: this._imageUrl,
+        title: this._title };
+
+    } }]);return SocialParameters;}();exports.default = SocialParameters;

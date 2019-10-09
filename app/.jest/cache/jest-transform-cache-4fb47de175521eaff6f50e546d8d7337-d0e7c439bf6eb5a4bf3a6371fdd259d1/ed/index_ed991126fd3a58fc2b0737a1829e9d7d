@@ -1,0 +1,28 @@
+6550ac2dad0ae79dd6eef8c5b2cb893d
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+
+
+var _StyleSheet = _interopRequireDefault(require("./StyleSheet"));
+
+function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+
+
+
+
+
+
+
+
+
+if (require("fbjs/lib/ExecutionEnvironment").canUseDOM && window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
+  window.__REACT_DEVTOOLS_GLOBAL_HOOK__.resolveRNStyle = _StyleSheet.default.flatten;
+}
+
+var _default = _StyleSheet.default;
+exports.default = _default;
+module.exports = exports.default;

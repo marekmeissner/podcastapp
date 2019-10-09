@@ -1,0 +1,193 @@
+c9f306ed6efbde5f4274416beed78787
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));var _reactNative = require("react-native");
+var _app = _interopRequireDefault(require("../modules/core/app"));
+var _internals = _interopRequireDefault(require("./internals"));
+var _ = require("./");
+var FirebaseCoreModule = _reactNative.NativeModules.RNFirebase;
+var APPS = {};
+var DEFAULT_APP_NAME = '[DEFAULT]';
+var APP_MODULES = {};
+var CUSTOM_URL_OR_REGION_NAMESPACES = {
+  database: true,
+  functions: true,
+  storage: false,
+
+
+  admob: false,
+  analytics: false,
+  auth: false,
+  config: false,
+  crashlytics: false,
+  firestore: false,
+  iid: false,
+  invites: false,
+  links: false,
+  messaging: false,
+  notifications: false,
+  perf: false,
+  utils: false };var _default =
+
+{
+  DEFAULT_APP_NAME: DEFAULT_APP_NAME,
+
+  app: function app(name) {
+    var _name = name ? name.toUpperCase() : DEFAULT_APP_NAME;
+
+    var app = APPS[_name];
+    if (!app) throw new Error(_internals.default.STRINGS.ERROR_APP_NOT_INIT(_name));
+    return app;
+  },
+
+  apps: function apps() {
+
+    return Object.values(APPS);
+  },
+
+
+
+
+
+
+
+
+
+  appModule: function appModule(app, namespace, InstanceClass) {
+    return function () {var customUrlOrRegion = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      if (customUrlOrRegion && !CUSTOM_URL_OR_REGION_NAMESPACES[namespace]) {
+        throw new Error(_internals.default.STRINGS.ERROR_INIT_SERVICE_URL_OR_REGION_UNSUPPORTED(namespace));
+      }
+
+      var appInstanceIdentifier = "" + app.name + (customUrlOrRegion || '');
+
+      if (!APP_MODULES[appInstanceIdentifier]) {
+        APP_MODULES[appInstanceIdentifier] = {};
+      }
+
+      if (!APP_MODULES[appInstanceIdentifier][namespace]) {
+        APP_MODULES[appInstanceIdentifier][namespace] = new InstanceClass(app, customUrlOrRegion);
+
+        if (_.isAndroid && namespace !== 'utils' && !_internals.default.FLAGS.checkedPlayServices) {
+          _internals.default.FLAGS.checkedPlayServices = true;
+          app.utils().checkPlayServicesAvailability();
+        }
+      }
+
+      return APP_MODULES[appInstanceIdentifier][namespace];
+    };
+  },
+
+
+
+
+
+
+  deleteApp: function deleteApp(name) {
+    var app = APPS[name];
+    if (!app) return;
+    delete APPS[name];
+  },
+
+
+
+
+
+
+
+
+  initializeApp: function initializeApp(options, name) {
+    if (name && !(0, _.isString)(name)) {
+      throw new Error(_internals.default.STRINGS.ERROR_INIT_STRING_NAME);
+    }
+
+    var _name = (name || DEFAULT_APP_NAME).toUpperCase();
+
+
+
+    if (APPS[_name]) {
+      console.warn(_internals.default.STRINGS.WARN_INITIALIZE_DEPRECATION);
+      return APPS[_name];
+    }
+
+
+
+
+    if (!(0, _.isObject)(options)) {
+      throw new Error(_internals.default.STRINGS.ERROR_INIT_OBJECT);
+    }
+
+    if (!options.apiKey) {
+      throw new Error(_internals.default.STRINGS.ERROR_MISSING_OPT('apiKey'));
+    }
+
+    if (!options.appId) {
+      throw new Error(_internals.default.STRINGS.ERROR_MISSING_OPT('appId'));
+    }
+
+    if (!options.databaseURL) {
+      throw new Error(_internals.default.STRINGS.ERROR_MISSING_OPT('databaseURL'));
+    }
+
+    if (!options.messagingSenderId) {
+      throw new Error(_internals.default.STRINGS.ERROR_MISSING_OPT('messagingSenderId'));
+    }
+
+    if (!options.projectId) {
+      throw new Error(_internals.default.STRINGS.ERROR_MISSING_OPT('projectId'));
+    }
+
+    if (!options.storageBucket) {
+      throw new Error(_internals.default.STRINGS.ERROR_MISSING_OPT('storageBucket'));
+    }
+
+    APPS[_name] = new _app.default(_name, options);
+    return APPS[_name];
+  },
+
+
+
+
+  initializeNativeApps: function initializeNativeApps() {
+    for (var i = 0, len = FirebaseCoreModule.apps.length; i < len; i++) {
+      var app = FirebaseCoreModule.apps[i];
+      var options = (0, _extends2.default)({}, app);
+      delete options.name;
+      APPS[app.name.toUpperCase()] = new _app.default(app.name.toUpperCase(), options, true);
+    }
+  },
+
+
+
+
+
+
+
+
+  moduleAndStatics: function moduleAndStatics(namespace, statics, moduleName) {var _this = this;
+    var getModule = function getModule(appOrUrlOrRegion, customUrlOrRegion) {
+      var _app = appOrUrlOrRegion;
+
+      var _customUrlOrRegion = customUrlOrRegion || null;
+
+      if (typeof appOrUrlOrRegion === 'string' && CUSTOM_URL_OR_REGION_NAMESPACES[namespace]) {
+        _app = null;
+        _customUrlOrRegion = appOrUrlOrRegion;
+      }
+
+
+      if (_app && !(_app instanceof _app.default)) {
+        throw new Error(_internals.default.STRINGS.ERROR_NOT_APP(namespace));
+      } else if (!_app) {
+
+
+        _app = _this.app(DEFAULT_APP_NAME);
+      }
+
+
+      var module = _app[namespace];
+      return module(_customUrlOrRegion);
+    };
+
+    return (0, _extends2.default)(getModule, statics, {
+      nativeModuleExists: !!_reactNative.NativeModules[moduleName] });
+
+  } };exports.default = _default;

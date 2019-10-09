@@ -1,0 +1,22 @@
+725b0509e89efa8565db83e6d019070e
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+
+
+var providerId = 'oauth';var
+OAuthProvider = function () {
+  function OAuthProvider() {(0, _classCallCheck2.default)(this, OAuthProvider);
+    throw new Error('`new OAuthProvider()` is not supported on the native Firebase SDKs.');
+  }(0, _createClass2.default)(OAuthProvider, null, [{ key: "credential", value: function credential(
+
+
+
+
+
+    idToken, accessToken) {
+      return {
+        token: idToken,
+        secret: accessToken,
+        providerId: providerId };
+
+    } }, { key: "PROVIDER_ID", get: function get() {return providerId;} }]);return OAuthProvider;}();exports.default = OAuthProvider;

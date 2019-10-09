@@ -1,0 +1,79 @@
+9659e9c8d27452b44e5e9e945080c72c
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Timestamp = function () {(0, _createClass2.default)(Timestamp, null, [{ key: "now", value: function now()
+    {
+      return Timestamp.fromMillis(Date.now());
+    } }, { key: "fromDate", value: function fromDate(
+
+    date) {
+      return Timestamp.fromMillis(date.getTime());
+    } }, { key: "fromMillis", value: function fromMillis(
+
+    milliseconds) {
+      var seconds = Math.floor(milliseconds / 1000);
+      var nanoseconds = (milliseconds - seconds * 1000) * 1e6;
+      return new Timestamp(seconds, nanoseconds);
+    } }]);
+
+  function Timestamp(seconds, nanoseconds) {(0, _classCallCheck2.default)(this, Timestamp);
+    if (nanoseconds < 0) {
+      throw new Error("Timestamp nanoseconds out of range: " + nanoseconds);
+    }
+
+    if (nanoseconds >= 1e9) {
+      throw new Error("Timestamp nanoseconds out of range: " + nanoseconds);
+    }
+
+
+    if (seconds < -62135596800) {
+      throw new Error("Timestamp seconds out of range: " + seconds);
+    }
+
+
+    if (seconds >= 253402300800) {
+      throw new Error("Timestamp seconds out of range: " + seconds);
+    }
+
+    this.seconds = seconds;
+    this.nanoseconds = nanoseconds;
+  }(0, _createClass2.default)(Timestamp, [{ key: "toDate", value: function toDate()
+
+    {
+      return new Date(this.toMillis());
+    } }, { key: "toMillis", value: function toMillis()
+
+    {
+      return this.seconds * 1000 + this.nanoseconds / 1e6;
+    } }, { key: "isEqual", value: function isEqual(
+
+    other) {
+      return other.seconds === this.seconds && other.nanoseconds === this.nanoseconds;
+    } }, { key: "toString", value: function toString()
+
+    {
+      return "Timestamp(seconds=" + this.seconds + ", nanoseconds=" + this.nanoseconds + ")";
+    } }]);return Timestamp;}();exports.default = Timestamp;

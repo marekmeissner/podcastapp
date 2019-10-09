@@ -1,0 +1,56 @@
+78271d6127fd054f05b258f6d3299101
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _ColorPropType = _interopRequireDefault(require("../ColorPropType"));
+
+
+
+var _createElement = _interopRequireDefault(require("../createElement"));
+
+
+
+function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+function _inheritsLoose(subClass, superClass) {subClass.prototype = Object.create(superClass.prototype);subClass.prototype.constructor = subClass;subClass.__proto__ = superClass;}
+
+var PickerItem =
+
+function (_Component) {
+  _inheritsLoose(PickerItem, _Component);
+
+  function PickerItem() {
+    return _Component.apply(this, arguments) || this;
+  }
+
+  var _proto = PickerItem.prototype;
+
+  _proto.render = function render() {
+    var _this$props = this.props,
+    color = _this$props.color,
+    label = _this$props.label,
+    testID = _this$props.testID,
+    value = _this$props.value;
+    var style = {
+      color: color };
+
+    return (0, _createElement.default)('option', {
+      style: style,
+      testID: testID,
+      value: value },
+    label);
+  };
+
+  return PickerItem;
+}(require("react").Component);
+
+exports.default = PickerItem;
+PickerItem.propTypes = process.env.NODE_ENV !== "production" ? {
+  color: _ColorPropType.default,
+  label: require("prop-types").string.isRequired,
+  testID: require("prop-types").string,
+  value: (0, require("prop-types").oneOfType)([require("prop-types").number, require("prop-types").string]) } :
+{};
+module.exports = exports.default;

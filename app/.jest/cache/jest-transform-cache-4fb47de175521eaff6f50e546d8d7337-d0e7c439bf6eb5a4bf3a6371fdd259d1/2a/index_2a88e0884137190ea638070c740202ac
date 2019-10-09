@@ -1,0 +1,146 @@
+7553b15c4fd35a082799cccb4822876e
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.statics = exports.default = exports.NAMESPACE = exports.MODULE_NAME = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+
+
+var _reactNative = require("react-native");
+var _events = require("../../utils/events");
+var _internals = _interopRequireDefault(require("../../utils/internals"));
+var _log = require("../../utils/log");
+var _ModuleBase = _interopRequireDefault(require("../../utils/ModuleBase"));
+var _native = require("../../utils/native");
+var _utils = require("../../utils");
+var _IOSMessaging = _interopRequireDefault(require("./IOSMessaging"));
+var _RemoteMessage = _interopRequireDefault(require("./RemoteMessage"));
+var NATIVE_EVENTS = ['messaging_message_received', 'messaging_token_refreshed'];
+var MODULE_NAME = 'RNFirebaseMessaging';exports.MODULE_NAME = MODULE_NAME;
+var NAMESPACE = 'messaging';exports.NAMESPACE = NAMESPACE;var
+
+
+
+
+Messaging = function (_ModuleBase) {(0, _inherits2.default)(Messaging, _ModuleBase);
+  function Messaging(app) {var _this;(0, _classCallCheck2.default)(this, Messaging);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Messaging).call(this, app, {
+      events: NATIVE_EVENTS,
+      moduleName: MODULE_NAME,
+      hasMultiAppSupport: false,
+      hasCustomUrlSupport: false,
+      namespace: NAMESPACE }));
+
+    _this._ios = new _IOSMessaging.default((0, _assertThisInitialized2.default)(_this));
+    _events.SharedEventEmitter.addListener(
+
+    'messaging_message_received', function (message) {
+      _events.SharedEventEmitter.emit('onMessage', new _RemoteMessage.default(message));
+    });
+    _events.SharedEventEmitter.addListener(
+
+    'messaging_token_refreshed', function (token) {
+      _events.SharedEventEmitter.emit('onTokenRefresh', token);
+    });
+
+    if (_reactNative.Platform.OS === 'ios') {
+      (0, _native.getNativeModule)((0, _assertThisInitialized2.default)(_this)).jsInitialised();
+    }return _this;
+  }(0, _createClass2.default)(Messaging, [{ key: "getToken", value: function getToken()
+
+
+
+
+
+    {
+      return (0, _native.getNativeModule)(this).getToken();
+    } }, { key: "deleteToken", value: function deleteToken()
+
+    {
+      return (0, _native.getNativeModule)(this).deleteToken();
+    } }, { key: "onMessage", value: function onMessage(
+
+    nextOrObserver) {var _this2 = this;
+      var listener;
+
+      if ((0, _utils.isFunction)(nextOrObserver)) {
+
+        listener = nextOrObserver;
+      } else if ((0, _utils.isObject)(nextOrObserver) && (0, _utils.isFunction)(nextOrObserver.next)) {
+        listener = nextOrObserver.next;
+      } else {
+        throw new Error('Messaging.onMessage failed: First argument must be a function or observer object with a `next` function.');
+      }
+
+      (0, _log.getLogger)(this).info('Creating onMessage listener');
+      _events.SharedEventEmitter.addListener('onMessage', listener);
+      return function () {
+        (0, _log.getLogger)(_this2).info('Removing onMessage listener');
+        _events.SharedEventEmitter.removeListener('onMessage', listener);
+      };
+    } }, { key: "onTokenRefresh", value: function onTokenRefresh(
+
+    nextOrObserver) {var _this3 = this;
+      var listener;
+
+      if ((0, _utils.isFunction)(nextOrObserver)) {
+
+        listener = nextOrObserver;
+      } else if ((0, _utils.isObject)(nextOrObserver) && (0, _utils.isFunction)(nextOrObserver.next)) {
+        listener = nextOrObserver.next;
+      } else {
+        throw new Error('Messaging.onTokenRefresh failed: First argument must be a function or observer object with a `next` function.');
+      }
+
+      (0, _log.getLogger)(this).info('Creating onTokenRefresh listener');
+      _events.SharedEventEmitter.addListener('onTokenRefresh', listener);
+      return function () {
+        (0, _log.getLogger)(_this3).info('Removing onTokenRefresh listener');
+        _events.SharedEventEmitter.removeListener('onTokenRefresh', listener);
+      };
+    } }, { key: "requestPermission", value: function requestPermission()
+
+    {
+      return (0, _native.getNativeModule)(this).requestPermission();
+    } }, { key: "hasPermission", value: function hasPermission()
+
+
+
+
+
+    {
+      return (0, _native.getNativeModule)(this).hasPermission();
+    } }, { key: "sendMessage", value: function sendMessage(
+
+    remoteMessage) {
+      if (!(remoteMessage instanceof _RemoteMessage.default)) {
+        return Promise.reject(new Error("Messaging:sendMessage expects a 'RemoteMessage' but got type " + typeof remoteMessage));
+      }
+
+      try {
+        return (0, _native.getNativeModule)(this).sendMessage(remoteMessage.build());
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    } }, { key: "subscribeToTopic", value: function subscribeToTopic(
+
+    topic) {
+      return (0, _native.getNativeModule)(this).subscribeToTopic(topic);
+    } }, { key: "unsubscribeFromTopic", value: function unsubscribeFromTopic(
+
+    topic) {
+      return (0, _native.getNativeModule)(this).unsubscribeFromTopic(topic);
+    } }, { key: "setBackgroundMessageHandler", value: function setBackgroundMessageHandler()
+
+
+
+
+
+    {
+      throw new Error(_internals.default.STRINGS.ERROR_UNSUPPORTED_MODULE_METHOD('messaging', 'setBackgroundMessageHandler'));
+    } }, { key: "useServiceWorker", value: function useServiceWorker()
+
+    {
+      throw new Error(_internals.default.STRINGS.ERROR_UNSUPPORTED_MODULE_METHOD('messaging', 'useServiceWorker'));
+    } }, { key: "ios", get: function get() {return this._ios;} }]);return Messaging;}(_ModuleBase.default);exports.default = Messaging;
+
+
+var statics = {
+  RemoteMessage: _RemoteMessage.default };exports.statics = statics;

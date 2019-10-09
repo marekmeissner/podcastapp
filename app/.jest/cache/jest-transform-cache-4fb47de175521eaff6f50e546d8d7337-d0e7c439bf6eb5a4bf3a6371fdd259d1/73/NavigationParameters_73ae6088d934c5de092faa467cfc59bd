@@ -1,0 +1,26 @@
+e5209c79fa5f67660759f3f7761eb01a
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var
+
+
+
+NavigationParameters = function () {
+  function NavigationParameters(link) {(0, _classCallCheck2.default)(this, NavigationParameters);
+    this._link = link;
+  }(0, _createClass2.default)(NavigationParameters, [{ key: "setForcedRedirectEnabled", value: function setForcedRedirectEnabled(
+
+
+
+
+
+
+
+    forcedRedirectEnabled) {
+      this._forcedRedirectEnabled = forcedRedirectEnabled;
+      return this._link;
+    } }, { key: "build", value: function build()
+
+    {
+      return {
+        forcedRedirectEnabled: this._forcedRedirectEnabled };
+
+    } }]);return NavigationParameters;}();exports.default = NavigationParameters;

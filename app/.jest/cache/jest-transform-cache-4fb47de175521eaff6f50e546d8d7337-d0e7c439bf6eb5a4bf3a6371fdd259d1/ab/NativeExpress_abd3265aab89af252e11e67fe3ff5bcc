@@ -1,0 +1,14 @@
+ff7ef9b244e246b9ab3fe9c4fcc374fb
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));var _react = _interopRequireDefault(require("react"));
+var _AdMobComponent = _interopRequireDefault(require("./AdMobComponent"));var _jsxFileName = "/private/var/www/Hillcode/podcastapp/app/node_modules/react-native-firebase/dist/modules/admob/NativeExpress.js";
+
+function NativeExpress(_ref)
+{var props = (0, _extends2.default)({}, _ref);
+  return _react.default.createElement(_AdMobComponent.default, (0, _extends2.default)({}, props, { class: "RNFirebaseAdMobNativeExpress", __source: { fileName: _jsxFileName, lineNumber: 6 } }));
+}
+
+NativeExpress.propTypes = _AdMobComponent.default.propTypes;
+NativeExpress.defaultProps = {
+  size: 'SMART_BANNER' };var _default =
+
+NativeExpress;exports.default = _default;

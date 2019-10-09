@@ -1,0 +1,29 @@
+7d66f5e24243e2aabc43409c190ada06
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+
+
+
+
+
+
+
+
+
+function emptyFunction() {}
+
+var BackHandler = {
+  exitApp: emptyFunction,
+  addEventListener: function addEventListener() {
+    return {
+      remove: emptyFunction };
+
+  },
+  removeEventListener: emptyFunction };
+
+var _default = BackHandler;
+exports.default = _default;
+module.exports = exports.default;

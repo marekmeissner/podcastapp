@@ -1,0 +1,94 @@
+127343c2be20e252b026c0a2f942fa22
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.createVariations = createVariations;exports.createSharedStyle = createSharedStyle;var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));var _lodash = _interopRequireDefault(require("lodash"));function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(source, true).forEach(function (key) {(0, _defineProperty2.default)(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(source).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}
+
+function capitalizeFirstLetter(value) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function createVariations(baseName, nameSuffixes, key, value) {
+  return _lodash.default.reduce(nameSuffixes, function (result, variant) {
+    var variantName = variant ? baseName + "-" + variant : baseName;
+    var keyName = variant ? "" + key + capitalizeFirstLetter(variant) : key;
+
+
+    result[variantName] = (0, _defineProperty2.default)({},
+    keyName, value);
+
+
+    return result;
+  }, {});
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function createSharedStyle(componentNames) {var sharedStyle = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};var customStyles = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+  return _lodash.default.reduce(componentNames, function (result, componentName) {
+
+    result[componentName] = _objectSpread({},
+    sharedStyle, {},
+    customStyles[componentName]);
+
+
+    return result;
+  }, {});
+}

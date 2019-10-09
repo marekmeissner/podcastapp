@@ -1,0 +1,59 @@
+0d4574072be99cb7772cbbc7776d2b5d
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var _native = require("../../utils/native");
+var _utils = require("../../utils");var
+
+
+
+
+
+AuthSettings = function () {
+  function AuthSettings(auth) {(0, _classCallCheck2.default)(this, AuthSettings);
+    this._auth = auth;
+    this._appVerificationDisabledForTesting = false;
+  }(0, _createClass2.default)(AuthSettings, [{ key: "setAutoRetrievedSmsCodeForPhoneNumber", value: function setAutoRetrievedSmsCodeForPhoneNumber(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    phoneNumber, smsCode) {
+      if (_utils.isAndroid) {
+        return (0, _native.getNativeModule)(this._auth).setAutoRetrievedSmsCodeForPhoneNumber(phoneNumber, smsCode);
+      }
+
+      return Promise.resolve(null);
+    } }, { key: "appVerificationDisabledForTesting", get: function get() {return this._appVerificationDisabledForTesting;}, set: function set(disabled) {if (_utils.isIOS) {this._appVerificationDisabledForTesting = disabled;(0, _native.getNativeModule)(this._auth).setAppVerificationDisabledForTesting(disabled);}} }]);return AuthSettings;}();exports.default = AuthSettings;

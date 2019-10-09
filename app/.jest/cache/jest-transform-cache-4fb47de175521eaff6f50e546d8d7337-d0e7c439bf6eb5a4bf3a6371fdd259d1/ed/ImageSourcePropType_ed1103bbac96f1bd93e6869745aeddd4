@@ -1,0 +1,95 @@
+3c8a800d442d1d6c66269d525ec01a7d
+
+
+
+
+
+
+
+
+'use strict';
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+var ImageURISourcePropType = _propTypes.default.shape({
+
+
+
+
+
+
+  uri: _propTypes.default.string,
+
+
+
+
+
+
+  bundle: _propTypes.default.string,
+
+
+
+
+  method: _propTypes.default.string,
+
+
+
+
+
+  headers: _propTypes.default.objectOf(_propTypes.default.string),
+
+
+
+
+
+
+  body: _propTypes.default.string,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  cache: _propTypes.default.oneOf(['default', 'reload', 'force-cache', 'only-if-cached']),
+
+
+
+
+
+  width: _propTypes.default.number,
+  height: _propTypes.default.number,
+
+
+
+
+
+  scale: _propTypes.default.number });
+
+
+var ImageSourcePropType = _propTypes.default.oneOfType([ImageURISourcePropType,
+_propTypes.default.number, _propTypes.default.string,
+_propTypes.default.arrayOf(ImageURISourcePropType)]);
+
+var _default = ImageSourcePropType;
+exports.default = _default;
+module.exports = exports.default;

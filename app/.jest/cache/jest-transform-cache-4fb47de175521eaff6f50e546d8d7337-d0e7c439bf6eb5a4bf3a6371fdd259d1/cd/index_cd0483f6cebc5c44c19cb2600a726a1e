@@ -1,0 +1,482 @@
+9f9193842a413e2f3ea7cd7da4a6c957
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.statics = exports.default = exports.NAMESPACE = exports.MODULE_NAME = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+
+
+var _User = _interopRequireDefault(require("./User"));
+var _ModuleBase = _interopRequireDefault(require("../../utils/ModuleBase"));
+var _events = require("../../utils/events");
+var _utils = require("../../utils");
+var _log = require("../../utils/log");
+var _native = require("../../utils/native");
+var _internals = _interopRequireDefault(require("../../utils/internals"));
+var _ConfirmationResult = _interopRequireDefault(require("./phone/ConfirmationResult"));
+var _PhoneAuthListener = _interopRequireDefault(require("./phone/PhoneAuthListener"));
+var _AuthSettings = _interopRequireDefault(require("./AuthSettings"));
+
+var _EmailAuthProvider = _interopRequireDefault(require("./providers/EmailAuthProvider"));
+var _PhoneAuthProvider = _interopRequireDefault(require("./providers/PhoneAuthProvider"));
+var _GoogleAuthProvider = _interopRequireDefault(require("./providers/GoogleAuthProvider"));
+var _GithubAuthProvider = _interopRequireDefault(require("./providers/GithubAuthProvider"));
+var _OAuthProvider = _interopRequireDefault(require("./providers/OAuthProvider"));
+var _TwitterAuthProvider = _interopRequireDefault(require("./providers/TwitterAuthProvider"));
+var _FacebookAuthProvider = _interopRequireDefault(require("./providers/FacebookAuthProvider"));
+var NATIVE_EVENTS = ['auth_state_changed', 'auth_id_token_changed', 'phone_auth_state_changed'];
+var MODULE_NAME = 'RNFirebaseAuth';exports.MODULE_NAME = MODULE_NAME;
+var NAMESPACE = 'auth';exports.NAMESPACE = NAMESPACE;var
+Auth = function (_ModuleBase) {(0, _inherits2.default)(Auth, _ModuleBase);
+  function Auth(app) {var _this;(0, _classCallCheck2.default)(this, Auth);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Auth).call(this, app, {
+      events: NATIVE_EVENTS,
+      moduleName: MODULE_NAME,
+      hasMultiAppSupport: true,
+      hasCustomUrlSupport: false,
+      namespace: NAMESPACE }));
+
+    var NativeModule = (0, _native.getNativeModule)((0, _assertThisInitialized2.default)(_this));
+    _this._user = null;
+    _this._settings = null;
+    _this._authResult = false;
+    _this._languageCode = NativeModule.APP_LANGUAGE[app._name] || NativeModule.APP_LANGUAGE['[DEFAULT]'];
+
+    if (NativeModule.APP_USER[app._name]) {
+      _this._setUser(NativeModule.APP_USER[app._name]);
+    }
+
+    _events.SharedEventEmitter.addListener(
+
+    (0, _events.getAppEventName)((0, _assertThisInitialized2.default)(_this), 'auth_state_changed'), function (state) {
+      _this._setUser(state.user);
+
+      _events.SharedEventEmitter.emit((0, _events.getAppEventName)((0, _assertThisInitialized2.default)(_this), 'onAuthStateChanged'), _this._user);
+    });
+    _events.SharedEventEmitter.addListener(
+
+    (0, _events.getAppEventName)((0, _assertThisInitialized2.default)(_this), 'phone_auth_state_changed'), function (event) {
+      var eventKey = "phone:auth:" + event.requestKey + ":" + event.type;
+      _events.SharedEventEmitter.emit(eventKey, event.state);
+    });
+    _events.SharedEventEmitter.addListener(
+
+    (0, _events.getAppEventName)((0, _assertThisInitialized2.default)(_this), 'auth_id_token_changed'), function (auth) {
+      _this._setUser(auth.user);
+
+      _events.SharedEventEmitter.emit((0, _events.getAppEventName)((0, _assertThisInitialized2.default)(_this), 'onIdTokenChanged'), _this._user);
+    });
+    NativeModule.addAuthStateListener();
+    NativeModule.addIdTokenListener();return _this;
+  }(0, _createClass2.default)(Auth, [{ key: "_setUser", value: function _setUser(
+
+    user) {
+      this._user = user ? new _User.default(this, user) : null;
+      this._authResult = true;
+      _events.SharedEventEmitter.emit((0, _events.getAppEventName)(this, 'onUserChanged'), this._user);
+      return this._user;
+    } }, { key: "_setUserCredential", value: function _setUserCredential(
+
+    userCredential) {
+      var user = new _User.default(this, userCredential.user);
+      this._user = user;
+      this._authResult = true;
+      _events.SharedEventEmitter.emit((0, _events.getAppEventName)(this, 'onUserChanged'), this._user);
+      return {
+        additionalUserInfo: userCredential.additionalUserInfo,
+        user: user };
+
+    } }, { key: "onAuthStateChanged", value: function onAuthStateChanged(
+
+
+
+
+
+
+
+
+
+
+    listener) {var _this2 = this;
+      (0, _log.getLogger)(this).info('Creating onAuthStateChanged listener');
+      _events.SharedEventEmitter.addListener((0, _events.getAppEventName)(this, 'onAuthStateChanged'), listener);
+      if (this._authResult) listener(this._user || null);
+      return function () {
+        (0, _log.getLogger)(_this2).info('Removing onAuthStateChanged listener');
+        _events.SharedEventEmitter.removeListener((0, _events.getAppEventName)(_this2, 'onAuthStateChanged'), listener);
+      };
+    } }, { key: "onIdTokenChanged", value: function onIdTokenChanged(
+
+
+
+
+
+
+    listener) {var _this3 = this;
+      (0, _log.getLogger)(this).info('Creating onIdTokenChanged listener');
+      _events.SharedEventEmitter.addListener((0, _events.getAppEventName)(this, 'onIdTokenChanged'), listener);
+      if (this._authResult) listener(this._user || null);
+      return function () {
+        (0, _log.getLogger)(_this3).info('Removing onIdTokenChanged listener');
+        _events.SharedEventEmitter.removeListener((0, _events.getAppEventName)(_this3, 'onIdTokenChanged'), listener);
+      };
+    } }, { key: "onUserChanged", value: function onUserChanged(
+
+
+
+
+
+
+    listener) {var _this4 = this;
+      (0, _log.getLogger)(this).info('Creating onUserChanged listener');
+      _events.SharedEventEmitter.addListener((0, _events.getAppEventName)(this, 'onUserChanged'), listener);
+      if (this._authResult) listener(this._user || null);
+      return function () {
+        (0, _log.getLogger)(_this4).info('Removing onUserChanged listener');
+        _events.SharedEventEmitter.removeListener((0, _events.getAppEventName)(_this4, 'onUserChanged'), listener);
+      };
+    } }, { key: "signOut", value: function signOut()
+
+
+
+
+
+
+    {var _this5 = this;
+      return (0, _native.getNativeModule)(this).signOut().then(function () {
+        _this5._setUser();
+      });
+    } }, { key: "signInAnonymously", value: function signInAnonymously()
+
+
+
+
+
+
+
+    {var _this6 = this;
+      return (0, _native.getNativeModule)(this).signInAnonymously().then(function (userCredential) {return _this6._setUserCredential(userCredential);});
+    } }, { key: "signInAnonymouslyAndRetrieveData", value: function signInAnonymouslyAndRetrieveData()
+
+
+
+
+
+
+
+
+    {var _this7 = this;
+      console.warn('Deprecated signInAnonymouslyAndRetrieveData in favor of signInAnonymously.');
+      return (0, _native.getNativeModule)(this).signInAnonymously().then(function (userCredential) {return _this7._setUserCredential(userCredential);});
+    } }, { key: "createUserWithEmailAndPassword", value: function createUserWithEmailAndPassword(
+
+
+
+
+
+
+
+
+
+    email, password) {var _this8 = this;
+      return (0, _native.getNativeModule)(this).createUserWithEmailAndPassword(email, password).then(function (userCredential) {return _this8._setUserCredential(userCredential);});
+    } }, { key: "createUserAndRetrieveDataWithEmailAndPassword", value: function createUserAndRetrieveDataWithEmailAndPassword(
+
+
+
+
+
+
+
+
+
+
+    email, password) {var _this9 = this;
+      console.warn('Deprecated createUserAndRetrieveDataWithEmailAndPassword in favor of createUserWithEmailAndPassword.');
+      return (0, _native.getNativeModule)(this).createUserWithEmailAndPassword(email, password).then(function (userCredential) {return _this9._setUserCredential(userCredential);});
+    } }, { key: "signInWithEmailAndPassword", value: function signInWithEmailAndPassword(
+
+
+
+
+
+
+
+
+
+    email, password) {var _this10 = this;
+      return (0, _native.getNativeModule)(this).signInWithEmailAndPassword(email, password).then(function (userCredential) {return _this10._setUserCredential(userCredential);});
+    } }, { key: "signInAndRetrieveDataWithEmailAndPassword", value: function signInAndRetrieveDataWithEmailAndPassword(
+
+
+
+
+
+
+
+
+
+
+    email, password) {var _this11 = this;
+      console.warn('Deprecated signInAndRetrieveDataWithEmailAndPassword in favor of signInWithEmailAndPassword.');
+      return (0, _native.getNativeModule)(this).signInWithEmailAndPassword(email, password).then(function (userCredential) {return _this11._setUserCredential(userCredential);});
+    } }, { key: "signInWithCustomToken", value: function signInWithCustomToken(
+
+
+
+
+
+
+
+
+    customToken) {var _this12 = this;
+      return (0, _native.getNativeModule)(this).signInWithCustomToken(customToken).then(function (userCredential) {return _this12._setUserCredential(userCredential);});
+    } }, { key: "signInAndRetrieveDataWithCustomToken", value: function signInAndRetrieveDataWithCustomToken(
+
+
+
+
+
+
+
+
+
+    customToken) {var _this13 = this;
+      console.warn('Deprecated signInAndRetrieveDataWithCustomToken in favor of signInWithCustomToken.');
+      return (0, _native.getNativeModule)(this).signInWithCustomToken(customToken).then(function (userCredential) {return _this13._setUserCredential(userCredential);});
+    } }, { key: "signInWithCredential", value: function signInWithCredential(
+
+
+
+
+
+
+
+    credential) {var _this14 = this;
+      return (0, _native.getNativeModule)(this).signInWithCredential(credential.providerId, credential.token, credential.secret).then(function (userCredential) {return _this14._setUserCredential(userCredential);});
+    } }, { key: "signInAndRetrieveDataWithCredential", value: function signInAndRetrieveDataWithCredential(
+
+
+
+
+
+
+
+
+    credential) {var _this15 = this;
+      console.warn('Deprecated signInAndRetrieveDataWithCredential in favor of signInWithCredential.');
+      return (0, _native.getNativeModule)(this).signInWithCredential(credential.providerId, credential.token, credential.secret).then(function (userCredential) {return _this15._setUserCredential(userCredential);});
+    } }, { key: "signInWithPhoneNumber", value: function signInWithPhoneNumber(
+
+
+
+
+
+
+    phoneNumber, forceResend) {var _this16 = this;
+      if (_utils.isAndroid) {
+        return (0, _native.getNativeModule)(this).signInWithPhoneNumber(phoneNumber, forceResend || false).then(function (result) {return new _ConfirmationResult.default(_this16, result.verificationId);});
+      }
+
+      return (0, _native.getNativeModule)(this).signInWithPhoneNumber(phoneNumber).then(function (result) {return new _ConfirmationResult.default(_this16, result.verificationId);});
+    } }, { key: "verifyPhoneNumber", value: function verifyPhoneNumber(
+
+
+
+
+
+
+
+
+
+
+
+
+    phoneNumber, autoVerifyTimeoutOrForceResend, forceResend) {
+      var _forceResend = forceResend;
+      var _autoVerifyTimeout = 60;
+
+      if ((0, _utils.isBoolean)(autoVerifyTimeoutOrForceResend)) {
+        _forceResend = autoVerifyTimeoutOrForceResend;
+      } else {
+        _autoVerifyTimeout = autoVerifyTimeoutOrForceResend;
+      }
+
+      return new _PhoneAuthListener.default(this, phoneNumber, _autoVerifyTimeout, _forceResend);
+    } }, { key: "sendPasswordResetEmail", value: function sendPasswordResetEmail(
+
+
+
+
+
+
+
+    email, actionCodeSettings) {
+      return (0, _native.getNativeModule)(this).sendPasswordResetEmail(email, actionCodeSettings);
+    } }, { key: "sendSignInLinkToEmail", value: function sendSignInLinkToEmail(
+
+
+
+
+
+
+
+    email, actionCodeSettings) {
+      return (0, _native.getNativeModule)(this).sendSignInLinkToEmail(email, actionCodeSettings);
+    } }, { key: "isSignInWithEmailLink", value: function isSignInWithEmailLink(
+
+
+
+
+
+
+    emailLink) {
+      return typeof emailLink === 'string' && (emailLink.includes('mode=signIn') || emailLink.includes('mode%3DsignIn')) && (emailLink.includes('oobCode=') || emailLink.includes('oobCode%3D'));
+    } }, { key: "signInWithEmailLink", value: function signInWithEmailLink(
+
+
+
+
+
+
+
+
+
+    email, emailLink) {var _this17 = this;
+      return (0, _native.getNativeModule)(this).signInWithEmailLink(email, emailLink).then(function (userCredential) {return _this17._setUserCredential(userCredential);});
+    } }, { key: "confirmPasswordReset", value: function confirmPasswordReset(
+
+
+
+
+
+
+
+
+
+
+    code, newPassword) {
+      return (0, _native.getNativeModule)(this).confirmPasswordReset(code, newPassword);
+    } }, { key: "applyActionCode", value: function applyActionCode(
+
+
+
+
+
+
+
+
+
+    code) {var _this18 = this;
+      return (0, _native.getNativeModule)(this).applyActionCode(code).then(function (user) {
+        _this18._setUser(user);
+      });
+    } }, { key: "checkActionCode", value: function checkActionCode(
+
+
+
+
+
+
+
+
+
+    code) {
+      return (0, _native.getNativeModule)(this).checkActionCode(code);
+    } }, { key: "fetchSignInMethodsForEmail", value: function fetchSignInMethodsForEmail(
+
+
+
+
+
+
+    email) {
+      return (0, _native.getNativeModule)(this).fetchSignInMethodsForEmail(email);
+    } }, { key: "verifyPasswordResetCode", value: function verifyPasswordResetCode(
+
+    code) {
+      return (0, _native.getNativeModule)(this).verifyPasswordResetCode(code);
+    } }, { key: "getRedirectResult", value: function getRedirectResult()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {
+      throw new Error(_internals.default.STRINGS.ERROR_UNSUPPORTED_MODULE_METHOD('auth', 'getRedirectResult'));
+    } }, { key: "setPersistence", value: function setPersistence()
+
+    {
+      throw new Error(_internals.default.STRINGS.ERROR_UNSUPPORTED_MODULE_METHOD('auth', 'setPersistence'));
+    } }, { key: "signInWithPopup", value: function signInWithPopup()
+
+    {
+      throw new Error(_internals.default.STRINGS.ERROR_UNSUPPORTED_MODULE_METHOD('auth', 'signInWithPopup'));
+    } }, { key: "signInWithRedirect", value: function signInWithRedirect()
+
+    {
+      throw new Error(_internals.default.STRINGS.ERROR_UNSUPPORTED_MODULE_METHOD('auth', 'signInWithRedirect'));
+    } }, { key: "useDeviceLanguage", value: function useDeviceLanguage()
+
+
+    {
+      throw new Error(_internals.default.STRINGS.ERROR_UNSUPPORTED_MODULE_METHOD('auth', 'useDeviceLanguage'));
+    } }, { key: "languageCode", set: function set(code) {this._languageCode = code;(0, _native.getNativeModule)(this).setLanguageCode(code);}, get: function get() {return this._languageCode;} }, { key: "settings", get: function get() {if (!this._settings) {this._settings = new _AuthSettings.default(this);}return this._settings;} }, { key: "currentUser", get: function get() {return this._user;} }]);return Auth;}(_ModuleBase.default);exports.default = Auth;
+
+
+var statics = {
+  EmailAuthProvider: _EmailAuthProvider.default,
+  PhoneAuthProvider: _PhoneAuthProvider.default,
+  GoogleAuthProvider: _GoogleAuthProvider.default,
+  GithubAuthProvider: _GithubAuthProvider.default,
+  TwitterAuthProvider: _TwitterAuthProvider.default,
+  FacebookAuthProvider: _FacebookAuthProvider.default,
+  OAuthProvider: _OAuthProvider.default,
+  PhoneAuthState: {
+    CODE_SENT: 'sent',
+    AUTO_VERIFY_TIMEOUT: 'timeout',
+    AUTO_VERIFIED: 'verified',
+    ERROR: 'error' } };exports.statics = statics;

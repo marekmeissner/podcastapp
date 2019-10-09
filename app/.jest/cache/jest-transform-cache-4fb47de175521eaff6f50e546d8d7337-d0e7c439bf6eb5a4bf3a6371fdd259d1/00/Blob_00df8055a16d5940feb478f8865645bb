@@ -1,0 +1,84 @@
+fab13aba08af6e58c402ec241a9467da
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var _Base = _interopRequireDefault(require("../../utils/Base64"));var
+Blob = function () {
+  function Blob(binaryString) {(0, _classCallCheck2.default)(this, Blob);
+    this._binaryString = binaryString;
+  }(0, _createClass2.default)(Blob, [{ key: "isEqual", value: function isEqual(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    blob) {
+      if (!(blob instanceof Blob)) {
+        throw new Error('firestore.Blob.isEqual expects an instance of Blob');
+      }
+
+      return this._binaryString === blob._binaryString;
+    } }, { key: "toBase64", value: function toBase64()
+
+
+
+
+
+
+
+
+    {
+      return _Base.default.btoa(this._binaryString);
+    } }, { key: "toUint8Array", value: function toUint8Array()
+
+
+
+
+
+
+
+
+    {
+      return new Uint8Array(this._binaryString.split('').map(function (c) {return c.charCodeAt(0);}));
+    } }, { key: "toString", value: function toString()
+
+
+
+
+
+
+
+
+    {
+      return "firestore.Blob(base64: " + this.toBase64() + ")";
+    } }], [{ key: "fromBase64String", value: function fromBase64String(base64) {if (typeof base64 !== 'string' || base64.length < 1) {throw new Error('firestore.Blob.fromBase64String expects a string of at least 1 character in length');}return new Blob(_Base.default.atob(base64));} }, { key: "fromUint8Array", value: function fromUint8Array(array) {if (!(array instanceof Uint8Array)) {throw new Error('firestore.Blob.fromUint8Array expects an instance of Uint8Array');}return new Blob(Array.prototype.map.call(array, function (char) {return String.fromCharCode(char);}).join(''));} }]);return Blob;}();exports.default = Blob;

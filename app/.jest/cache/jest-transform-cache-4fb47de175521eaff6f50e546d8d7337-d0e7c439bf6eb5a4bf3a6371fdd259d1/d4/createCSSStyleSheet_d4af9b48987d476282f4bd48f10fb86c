@@ -1,0 +1,43 @@
+3ab132fd83e68abb9b12d1bd4b3b6eba
+"use strict";
+
+exports.__esModule = true;
+exports.default = createCSSStyleSheet;
+
+
+
+
+
+
+
+
+
+
+
+
+function createCSSStyleSheet(id) {
+  if (require("fbjs/lib/ExecutionEnvironment").canUseDOM) {
+    var element = document.getElementById(id);
+
+    if (element != null) {
+
+      return element.sheet;
+    } else {
+      var _element = document.createElement('style');
+
+      _element.setAttribute('id', id);
+
+      var head = document.head;
+
+      if (head) {
+        head.insertBefore(_element, head.firstChild);
+      }
+
+      return _element.sheet;
+    }
+  } else {
+    return null;
+  }
+}
+
+module.exports = exports.default;

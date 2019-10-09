@@ -1,0 +1,69 @@
+376620f5d2ab16896208f641892eb682
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _Dimensions = _interopRequireDefault(require("../Dimensions"));
+
+function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var PixelRatio =
+
+function () {
+  function PixelRatio() {}
+
+
+
+
+  PixelRatio.get = function get() {
+    return _Dimensions.default.get('window').scale;
+  };
+
+
+
+
+
+  PixelRatio.getFontScale = function getFontScale() {
+    return _Dimensions.default.get('window').fontScale || PixelRatio.get();
+  };
+
+
+
+
+
+
+  PixelRatio.getPixelSizeForLayoutSize = function getPixelSizeForLayoutSize(layoutSize) {
+    return Math.round(layoutSize * PixelRatio.get());
+  };
+
+
+
+
+
+
+
+
+  PixelRatio.roundToNearestPixel = function roundToNearestPixel(layoutSize) {
+    var ratio = PixelRatio.get();
+    return Math.round(layoutSize * ratio) / ratio;
+  };
+
+  return PixelRatio;
+}();
+
+exports.default = PixelRatio;
+module.exports = exports.default;

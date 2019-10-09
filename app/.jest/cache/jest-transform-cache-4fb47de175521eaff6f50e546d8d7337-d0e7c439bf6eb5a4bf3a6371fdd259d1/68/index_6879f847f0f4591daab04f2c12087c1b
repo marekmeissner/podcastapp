@@ -1,0 +1,114 @@
+fb79367dff15251347cab21ab4515810
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.statics = exports.default = exports.NAMESPACE = exports.MODULE_NAME = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));var _reactNative = require("react-native");
+var _internals = _interopRequireDefault(require("../../utils/internals"));
+var _utils = require("../../utils");
+var _ModuleBase = _interopRequireDefault(require("../../utils/ModuleBase"));
+var _database = _interopRequireDefault(require("./database"));
+var FirebaseCoreModule = _reactNative.NativeModules.RNFirebase;
+var MODULE_NAME = 'RNFirebaseUtils';exports.MODULE_NAME = MODULE_NAME;
+var NAMESPACE = 'utils';exports.NAMESPACE = NAMESPACE;var
+RNFirebaseUtils = function (_ModuleBase) {(0, _inherits2.default)(RNFirebaseUtils, _ModuleBase);
+  function RNFirebaseUtils(app) {(0, _classCallCheck2.default)(this, RNFirebaseUtils);return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(RNFirebaseUtils).call(this,
+    app, {
+      moduleName: MODULE_NAME,
+      hasMultiAppSupport: false,
+      hasCustomUrlSupport: false,
+      namespace: NAMESPACE }));
+
+  }(0, _createClass2.default)(RNFirebaseUtils, [{ key: "checkPlayServicesAvailability", value: function checkPlayServicesAvailability()
+
+
+
+
+
+
+
+
+
+    {
+      if (_utils.isIOS) return;var
+
+      status =
+      this.playServicesAvailability.status;
+
+      if (!this.playServicesAvailability.isAvailable) {
+        if (_internals.default.OPTIONS.promptOnMissingPlayServices && this.playServicesAvailability.isUserResolvableError) {
+          this.promptForPlayServices();
+        } else {
+          var error = _internals.default.STRINGS.ERROR_PLAY_SERVICES(status);
+
+          if (_internals.default.OPTIONS.errorOnMissingPlayServices) {
+            if (status === 2) console.warn(error);else
+              throw new Error(error);
+          } else {
+            console.warn(error);
+          }
+        }
+      }
+    } }, { key: "getPlayServicesStatus", value: function getPlayServicesStatus()
+
+    {
+      if (_utils.isIOS) return Promise.resolve(null);
+      return FirebaseCoreModule.getPlayServicesStatus();
+    } }, { key: "promptForPlayServices", value: function promptForPlayServices()
+
+    {
+      if (_utils.isIOS) return null;
+      return FirebaseCoreModule.promptForPlayServices();
+    } }, { key: "resolutionForPlayServices", value: function resolutionForPlayServices()
+
+    {
+      if (_utils.isIOS) return null;
+      return FirebaseCoreModule.resolutionForPlayServices();
+    } }, { key: "makePlayServicesAvailable", value: function makePlayServicesAvailable()
+
+    {
+      if (_utils.isIOS) return null;
+      return FirebaseCoreModule.makePlayServicesAvailable();
+    } }, { key: "database", get: function get() {return _database.default;} }, { key: "logLevel", set: function set(
+
+
+
+
+
+
+
+    logLevel) {
+      _internals.default.OPTIONS.logLevel = logLevel;
+    } }, { key: "playServicesAvailability", get: function get()
+
+
+
+
+
+
+
+    {
+      return FirebaseCoreModule.playServicesAvailability || {
+        isAvailable: true,
+        status: 0 };
+
+    } }, { key: "errorOnMissingPlayServices", set: function set(
+
+
+
+
+
+
+
+    bool) {
+      _internals.default.OPTIONS.errorOnMissingPlayServices = bool;
+    } }, { key: "promptOnMissingPlayServices", set: function set(
+
+
+
+
+
+
+
+    bool) {
+      _internals.default.OPTIONS.promptOnMissingPlayServices = bool;
+    } }]);return RNFirebaseUtils;}(_ModuleBase.default);exports.default = RNFirebaseUtils;
+
+
+var statics = {};exports.statics = statics;

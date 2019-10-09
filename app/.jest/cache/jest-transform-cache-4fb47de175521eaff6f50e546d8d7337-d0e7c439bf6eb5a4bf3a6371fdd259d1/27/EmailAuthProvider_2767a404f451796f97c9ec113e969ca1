@@ -1,0 +1,46 @@
+a278c0b8b113fbcfc6b5bcf9e747b7dd
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+
+
+var linkProviderId = 'emailLink';
+var passwordProviderId = 'password';var
+EmailAuthProvider = function () {
+  function EmailAuthProvider() {(0, _classCallCheck2.default)(this, EmailAuthProvider);
+    throw new Error('`new EmailAuthProvider()` is not supported on the native Firebase SDKs.');
+  }(0, _createClass2.default)(EmailAuthProvider, null, [{ key: "credential", value: function credential(
+
+
+
+
+
+
+
+
+
+
+
+
+
+    email, password) {
+      return {
+        token: email,
+        secret: password,
+        providerId: passwordProviderId };
+
+    } }, { key: "credentialWithLink", value: function credentialWithLink(
+
+
+
+
+
+
+
+
+    email, emailLink) {
+      return {
+        token: email,
+        secret: emailLink,
+        providerId: linkProviderId };
+
+    } }, { key: "EMAIL_LINK_SIGN_IN_METHOD", get: function get() {return linkProviderId;} }, { key: "EMAIL_PASSWORD_SIGN_IN_METHOD", get: function get() {return passwordProviderId;} }, { key: "PROVIDER_ID", get: function get() {return passwordProviderId;} }]);return EmailAuthProvider;}();exports.default = EmailAuthProvider;

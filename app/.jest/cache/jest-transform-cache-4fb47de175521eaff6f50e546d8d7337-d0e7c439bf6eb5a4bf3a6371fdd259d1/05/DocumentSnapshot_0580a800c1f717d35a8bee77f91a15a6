@@ -1,0 +1,60 @@
+6f93453cc904b14f6e625feaf30f19a3
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+
+
+var _DocumentReference = _interopRequireDefault(require("./DocumentReference"));
+var _FieldPath = _interopRequireDefault(require("./FieldPath"));
+var _Path = _interopRequireDefault(require("./Path"));
+var _utils = require("../../utils");
+var _serialize = require("./utils/serialize");
+
+var extractFieldPathData = function extractFieldPathData(data, segments) {
+  if (!data || !(0, _utils.isObject)(data)) {
+    return undefined;
+  }
+
+  var pathValue = data[segments[0]];
+
+  if (segments.length === 1) {
+    return pathValue;
+  }
+
+  return extractFieldPathData(pathValue, segments.slice(1));
+};var
+
+
+
+
+
+DocumentSnapshot = function () {
+  function DocumentSnapshot(firestore, nativeData) {var _this = this;(0, _classCallCheck2.default)(this, DocumentSnapshot);this.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    data = function () {return _this._data;};this.
+    get = function (fieldPath) {
+      if (fieldPath instanceof _FieldPath.default) {
+        return extractFieldPathData(_this._data, fieldPath._segments);
+      }
+
+      return (0, _utils.deepGet)(_this._data, fieldPath, '.');
+    };this._data = (0, _serialize.parseNativeMap)(firestore, nativeData.data);this._metadata = nativeData.metadata;this._ref = new _DocumentReference.default(firestore, _Path.default.fromName(nativeData.path));}(0, _createClass2.default)(DocumentSnapshot, [{ key: "exists", get: function get() {return this._data !== undefined;} }, { key: "id", get: function get() {return this._ref.id;} }, { key: "metadata", get: function get() {return this._metadata;} }, { key: "ref", get: function get() {return this._ref;} }]);return DocumentSnapshot;}();exports.default = DocumentSnapshot;

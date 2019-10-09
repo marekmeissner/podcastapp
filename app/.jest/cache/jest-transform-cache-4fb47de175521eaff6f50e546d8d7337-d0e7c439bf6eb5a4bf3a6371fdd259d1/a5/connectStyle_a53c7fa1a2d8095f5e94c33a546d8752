@@ -1,0 +1,405 @@
+841b788531270dc72a8996db7191af73
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");Object.defineProperty(exports, "__esModule", { value: true });exports.clearThemeCache = clearThemeCache;exports.default = void 0;var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));var _react = _interopRequireDefault(require("react"));
+var _propTypes = _interopRequireDefault(require("prop-types"));
+var _hoistNonReactStatics = _interopRequireDefault(require("hoist-non-react-statics"));
+var _ = _interopRequireWildcard(require("lodash"));
+var _normalizeStyle = _interopRequireDefault(require("./StyleNormalizer/normalizeStyle"));
+var _reactNative = require("react-native");
+
+var _Theme = _interopRequireWildcard(require("./Theme"));
+var _resolveComponentStyle = require("./resolveComponentStyle");var _jsxFileName = "/private/var/www/Hillcode/podcastapp/app/node_modules/native-base-shoutem-theme/src/connectStyle.js";
+
+var themeCache = {};
+
+
+
+
+
+function clearThemeCache() {
+  themeCache = {};
+}
+
+
+
+
+
+
+
+function throwConnectStyleError(errorMessage, componentDisplayName) {
+  throw Error(
+  errorMessage + " - when connecting " + componentDisplayName + " component to style.");
+
+}
+
+
+
+
+
+
+
+
+function getTheme(context) {
+
+
+  return context.theme || _Theme.default.getDefaultTheme();
+}
+
+
+
+
+
+
+
+
+
+
+function isStyleVariant(propertyName) {
+  return /^\./.test(propertyName);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+function isChildStyle(propertyName) {
+  return /(^[^\.].*\.)|^\*$/.test(propertyName);
+}
+
+function getConcreteStyle(style) {
+  return _.pickBy(style, function (value, key) {
+    return !isStyleVariant(key) && !isChildStyle(key);
+  });
+}var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function _default(
+componentStyleName)
+
+
+
+{var componentStyle = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};var mapPropsToStyleNames = arguments.length > 2 ? arguments[2] : undefined;var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+  function getComponentDisplayName(WrappedComponent) {
+    return WrappedComponent.displayName || WrappedComponent.name || "Component";
+  }
+
+  return function wrapWithStyledComponent(WrappedComponent) {
+    var componentDisplayName = getComponentDisplayName(WrappedComponent);
+
+    if (!_.isPlainObject(componentStyle)) {
+      throwConnectStyleError(
+      "Component style must be plain object",
+      componentDisplayName);
+
+    }
+
+    if (!_.isString(componentStyleName)) {
+      throwConnectStyleError(
+      "Component Style Name must be string",
+      componentDisplayName);
+
+    }var
+
+    StyledComponent = function (_React$Component) {(0, _inherits2.default)(StyledComponent, _React$Component);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      function StyledComponent(props, context) {var _this;(0, _classCallCheck2.default)(this, StyledComponent);
+        _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(StyledComponent).call(this, props, context));
+
+        var styleNames = _this.getStyleNames(props);
+        var style = props.style;
+
+        var finalStyle = _this.getFinalStyle(
+        props,
+        context,
+        style,
+        styleNames);
+
+
+        _this.setWrappedInstance = _this.setWrappedInstance.bind((0, _assertThisInitialized2.default)(_this));
+        _this.resolveConnectedComponentStyle = _this.resolveConnectedComponentStyle.bind((0, _assertThisInitialized2.default)(_this));
+
+
+        _this.state = {
+          style: finalStyle,
+
+
+
+          addedProps: _this.resolveAddedProps(),
+          styleNames: styleNames };return _this;
+
+      }(0, _createClass2.default)(StyledComponent, [{ key: "getFinalStyle", value: function getFinalStyle(
+
+        props, context, style, styleNames) {
+          var resolvedStyle = {};
+          if (context.parentPath) {
+            resolvedStyle = this.getOrSetStylesInCache(
+            context,
+            props,
+            styleNames, [].concat((0, _toConsumableArray2.default)(
+            context.parentPath), [componentStyleName], (0, _toConsumableArray2.default)(styleNames)));
+
+          } else {
+            resolvedStyle = this.resolveStyle(context, props, styleNames);
+            themeCache[componentStyleName] = resolvedStyle;
+          }
+
+          var concreteStyle = getConcreteStyle(_.merge({}, resolvedStyle));
+
+          if (_.isArray(style)) {
+            return [concreteStyle].concat((0, _toConsumableArray2.default)(style));
+          }
+
+          if (typeof style == "number" || typeof style == "object") {
+            return [concreteStyle, style];
+          }
+
+          return concreteStyle;
+        } }, { key: "getStyleNames", value: function getStyleNames(
+
+        props) {
+          var styleNamesArr = _.map(props, function (value, key) {
+            if (typeof value !== "object" && value === true) {
+              return "." + key;
+            } else {
+              return false;
+            }
+          });
+          _.remove(styleNamesArr, function (value, index) {
+            return value === false;
+          });
+
+          return styleNamesArr;
+        } }, { key: "getParentPath", value: function getParentPath()
+
+        {
+          if (!this.context.parentPath) {
+            return [componentStyleName];
+          } else {
+            return [].concat((0, _toConsumableArray2.default)(
+            this.context.parentPath), [
+            componentStyleName], (0, _toConsumableArray2.default)(
+            this.getStyleNames(this.props)));
+
+          }
+        } }, { key: "getChildContext", value: function getChildContext()
+
+        {
+          return {
+
+
+
+
+            parentPath: this.getParentPath() };
+
+        } }, { key: "UNSAFE_componentWillReceiveProps", value: function UNSAFE_componentWillReceiveProps(
+
+        nextProps, nextContext) {
+          var styleNames = this.getStyleNames(nextProps);
+          var style = nextProps.style;
+          if (this.shouldRebuildStyle(nextProps, nextContext, styleNames)) {
+            var finalStyle = this.getFinalStyle(
+            nextProps,
+            nextContext,
+            style,
+            styleNames);
+
+
+            this.setState({
+              style: finalStyle,
+
+              styleNames: styleNames });
+
+          }
+        } }, { key: "setNativeProps", value: function setNativeProps(
+
+        nativeProps) {
+          if (this.wrappedInstance.setNativeProps) {
+            this.wrappedInstance.setNativeProps(nativeProps);
+          }
+        } }, { key: "setWrappedInstance", value: function setWrappedInstance(
+
+        component) {
+          if (component && component._root) {
+            this._root = component._root;
+          } else {
+            this._root = component;
+          }
+          this.wrappedInstance = this._root;
+        } }, { key: "hasStyleNameChanged", value: function hasStyleNameChanged(
+
+        nextProps, styleNames) {
+          return (
+            mapPropsToStyleNames &&
+            this.props !== nextProps &&
+
+
+            !_.isEqual(this.state.styleNames, styleNames));
+
+        } }, { key: "shouldRebuildStyle", value: function shouldRebuildStyle(
+
+        nextProps, nextContext, styleNames) {
+          return (
+            nextProps.style !== this.props.style ||
+            nextProps.styleName !== this.props.styleName ||
+            nextContext.theme !== this.context.theme ||
+            !_.isEqual(nextContext.parentPath, this.context.parentPath) ||
+            this.hasStyleNameChanged(nextProps, styleNames));
+
+        } }, { key: "resolveStyleNames", value: function resolveStyleNames(
+
+        props) {var
+          styleName = props.styleName;
+          var styleNames = styleName ? styleName.split(/\s/g) : [];
+
+          if (!mapPropsToStyleNames) {
+            return styleNames;
+          }
+
+
+          return _.uniq(mapPropsToStyleNames(styleNames, props));
+        } }, { key: "resolveAddedProps", value: function resolveAddedProps()
+
+        {
+          var addedProps = {};
+          if (options.withRef) {
+            addedProps.ref = "wrappedInstance";
+          }
+          return addedProps;
+        } }, { key: "getOrSetStylesInCache", value: function getOrSetStylesInCache(
+
+        context, props, styleNames, path) {
+          if (themeCache && themeCache[path.join(">")]) {
+
+
+            return themeCache[path.join(">")];
+          } else {
+            var resolvedStyle = this.resolveStyle(context, props, styleNames);
+            if (Object.keys(themeCache).length < 10000) {
+              themeCache[path.join(">")] = resolvedStyle;
+            }
+            return resolvedStyle;
+          }
+        } }, { key: "resolveStyle", value: function resolveStyle(
+
+        context, props, styleNames) {
+          var parentStyle = {};
+
+          var theme = getTheme(context);
+          var themeStyle = theme.createComponentStyle(
+          componentStyleName,
+          componentStyle);
+
+
+          if (context.parentPath) {
+            parentStyle = themeCache[context.parentPath.join(">")];
+          } else {
+            parentStyle = (0, _resolveComponentStyle.resolveComponentStyle)(
+            componentStyleName,
+            styleNames,
+            themeStyle,
+            parentStyle);
+
+          }
+
+          return (0, _resolveComponentStyle.resolveComponentStyle)(
+          componentStyleName,
+          styleNames,
+          themeStyle,
+          parentStyle);
+
+        } }, { key: "resolveConnectedComponentStyle", value: function resolveConnectedComponentStyle(
+
+
+
+
+
+
+
+
+        props) {
+          var styleNames = this.resolveStyleNames(props);
+          return this.resolveStyle(this.context, props, styleNames).
+          componentStyle;
+        } }, { key: "render", value: function render()
+
+        {var _this$state =
+
+
+
+
+
+
+
+          this.state,addedProps = _this$state.addedProps,style = _this$state.style;
+          return (
+            _react.default.createElement(WrappedComponent, (0, _extends2.default)({},
+            this.props,
+            addedProps, {
+              style: style,
+              ref: this.setWrappedInstance, __source: { fileName: _jsxFileName, lineNumber: 392 } })));
+
+
+        } }]);return StyledComponent;}(_react.default.Component);StyledComponent.contextTypes = { theme: _Theme.ThemeShape, parentPath: _propTypes.default.array };StyledComponent.childContextTypes = { parentPath: _propTypes.default.array };StyledComponent.propTypes = { style: _propTypes.default.oneOfType([_propTypes.default.object, _propTypes.default.number, _propTypes.default.array]), styleName: _propTypes.default.string, virtual: _propTypes.default.bool };StyledComponent.defaultProps = { virtual: options.virtual };StyledComponent.displayName = "Styled(" + componentDisplayName + ")";StyledComponent.WrappedComponent = WrappedComponent;
+
+
+    return (0, _hoistNonReactStatics.default)(StyledComponent, WrappedComponent);
+  };
+};exports.default = _default;

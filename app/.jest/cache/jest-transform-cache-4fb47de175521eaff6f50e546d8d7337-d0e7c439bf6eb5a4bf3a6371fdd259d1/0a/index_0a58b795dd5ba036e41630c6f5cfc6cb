@@ -1,0 +1,30 @@
+1dfad3574ec41623026772511c02f7c3
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+
+
+
+
+
+
+
+
+
+
+var getBoundingClientRect = function getBoundingClientRect(node) {
+  if (node) {
+    var isElement = node.nodeType === 1;
+
+
+    if (isElement && typeof node.getBoundingClientRect === 'function') {
+      return node.getBoundingClientRect();
+    }
+  }
+};
+
+var _default = getBoundingClientRect;
+exports.default = _default;
+module.exports = exports.default;

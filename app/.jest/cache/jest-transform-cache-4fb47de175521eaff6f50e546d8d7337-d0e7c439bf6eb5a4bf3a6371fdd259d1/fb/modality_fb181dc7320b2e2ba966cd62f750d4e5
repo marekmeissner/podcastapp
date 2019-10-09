@@ -1,0 +1,289 @@
+48064b8d24daa9ae50d1d1225e32f228
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var focusVisibleAttributeName = 'data-focusvisible-polyfill';
+var rule = ":focus:not([" + focusVisibleAttributeName + "]){outline: none;}";
+
+var modality = function modality(insertRule) {
+  insertRule(rule);
+
+  if (!require("fbjs/lib/ExecutionEnvironment").canUseDOM) {
+    return;
+  }
+
+  var hadKeyboardEvent = true;
+  var hadFocusVisibleRecently = false;
+  var hadFocusVisibleRecentlyTimeout = null;
+  var inputTypesWhitelist = {
+    text: true,
+    search: true,
+    url: true,
+    tel: true,
+    email: true,
+    password: true,
+    number: true,
+    date: true,
+    month: true,
+    week: true,
+    time: true,
+    datetime: true,
+    'datetime-local': true };
+
+
+
+
+
+
+  function isValidFocusTarget(el) {
+    if (el && el !== document && el.nodeName !== 'HTML' && el.nodeName !== 'BODY' && 'classList' in el && 'contains' in el.classList) {
+      return true;
+    }
+
+    return false;
+  }
+
+
+
+
+
+
+
+  function focusTriggersKeyboardModality(el) {
+    var type = el.type;
+    var tagName = el.tagName;
+    var isReadOnly = el.readOnly;
+
+    if (tagName === 'INPUT' && inputTypesWhitelist[type] && !isReadOnly) {
+      return true;
+    }
+
+    if (tagName === 'TEXTAREA' && !isReadOnly) {
+      return true;
+    }
+
+    if (el.isContentEditable) {
+      return true;
+    }
+
+    return false;
+  }
+
+
+
+
+
+
+  function addFocusVisibleAttribute(el) {
+    if (el.hasAttribute(focusVisibleAttributeName)) {
+      return;
+    }
+
+    el.setAttribute(focusVisibleAttributeName, true);
+  }
+
+
+
+
+
+
+  function removeFocusVisibleAttribute(el) {
+    el.removeAttribute(focusVisibleAttributeName);
+  }
+
+
+
+
+
+  function removeAllFocusVisibleAttributes() {
+    var list = document.querySelectorAll("[" + focusVisibleAttributeName + "]");
+
+    for (var i = 0; i < list.length; i += 1) {
+      removeFocusVisibleAttribute(list[i]);
+    }
+  }
+
+
+
+
+
+
+
+  function onKeyDown(e) {
+    if (e.key !== 'Tab' && (e.metaKey || e.altKey || e.ctrlKey || e.shiftKey)) {
+      return;
+    }
+
+    if (isValidFocusTarget(document.activeElement)) {
+      addFocusVisibleAttribute(document.activeElement);
+    }
+
+    hadKeyboardEvent = true;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  function onPointerDown(e) {
+    if (hadKeyboardEvent === true) {
+      removeAllFocusVisibleAttributes();
+    }
+
+    hadKeyboardEvent = false;
+  }
+
+
+
+
+
+
+
+
+  function onFocus(e) {
+
+    if (!isValidFocusTarget(e.target)) {
+      return;
+    }
+
+    if (hadKeyboardEvent || focusTriggersKeyboardModality(e.target)) {
+      addFocusVisibleAttribute(e.target);
+    }
+  }
+
+
+
+
+
+  function onBlur(e) {
+    if (!isValidFocusTarget(e.target)) {
+      return;
+    }
+
+    if (e.target.hasAttribute(focusVisibleAttributeName)) {
+
+
+
+
+      hadFocusVisibleRecently = true;
+      window.clearTimeout(hadFocusVisibleRecentlyTimeout);
+      hadFocusVisibleRecentlyTimeout = window.setTimeout(function () {
+        hadFocusVisibleRecently = false;
+        window.clearTimeout(hadFocusVisibleRecentlyTimeout);
+      }, 100);
+      removeFocusVisibleAttribute(e.target);
+    }
+  }
+
+
+
+
+
+
+  function onVisibilityChange(e) {
+    if (document.visibilityState === 'hidden') {
+
+
+
+
+      if (hadFocusVisibleRecently) {
+        hadKeyboardEvent = true;
+      }
+
+      addInitialPointerMoveListeners();
+    }
+  }
+
+
+
+
+
+
+
+
+  function addInitialPointerMoveListeners() {
+    document.addEventListener('mousemove', onInitialPointerMove);
+    document.addEventListener('mousedown', onInitialPointerMove);
+    document.addEventListener('mouseup', onInitialPointerMove);
+    document.addEventListener('pointermove', onInitialPointerMove);
+    document.addEventListener('pointerdown', onInitialPointerMove);
+    document.addEventListener('pointerup', onInitialPointerMove);
+    document.addEventListener('touchmove', onInitialPointerMove);
+    document.addEventListener('touchstart', onInitialPointerMove);
+    document.addEventListener('touchend', onInitialPointerMove);
+  }
+
+  function removeInitialPointerMoveListeners() {
+    document.removeEventListener('mousemove', onInitialPointerMove);
+    document.removeEventListener('mousedown', onInitialPointerMove);
+    document.removeEventListener('mouseup', onInitialPointerMove);
+    document.removeEventListener('pointermove', onInitialPointerMove);
+    document.removeEventListener('pointerdown', onInitialPointerMove);
+    document.removeEventListener('pointerup', onInitialPointerMove);
+    document.removeEventListener('touchmove', onInitialPointerMove);
+    document.removeEventListener('touchstart', onInitialPointerMove);
+    document.removeEventListener('touchend', onInitialPointerMove);
+  }
+
+
+
+
+
+
+
+
+  function onInitialPointerMove(e) {
+
+
+    if (e.target.nodeName === 'HTML') {
+      return;
+    }
+
+    hadKeyboardEvent = false;
+    removeInitialPointerMoveListeners();
+  }
+
+  document.addEventListener('keydown', onKeyDown, true);
+  document.addEventListener('mousedown', onPointerDown, true);
+  document.addEventListener('pointerdown', onPointerDown, true);
+  document.addEventListener('touchstart', onPointerDown, true);
+  document.addEventListener('focus', onFocus, true);
+  document.addEventListener('blur', onBlur, true);
+  document.addEventListener('visibilitychange', onVisibilityChange, true);
+  addInitialPointerMoveListeners();
+};
+
+var _default = modality;
+exports.default = _default;
+module.exports = exports.default;

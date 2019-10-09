@@ -1,0 +1,103 @@
+570f056b95986431526ecd2c590932da
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+
+
+
+
+
+
+
+
+
+
+var OverflowPropType = (0, require("prop-types").oneOf)(['auto', 'hidden', 'scroll', 'visible']);
+var hiddenOrVisible = (0, require("prop-types").oneOf)(['hidden', 'visible']);
+var numberOrString = (0, require("prop-types").oneOfType)([require("prop-types").number, require("prop-types").string]);
+var LayoutPropTypes = {
+  alignContent: (0, require("prop-types").oneOf)(['center', 'flex-end', 'flex-start', 'space-around', 'space-between', 'stretch']),
+  alignItems: (0, require("prop-types").oneOf)(['baseline', 'center', 'flex-end', 'flex-start', 'stretch']),
+  alignSelf: (0, require("prop-types").oneOf)(['auto', 'baseline', 'center', 'flex-end', 'flex-start', 'stretch']),
+  backfaceVisibility: hiddenOrVisible,
+  borderWidth: numberOrString,
+  borderBottomWidth: numberOrString,
+  borderEndWidth: numberOrString,
+  borderLeftWidth: numberOrString,
+  borderRightWidth: numberOrString,
+  borderStartWidth: numberOrString,
+  borderTopWidth: numberOrString,
+  bottom: numberOrString,
+  boxSizing: require("prop-types").string,
+  direction: (0, require("prop-types").oneOf)(['inherit', 'ltr', 'rtl']),
+  display: require("prop-types").string,
+  end: numberOrString,
+  flex: require("prop-types").number,
+  flexBasis: numberOrString,
+  flexDirection: (0, require("prop-types").oneOf)(['column', 'column-reverse', 'row', 'row-reverse']),
+  flexGrow: require("prop-types").number,
+  flexShrink: require("prop-types").number,
+  flexWrap: (0, require("prop-types").oneOf)(['nowrap', 'wrap', 'wrap-reverse']),
+  height: numberOrString,
+  justifyContent: (0, require("prop-types").oneOf)(['center', 'flex-end', 'flex-start', 'space-around', 'space-between', 'space-evenly']),
+  left: numberOrString,
+  margin: numberOrString,
+  marginBottom: numberOrString,
+  marginHorizontal: numberOrString,
+  marginEnd: numberOrString,
+  marginLeft: numberOrString,
+  marginRight: numberOrString,
+  marginStart: numberOrString,
+  marginTop: numberOrString,
+  marginVertical: numberOrString,
+  maxHeight: numberOrString,
+  maxWidth: numberOrString,
+  minHeight: numberOrString,
+  minWidth: numberOrString,
+  order: require("prop-types").number,
+  overflow: OverflowPropType,
+  overflowX: OverflowPropType,
+  overflowY: OverflowPropType,
+  padding: numberOrString,
+  paddingBottom: numberOrString,
+  paddingHorizontal: numberOrString,
+  paddingEnd: numberOrString,
+  paddingLeft: numberOrString,
+  paddingRight: numberOrString,
+  paddingStart: numberOrString,
+  paddingTop: numberOrString,
+  paddingVertical: numberOrString,
+  position: (0, require("prop-types").oneOf)(['absolute', 'fixed', 'relative', 'static', 'sticky']),
+  right: numberOrString,
+  start: numberOrString,
+  top: numberOrString,
+  visibility: hiddenOrVisible,
+  width: numberOrString,
+  zIndex: require("prop-types").number,
+
+
+
+
+  aspectRatio: require("prop-types").number,
+
+
+
+
+  gridAutoColumns: require("prop-types").string,
+  gridAutoFlow: require("prop-types").string,
+  gridAutoRows: require("prop-types").string,
+  gridColumnEnd: require("prop-types").string,
+  gridColumnGap: require("prop-types").string,
+  gridColumnStart: require("prop-types").string,
+  gridRowEnd: require("prop-types").string,
+  gridRowGap: require("prop-types").string,
+  gridRowStart: require("prop-types").string,
+  gridTemplateColumns: require("prop-types").string,
+  gridTemplateRows: require("prop-types").string,
+  gridTemplateAreas: require("prop-types").string };
+
+var _default = LayoutPropTypes;
+exports.default = _default;
+module.exports = exports.default;

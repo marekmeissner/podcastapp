@@ -1,0 +1,175 @@
+42e73b06314d408fc56695d3331eb30e
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+
+
+var _utils = require("../../utils");
+var _log = require("../../utils/log");
+var _native = require("../../utils/native");var
+IOSNotification = function () {
+  function IOSNotification(notification, notifications, data) {(0, _classCallCheck2.default)(this, IOSNotification);
+    this._notification = notification;
+
+    if (data) {
+      this._alertAction = data.alertAction;
+      this._attachments = data.attachments || [];
+      this._badge = data.badge;
+      this._category = data.category;
+      this._hasAction = data.hasAction;
+      this._launchImage = data.launchImage;
+      this._threadIdentifier = data.threadIdentifier;
+    } else {
+      this._attachments = [];
+    }
+
+    if (!_utils.isIOS || !notifications || !notifications.ios) {
+      return this;
+    }
+
+
+    var complete = function complete(fetchResult) {var
+
+      notificationId =
+      notification.notificationId;
+
+      if (notificationId && notifications) {
+        (0, _log.getLogger)(notifications).debug("Completion handler called for notificationId=" + notificationId);
+        (0, _native.getNativeModule)(notifications).complete(notificationId, fetchResult);
+      }
+    };
+
+    if (notifications.ios.shouldAutoComplete) {
+      complete(notifications.ios.backgroundFetchResult.noData);
+    } else {
+      this._complete = complete;
+    }
+  }(0, _createClass2.default)(IOSNotification, [{ key: "addAttachment", value: function addAttachment(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    identifier, url, options) {
+      this._attachments.push({
+        identifier: identifier,
+        options: options,
+        url: url });
+
+
+      return this._notification;
+    } }, { key: "setAlertAction", value: function setAlertAction(
+
+
+
+
+
+
+
+    alertAction) {
+      this._alertAction = alertAction;
+      return this._notification;
+    } }, { key: "setBadge", value: function setBadge(
+
+
+
+
+
+
+
+    badge) {
+      this._badge = badge;
+      return this._notification;
+    } }, { key: "setCategory", value: function setCategory(
+
+
+
+
+
+
+
+    category) {
+      this._category = category;
+      return this._notification;
+    } }, { key: "setHasAction", value: function setHasAction(
+
+
+
+
+
+
+
+    hasAction) {
+      this._hasAction = hasAction;
+      return this._notification;
+    } }, { key: "setLaunchImage", value: function setLaunchImage(
+
+
+
+
+
+
+
+    launchImage) {
+      this._launchImage = launchImage;
+      return this._notification;
+    } }, { key: "setThreadIdentifier", value: function setThreadIdentifier(
+
+
+
+
+
+
+
+    threadIdentifier) {
+      this._threadIdentifier = threadIdentifier;
+      return this._notification;
+    } }, { key: "build", value: function build()
+
+    {
+
+      return {
+        alertAction: this._alertAction,
+        attachments: this._attachments,
+        badge: this._badge,
+        category: this._category,
+        hasAction: this._hasAction,
+        launchImage: this._launchImage,
+        threadIdentifier: this._threadIdentifier };
+
+    } }, { key: "alertAction", get: function get() {return this._alertAction;} }, { key: "attachments", get: function get() {return this._attachments;} }, { key: "badge", get: function get() {return this._badge;} }, { key: "category", get: function get() {return this._category;} }, { key: "hasAction", get: function get() {return this._hasAction;} }, { key: "launchImage", get: function get() {return this._launchImage;} }, { key: "threadIdentifier", get: function get() {return this._threadIdentifier;} }, { key: "complete", get: function get() {return this._complete;} }]);return IOSNotification;}();exports.default = IOSNotification;

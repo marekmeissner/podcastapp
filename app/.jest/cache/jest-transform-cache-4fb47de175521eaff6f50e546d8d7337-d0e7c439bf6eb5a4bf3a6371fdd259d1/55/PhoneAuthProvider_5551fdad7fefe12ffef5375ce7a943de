@@ -1,0 +1,22 @@
+8e4bfe4a346eedcf6efec498cda0afe7
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+
+
+var providerId = 'phone';var
+PhoneAuthProvider = function () {
+  function PhoneAuthProvider() {(0, _classCallCheck2.default)(this, PhoneAuthProvider);
+    throw new Error('`new PhoneAuthProvider()` is not supported on the native Firebase SDKs.');
+  }(0, _createClass2.default)(PhoneAuthProvider, null, [{ key: "credential", value: function credential(
+
+
+
+
+
+    verificationId, code) {
+      return {
+        token: verificationId,
+        secret: code,
+        providerId: providerId };
+
+    } }, { key: "PROVIDER_ID", get: function get() {return providerId;} }]);return PhoneAuthProvider;}();exports.default = PhoneAuthProvider;

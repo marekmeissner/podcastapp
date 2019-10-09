@@ -1,0 +1,119 @@
+27d67aac6e4d7fb620d514e326f02533
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));var _react = _interopRequireDefault(require("react"));
+var _reactNative = require("react-native");
+var _propTypes = _interopRequireDefault(require("prop-types"));
+var _EventTypes = _interopRequireWildcard(require("./EventTypes"));
+var _utils = require("../../utils");
+var _AdRequest = _interopRequireDefault(require("./AdRequest"));
+var _VideoOptions = _interopRequireDefault(require("./VideoOptions"));var _jsxFileName = "/private/var/www/Hillcode/podcastapp/app/node_modules/react-native-firebase/dist/modules/admob/AdMobComponent.js";function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(source, true).forEach(function (key) {(0, _defineProperty2.default)(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(source).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}
+var adMobPropTypes = _objectSpread({}, _reactNative.ViewPropTypes, {
+  size: _propTypes.default.string.isRequired,
+  unitId: _propTypes.default.string.isRequired,
+
+
+  request: _propTypes.default.object,
+  video: _propTypes.default.object });
+
+
+
+Object.keys(_EventTypes.default).forEach(function (eventType) {
+  adMobPropTypes[eventType] = _propTypes.default.func;
+});
+Object.keys(_EventTypes.NativeExpressEventTypes).forEach(function (eventType) {
+  adMobPropTypes[eventType] = _propTypes.default.func;
+});
+var nativeComponents = {};
+
+function getNativeComponent(name) {
+  if (nativeComponents[name]) return nativeComponents[name];
+  var component = (0, _reactNative.requireNativeComponent)(name, AdMobComponent, {
+    nativeOnly: {
+      onBannerEvent: true } });
+
+
+  nativeComponents[name] = component;
+  return component;
+}var
+
+AdMobComponent = function (_React$Component) {(0, _inherits2.default)(AdMobComponent, _React$Component);
+
+
+
+
+
+
+  function AdMobComponent(_props) {var _this;(0, _classCallCheck2.default)(this, AdMobComponent);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(AdMobComponent).call(this, _props));_this.
+
+
+
+
+
+
+
+
+
+
+
+
+
+    onBannerEvent = function (_ref)
+
+    {var nativeEvent = _ref.nativeEvent;var _assertThisInitialize = (0, _assertThisInitialized2.default)(_this),
+
+      props = _assertThisInitialize.props;
+
+
+      if (props[nativeEvent.type]) {
+        if (nativeEvent.type === 'onAdFailedToLoad') {var _nativeEvent$payload =
+
+
+
+          nativeEvent.payload,code = _nativeEvent$payload.code,message = _nativeEvent$payload.message;
+          props[nativeEvent.type]((0, _utils.nativeToJSError)(code, message));
+        } else {
+          props[nativeEvent.type](nativeEvent.payload || {});
+        }
+      }
+
+      if (nativeEvent.type === 'onSizeChange') {
+        _this.updateSize(nativeEvent.payload);
+      }
+
+      if (nativeEvent.type === 'onAdLoaded' && _reactNative.Platform.OS === 'ios') {
+        _this.updateSize(nativeEvent.payload);
+      }
+    };_this.
+
+
+
+
+
+
+    updateSize = function (_ref2)
+
+
+    {var width = _ref2.width,height = _ref2.height;
+      if (width !== undefined && height !== undefined) {
+        _this.setState({
+          width: width,
+          height: height });
+
+      }
+    };_this.state = { width: 0, height: 0 };_this.nativeView = getNativeComponent(_props.class);return _this;}(0, _createClass2.default)(AdMobComponent, [{ key: "render", value: function render()
+
+
+
+
+
+    {var
+
+      style =
+      this.props.style;
+      return _react.default.createElement(this.nativeView, (0, _extends2.default)({}, this.props, { style: [style, _objectSpread({}, this.state)],
+        onBannerEvent: this.onBannerEvent, __source: { fileName: _jsxFileName, lineNumber: 112 } }));
+    } }]);return AdMobComponent;}(_react.default.Component);AdMobComponent.propTypes = adMobPropTypes;AdMobComponent.defaultProps = { request: new _AdRequest.default().addTestDevice().build(), video: new _VideoOptions.default().build() };var _default =
+
+
+
+AdMobComponent;exports.default = _default;

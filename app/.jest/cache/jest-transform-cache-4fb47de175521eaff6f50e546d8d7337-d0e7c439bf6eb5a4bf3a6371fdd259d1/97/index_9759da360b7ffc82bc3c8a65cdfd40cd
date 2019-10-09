@@ -1,0 +1,161 @@
+cac665ae4cb10954287ccc3c250d221f
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.statics = exports.default = exports.NAMESPACE = exports.MODULE_NAME = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+
+
+var _log = require("../../utils/log");
+var _ModuleBase = _interopRequireDefault(require("../../utils/ModuleBase"));
+var _native = require("../../utils/native");
+var MODULE_NAME = 'RNFirebaseRemoteConfig';exports.MODULE_NAME = MODULE_NAME;
+var NAMESPACE = 'config';exports.NAMESPACE = NAMESPACE;var
+
+
+
+
+RemoteConfig = function (_ModuleBase) {(0, _inherits2.default)(RemoteConfig, _ModuleBase);
+  function RemoteConfig(app) {var _this;(0, _classCallCheck2.default)(this, RemoteConfig);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(RemoteConfig).call(this, app, {
+      moduleName: MODULE_NAME,
+      hasMultiAppSupport: false,
+      hasCustomUrlSupport: false,
+      namespace: NAMESPACE }));
+
+    _this._developerModeEnabled = false;return _this;
+  }(0, _createClass2.default)(RemoteConfig, [{ key: "_nativeValueToJS", value: function _nativeValueToJS(
+
+
+
+
+
+
+
+
+    nativeValue) {
+      return {
+        source: nativeValue.source,
+
+        val: function val() {
+          if (nativeValue.boolValue !== null && (nativeValue.stringValue === 'true' || nativeValue.stringValue === 'false' || nativeValue.stringValue === null)) return nativeValue.boolValue;
+          if (nativeValue.numberValue !== null && nativeValue.numberValue !== undefined && (nativeValue.stringValue == null || nativeValue.stringValue === '' || nativeValue.numberValue.toString() === nativeValue.stringValue)) return nativeValue.numberValue;
+          if (nativeValue.dataValue !== nativeValue.stringValue && (nativeValue.stringValue == null || nativeValue.stringValue === '')) return nativeValue.dataValue;
+          return nativeValue.stringValue;
+        } };
+
+
+    } }, { key: "enableDeveloperMode", value: function enableDeveloperMode()
+
+
+
+
+
+    {
+      if (!this._developerModeEnabled) {
+        (0, _log.getLogger)(this).debug('Enabled developer mode');
+        (0, _native.getNativeModule)(this).enableDeveloperMode();
+        this._developerModeEnabled = true;
+      }
+    } }, { key: "fetch", value: function fetch(
+
+
+
+
+
+
+
+    expiration) {
+      if (expiration !== undefined) {
+        (0, _log.getLogger)(this).debug("Fetching remote config data with expiration " + expiration.toString());
+        return (0, _native.getNativeModule)(this).fetchWithExpirationDuration(expiration);
+      }
+
+      (0, _log.getLogger)(this).debug('Fetching remote config data');
+      return (0, _native.getNativeModule)(this).fetch();
+    } }, { key: "activateFetched", value: function activateFetched()
+
+
+
+
+
+
+
+
+    {
+      (0, _log.getLogger)(this).debug('Activating remote config');
+      return (0, _native.getNativeModule)(this).activateFetched();
+    } }, { key: "getValue", value: function getValue(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    key) {
+      return (0, _native.getNativeModule)(this).getValue(key || '').then(this._nativeValueToJS);
+    } }, { key: "getValues", value: function getValues(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    keys) {var _this2 = this;
+      return (0, _native.getNativeModule)(this).getValues(keys || []).then(function (nativeValues) {
+        var values = {};
+
+        for (var i = 0, len = keys.length; i < len; i++) {
+          values[keys[i]] = _this2._nativeValueToJS(nativeValues[i]);
+        }
+
+        return values;
+      });
+    } }, { key: "getKeysByPrefix", value: function getKeysByPrefix(
+
+
+
+
+
+
+
+    prefix) {
+      return (0, _native.getNativeModule)(this).getKeysByPrefix(prefix);
+    } }, { key: "setDefaults", value: function setDefaults(
+
+
+
+
+
+
+    defaults) {
+      (0, _native.getNativeModule)(this).setDefaults(defaults);
+    } }, { key: "setDefaultsFromResource", value: function setDefaultsFromResource(
+
+
+
+
+
+
+    resource) {
+      (0, _native.getNativeModule)(this).setDefaultsFromResource(resource);
+    } }]);return RemoteConfig;}(_ModuleBase.default);exports.default = RemoteConfig;
+
+
+var statics = {};exports.statics = statics;

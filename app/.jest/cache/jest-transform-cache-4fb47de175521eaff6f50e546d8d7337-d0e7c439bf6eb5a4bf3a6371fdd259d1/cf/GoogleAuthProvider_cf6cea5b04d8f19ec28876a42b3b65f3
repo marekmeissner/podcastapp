@@ -1,0 +1,22 @@
+4a6470f6d71331e7604abe7474d1ba89
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+
+
+var providerId = 'google.com';var
+GoogleAuthProvider = function () {
+  function GoogleAuthProvider() {(0, _classCallCheck2.default)(this, GoogleAuthProvider);
+    throw new Error('`new GoogleAuthProvider()` is not supported on the native Firebase SDKs.');
+  }(0, _createClass2.default)(GoogleAuthProvider, null, [{ key: "credential", value: function credential(
+
+
+
+
+
+    token, secret) {
+      return {
+        token: token,
+        secret: secret,
+        providerId: providerId };
+
+    } }, { key: "PROVIDER_ID", get: function get() {return providerId;} }]);return GoogleAuthProvider;}();exports.default = GoogleAuthProvider;

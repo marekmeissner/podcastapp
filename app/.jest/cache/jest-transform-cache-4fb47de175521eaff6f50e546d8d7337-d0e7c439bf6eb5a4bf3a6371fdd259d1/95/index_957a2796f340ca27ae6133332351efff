@@ -1,0 +1,22 @@
+0f187eaedf81edbb405797c68406fde9
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _SwipeableFlatList = _interopRequireDefault(require("../../vendor/react-native/SwipeableFlatList"));
+
+function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+
+
+
+
+
+
+
+
+
+var _default = _SwipeableFlatList.default;
+exports.default = _default;
+module.exports = exports.default;

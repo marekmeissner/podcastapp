@@ -1,0 +1,22 @@
+a8af2a65ccc08c3ca8e3c38f2b444a8e
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+
+
+var providerId = 'facebook.com';var
+FacebookAuthProvider = function () {
+  function FacebookAuthProvider() {(0, _classCallCheck2.default)(this, FacebookAuthProvider);
+    throw new Error('`new FacebookAuthProvider()` is not supported on the native Firebase SDKs.');
+  }(0, _createClass2.default)(FacebookAuthProvider, null, [{ key: "credential", value: function credential(
+
+
+
+
+
+    token) {
+      return {
+        token: token,
+        secret: '',
+        providerId: providerId };
+
+    } }, { key: "PROVIDER_ID", get: function get() {return providerId;} }]);return FacebookAuthProvider;}();exports.default = FacebookAuthProvider;

@@ -1,0 +1,25 @@
+60510f788a11cde513dad446c93c2878
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var
+
+
+
+
+
+
+
+GeoPoint = function () {
+  function GeoPoint(latitude, longitude) {(0, _classCallCheck2.default)(this, GeoPoint);
+
+
+
+    this._latitude = latitude;
+    this._longitude = longitude;
+  }(0, _createClass2.default)(GeoPoint, [{ key: "latitude", get: function get()
+
+    {
+      return this._latitude;
+    } }, { key: "longitude", get: function get()
+
+    {
+      return this._longitude;
+    } }]);return GeoPoint;}();exports.default = GeoPoint;

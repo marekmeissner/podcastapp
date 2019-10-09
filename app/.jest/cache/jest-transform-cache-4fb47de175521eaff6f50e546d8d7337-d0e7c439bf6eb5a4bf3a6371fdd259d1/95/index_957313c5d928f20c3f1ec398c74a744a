@@ -1,0 +1,36 @@
+6f4f1029bafe2b4c1e9b152fb34c9e3c
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+
+
+
+
+
+
+
+
+
+var _vibrate = function vibrate(pattern) {
+  if ('vibrate' in window.navigator) {
+    window.navigator.vibrate(pattern);
+  }
+};
+
+var Vibration = {
+  cancel: function cancel() {
+    _vibrate(0);
+  },
+  vibrate: function vibrate(pattern) {
+    if (pattern === void 0) {
+      pattern = 400;
+    }
+
+    _vibrate(pattern);
+  } };
+
+var _default = Vibration;
+exports.default = _default;
+module.exports = exports.default;

@@ -1,0 +1,106 @@
+b5339c0ce453aac38f4fd820f45e7de9
+"use strict";var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+
+
+var _ReferenceBase = _interopRequireDefault(require("../../utils/ReferenceBase"));
+var _task = _interopRequireWildcard(require("./task"));
+var _utils = require("../../utils");
+var _native = require("../../utils/native");var
+
+
+
+
+StorageReference = function (_ReferenceBase) {(0, _inherits2.default)(StorageReference, _ReferenceBase);
+  function StorageReference(storage, path) {var _this;(0, _classCallCheck2.default)(this, StorageReference);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(StorageReference).call(this, path));
+    _this._storage = storage;return _this;
+  }(0, _createClass2.default)(StorageReference, [{ key: "toString", value: function toString()
+
+
+
+
+
+    {
+      return "gs://" + this._storage.app.options.storageBucket + this.path;
+    } }, { key: "child", value: function child(
+
+
+
+
+
+
+
+    path) {
+      return new StorageReference(this._storage, this.path + "/" + path);
+    } }, { key: "delete", value: function _delete()
+
+
+
+
+
+
+    {
+      return (0, _native.getNativeModule)(this._storage).delete(this.path);
+    } }, { key: "getDownloadURL", value: function getDownloadURL()
+
+
+
+
+
+
+    {
+      return (0, _native.getNativeModule)(this._storage).getDownloadURL(this.path);
+    } }, { key: "getMetadata", value: function getMetadata()
+
+
+
+
+
+
+    {
+      return (0, _native.getNativeModule)(this._storage).getMetadata(this.path);
+    } }, { key: "updateMetadata", value: function updateMetadata()
+
+
+
+
+
+
+
+    {var metadata = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      return (0, _native.getNativeModule)(this._storage).updateMetadata(this.path, metadata);
+    } }, { key: "downloadFile", value: function downloadFile(
+
+
+
+
+
+
+
+    filePath) {
+      return new _task.default(_task.DOWNLOAD_TASK, (0, _native.getNativeModule)(this._storage).downloadFile(this.path, filePath), this);
+    } }, { key: "putFile", value: function putFile(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    filePath) {var metadata = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var _filePath = _utils.isIOS ? filePath.replace('file://', '') : filePath;
+
+      if (_filePath.includes('%')) _filePath = decodeURIComponent(_filePath);
+      return new _task.default(_task.UPLOAD_TASK, (0, _native.getNativeModule)(this._storage).putFile(this.path, _filePath, metadata), this);
+    } }, { key: "fullPath", get: function get() {return this.path;} }, { key: "put", get: function get() {return this.putFile;} }]);return StorageReference;}(_ReferenceBase.default);exports.default = StorageReference;

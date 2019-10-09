@@ -1,0 +1,64 @@
+00cce548ce0c097f4ac08a3f6870cce3
+
+
+
+
+
+
+
+
+
+'use strict';
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _NativeAnimatedHelper = _interopRequireDefault(require("../NativeAnimatedHelper"));
+
+function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+
+
+
+var Animation =
+
+function () {
+  function Animation() {}
+
+  var _proto = Animation.prototype;
+
+  _proto.start = function start(fromValue, onUpdate, onEnd, previousAnimation, animatedValue) {};
+
+  _proto.stop = function stop() {
+    if (this.__nativeId) {
+      _NativeAnimatedHelper.default.API.stopAnimation(this.__nativeId);
+    }
+  };
+
+  _proto.__getNativeAnimationConfig = function __getNativeAnimationConfig() {
+
+
+    throw new Error('This animation type cannot be offloaded to native');
+  };
+
+
+  _proto.__debouncedOnEnd = function __debouncedOnEnd(result) {
+    var onEnd = this.__onEnd;
+    this.__onEnd = null;
+    onEnd && onEnd(result);
+  };
+
+  _proto.__startNativeAnimation = function __startNativeAnimation(animatedValue) {
+    animatedValue.__makeNative();
+
+    this.__nativeId = _NativeAnimatedHelper.default.generateNewAnimationId();
+
+    _NativeAnimatedHelper.default.API.startAnimatingNode(this.__nativeId, animatedValue.__getNativeTag(), this.__getNativeAnimationConfig(), this.__debouncedOnEnd.bind(this));
+  };
+
+  return Animation;
+}();
+
+var _default = Animation;
+exports.default = _default;
+module.exports = exports.default;

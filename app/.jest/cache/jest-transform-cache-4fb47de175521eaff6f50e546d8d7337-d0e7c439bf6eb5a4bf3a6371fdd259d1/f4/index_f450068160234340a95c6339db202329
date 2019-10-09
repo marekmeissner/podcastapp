@@ -1,0 +1,111 @@
+4e667ceffec155ea390ab1bdba475038
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.statics = exports.default = exports.MODULE_NAME = exports.NAMESPACE = void 0;var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+
+
+var _ModuleBase = _interopRequireDefault(require("../../utils/ModuleBase"));
+var _utils = require("../../utils");
+var _native = require("../../utils/native");
+var _firebase = _interopRequireDefault(require("../core/firebase"));
+var _HttpsError = _interopRequireDefault(require("./HttpsError"));
+var NAMESPACE = 'functions';exports.NAMESPACE = NAMESPACE;
+var MODULE_NAME = 'RNFirebaseFunctions';exports.MODULE_NAME = MODULE_NAME;
+
+
+
+
+
+
+function errorOrResult(possibleError) {
+  if ((0, _utils.isObject)(possibleError) && possibleError.__error) {var
+
+    code =
+
+
+    possibleError.code,message = possibleError.message,details = possibleError.details;
+    return Promise.reject(new _HttpsError.default(statics.HttpsErrorCode[code] || statics.HttpsErrorCode.UNKNOWN, message, details));
+  }
+
+  return Promise.resolve(possibleError);
+}var
+
+
+
+
+
+
+
+Functions = function (_ModuleBase) {(0, _inherits2.default)(Functions, _ModuleBase);
+  function Functions(appOrRegion, region) {(0, _classCallCheck2.default)(this, Functions);
+    var _app = appOrRegion;
+
+    var _region = region || 'us-central1';
+
+    if (typeof _app === 'string') {
+      _region = _app;
+      _app = _firebase.default.app();
+    }return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Functions).call(this,
+
+    _app, {
+      hasMultiAppSupport: true,
+      hasCustomUrlSupport: false,
+      hasRegionsSupport: true,
+      namespace: NAMESPACE,
+      moduleName: MODULE_NAME },
+    _region));
+  }(0, _createClass2.default)(Functions, [{ key: "httpsCallable", value: function httpsCallable(
+
+
+
+
+
+
+
+
+
+
+
+
+    name) {var _this = this;
+      return function (data) {
+        var promise = (0, _native.getNativeModule)(_this).httpsCallable(name, {
+          data: data });
+
+        return promise.then(errorOrResult);
+      };
+    } }, { key: "useFunctionsEmulator", value: function useFunctionsEmulator(
+
+
+
+
+
+
+
+
+
+
+
+    origin) {
+      return (0, _native.getNativeModule)(this).useFunctionsEmulator(origin);
+    } }]);return Functions;}(_ModuleBase.default);exports.default = Functions;
+
+
+var statics = {
+  HttpsErrorCode: {
+    OK: 'ok',
+    CANCELLED: 'cancelled',
+    UNKNOWN: 'unknown',
+    INVALID_ARGUMENT: 'invalid-argument',
+    DEADLINE_EXCEEDED: 'deadline-exceeded',
+    NOT_FOUND: 'not-found',
+    ALREADY_EXISTS: 'already-exists',
+    PERMISSION_DENIED: 'permission-denied',
+    UNAUTHENTICATED: 'unauthenticated',
+    RESOURCE_EXHAUSTED: 'resource-exhausted',
+    FAILED_PRECONDITION: 'failed-precondition',
+    ABORTED: 'aborted',
+    OUT_OF_RANGE: 'out-of-range',
+    UNIMPLEMENTED: 'unimplemented',
+    INTERNAL: 'internal',
+    UNAVAILABLE: 'unavailable',
+    DATA_LOSS: 'data-loss' } };exports.statics = statics;
