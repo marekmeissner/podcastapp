@@ -6,35 +6,55 @@
  * @flow
  */
 
-import React, {Fragment} from 'react';
-import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import React from 'react';
+import {StatusBar, StyleSheet, View, SafeAreaView} from 'react-native';
 
-import Login from './screens/Auth/Login/Login';
-
-import {StyleProvider, Container} from 'native-base';
+import {StyleProvider, Container, Content} from 'native-base';
 import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
+import Router from './Router';
+import NavigatorService from './helpers/navigationService';
 
 import {COLORS} from './utils/styles/colors.ts';
 
 const styles = StyleSheet.create({
-  app: {
-    backgroundColor: COLORS.GREY_BG,
+  mainContainer: {flex: 1},
+  innerContainer: {
+    position: 'absolute',
+    width: '100%',
     height: '100%',
+    elevation: 0,
+    backgroundColor: COLORS.GREY_BG,
   },
 });
 
-const App: React.FC = () => {
-  return (
-    <StyleProvider style={getTheme(platform)}>
-      <Container>
-        <StatusBar barStyle="light-content" />
-        <SafeAreaView style={styles.app}>
-          <Login />
-        </SafeAreaView>
-      </Container>
-    </StyleProvider>
-  );
-};
+function getActiveRouteName(navigationState: any): string | null {
+  if (!navigationState) {
+    return null;
+  }
+  const route = navigationState.routes[navigationState.index];
+  // dive into nested navigators
+  if (route.routes) {
+    return getActiveRouteName(route);
+  }
+  return route.routeName;
+}
+class App extends React.Component {
+  render() {
+    return (
+      <View style={styles.mainContainer}>
+        <View style={styles.innerContainer}>
+          <StyleProvider style={getTheme(platform)}>
+            <SafeAreaView style={{height: '100%'}}>
+              <Router
+                ref={navigator => NavigatorService.setContainer(navigator)}
+              />
+            </SafeAreaView>
+          </StyleProvider>
+        </View>
+      </View>
+    );
+  }
+}
 
 export default App;

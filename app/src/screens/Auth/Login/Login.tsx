@@ -16,6 +16,7 @@ import * as Yup from 'yup';
 import {EMAIL_REGEX} from '../../../utils/constants';
 import {EmailPasswordSignIn} from '../../../../firebase/auth/signIn';
 import InputError from '../../../components/InputError/InputError';
+import NavigatorService from '../../../helpers/navigationService';
 
 export class Login extends React.Component {
   handleLogin = async (
@@ -135,7 +136,10 @@ export class Login extends React.Component {
                     <Button transparent small>
                       <Text>Forgot password?</Text>
                     </Button>
-                    <Button transparent small>
+                    <Button
+                      transparent
+                      small
+                      onPress={() => NavigatorService.navigate('Register')}>
                       <Text>Don't have account?</Text>
                     </Button>
                   </View>
