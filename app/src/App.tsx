@@ -44,6 +44,7 @@ class App extends React.Component {
     return (
       <View style={styles.mainContainer}>
         <View style={styles.innerContainer}>
+          <StatusBar barStyle="light-content" />
           <StyleProvider style={getTheme(platform)}>
             <SafeAreaView style={{height: '100%'}}>
               <Router
