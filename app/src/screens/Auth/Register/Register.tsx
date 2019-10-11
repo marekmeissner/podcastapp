@@ -33,10 +33,9 @@ export class Register extends React.Component {
         'Password should have at least 1 uppercase & number',
       )
       .required('Required'),
-    passwordRepeat: Yup.string().oneOf(
-      [Yup.ref('password'), null],
-      'Passwords must match',
-    ),
+    passwordRepeat: Yup.string()
+      .oneOf([Yup.ref('password'), null], 'Passwords must match')
+      .required('Required'),
   });
 
   render() {
