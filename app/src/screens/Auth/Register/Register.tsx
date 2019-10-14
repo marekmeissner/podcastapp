@@ -16,12 +16,22 @@ import * as Yup from 'yup';
 import {EMAIL_REGEX, PASSWORD_REGEX} from '../../../utils/constants';
 import InputError from '../../../components/InputError/InputError';
 import NavigatorService from '../../../helpers/navigationService';
+import {EmailPasswordSignUp} from '../../../../firebase/auth/signUp';
 
 export class Register extends React.Component {
-  handleSignUp = (
-    {email, password}: UserSignUpCredentials,
-    {setSubmitting, setStatus}: FormikActions<UserCredentials>,
-  ) => null;
+  handleSignUp = async (
+    newUser: UserSignUpCredentials,
+    {setSubmitting, setStatus}: FormikActions<UserSignUpCredentials>,
+  ) => {
+    setSubmitting(true);
+    try {
+      await EmailPasswordSignUp(newUser);
+    } catch ({message}) {
+      console.warn(message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   validationSchema = Yup.object().shape({
     accountName: Yup.string().required('Required'),

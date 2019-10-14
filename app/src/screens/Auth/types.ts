@@ -6,5 +6,6 @@ export interface UserCredentials {
 export interface UserSignUpCredentials {
   email: string;
   password: string;
-  passwordRepeat: string;
+  passwordRepeat: string,
+  accountName: string
 }
