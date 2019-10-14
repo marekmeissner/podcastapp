@@ -16,14 +16,25 @@ import * as Yup from 'yup';
 import {EMAIL_REGEX, PASSWORD_REGEX} from '../../../utils/constants';
 import InputError from '../../../components/InputError/InputError';
 import NavigatorService from '../../../helpers/navigationService';
+import {EmailPasswordSignUp} from '../../../../firebase/auth/signUp';
 
 export class Register extends React.Component {
-  handleSignUp = (
-    {email, password}: UserSignUpCredentials,
-    {setSubmitting, setStatus}: FormikActions<UserCredentials>,
-  ) => null;
+  handleSignUp = async (
+    newUser: UserSignUpCredentials,
+    {setSubmitting, setStatus}: FormikActions<UserSignUpCredentials>,
+  ) => {
+    setSubmitting(true);
+    try {
+      await EmailPasswordSignUp(newUser);
+    } catch ({message}) {
+      console.warn(message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   validationSchema = Yup.object().shape({
+    accountName: Yup.string().required('Required'),
     email: Yup.string()
       .matches(EMAIL_REGEX, 'Email address provided is invalid')
       .required('Required'),
@@ -42,7 +53,7 @@ export class Register extends React.Component {
     return (
       <Container>
         <View
-          style={{height: 250, justifyContent: 'center', alignItems: 'center'}}>
+          style={{height: 150, justifyContent: 'center', alignItems: 'center'}}>
           <Text
             uppercase
             style={{fontSize: 30, marginBottom: -50, fontWeight: '900'}}>
@@ -52,6 +63,7 @@ export class Register extends React.Component {
         <Content>
           <Formik
             initialValues={{
+              accountName: '',
               email: '',
               password: '',
               passwordRepeat: '',
@@ -70,6 +82,27 @@ export class Register extends React.Component {
             }) => {
               return (
                 <Form style={{padding: 20}}>
+                  <Content style={{height: 80, paddingTop: 10}}>
+                    <Item
+                      floatingLabel
+                      error={touched.accountName && !!errors.accountName}>
+                      <Label>Account name</Label>
+                      <Input
+                        testID={'accountName'}
+                        onChangeText={handleChange('accountName')}
+                        value={values.accountName}
+                        onBlur={() => setFieldTouched('accountName')}
+                        autoCapitalize="none"
+                      />
+                    </Item>
+                    {errors.accountName && touched.accountName && (
+                      <InputError
+                        style={{paddingTop: 5}}
+                        testID={'accountNameError'}>
+                        {errors.accountName}
+                      </InputError>
+                    )}
+                  </Content>
                   <Content style={{height: 80, paddingTop: 10}}>
                     <Item floatingLabel error={touched.email && !!errors.email}>
                       <Label>Email</Label>
