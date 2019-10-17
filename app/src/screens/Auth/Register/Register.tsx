@@ -1,5 +1,7 @@
 import React from 'react';
-import {View, ActivityIndicator, Image} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
+import {connect} from 'react-redux';
+import {registerUser} from '../../../redux/reducers/auth/authReducer';
 import {
   Container,
   Content,
@@ -10,7 +12,7 @@ import {
   Form,
   Label,
 } from 'native-base';
-import {UserSignUpCredentials} from '../types';
+import {UserSignUpCredentials} from '../../../redux/reducers/auth/types';
 import {Formik, FormikActions} from 'formik';
 import * as Yup from 'yup';
 import {EMAIL_REGEX, PASSWORD_REGEX} from '../../../utils/constants';
@@ -18,6 +20,9 @@ import InputError from '../../../components/InputError/InputError';
 import NavigatorService from '../../../helpers/navigationService';
 import {EmailPasswordSignUp} from '../../../../firebase/auth/signUp';
 
+interface Props {
+  registerUser: (registerData: UserSignUpCredentials) => Promise<void>;
+}
 export class Register extends React.Component {
   handleSignUp = async (
     newUser: UserSignUpCredentials,
@@ -25,7 +30,7 @@ export class Register extends React.Component {
   ) => {
     setSubmitting(true);
     try {
-      await EmailPasswordSignUp(newUser);
+      await this.props.registerUser(newUser);
     } catch ({message}) {
       console.warn(message);
     } finally {
@@ -206,4 +211,7 @@ export class Register extends React.Component {
   }
 }
 
-export default Register;
+export default connect(
+  null,
+  {registerUser},
+)(Register);

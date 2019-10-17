@@ -1,5 +1,7 @@
 import React from 'react';
 import {View, ActivityIndicator, Image} from 'react-native';
+import {connect} from 'react-redux';
+import {loginUser} from '../../../redux/reducers/auth/authReducer';
 import {
   Container,
   Content,
@@ -10,7 +12,7 @@ import {
   Form,
   Label,
 } from 'native-base';
-import {UserCredentials} from '../types';
+import {UserCredentials} from '../../../redux/reducers/auth/types';
 import {Formik, FormikActions} from 'formik';
 import * as Yup from 'yup';
 import {EMAIL_REGEX} from '../../../utils/constants';
@@ -18,13 +20,16 @@ import {EmailPasswordSignIn} from '../../../../firebase/auth/signIn';
 import InputError from '../../../components/InputError/InputError';
 import NavigatorService from '../../../helpers/navigationService';
 
-export class Login extends React.Component {
+interface Props {
+  loginUser: (credentials: UserCredentials) => Promise<void>;
+}
+export class Login extends React.Component<Props> {
   handleLogin = async (
-    {email, password}: UserCredentials,
+    credentials: UserCredentials,
     {setSubmitting, setStatus}: FormikActions<UserCredentials>,
   ) => {
     try {
-      await EmailPasswordSignIn({email, password});
+      await this.props.loginUser(credentials);
     } catch ({message}) {
       console.warn(message);
     } finally {
@@ -153,4 +158,7 @@ export class Login extends React.Component {
   }
 }
 
-export default Login;
+export default connect(
+  null,
+  {loginUser},
+)(Login);
