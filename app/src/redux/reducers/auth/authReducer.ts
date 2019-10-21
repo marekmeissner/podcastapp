@@ -5,7 +5,7 @@ import {
   AUTH_ACTIONS,
   UserCredentials,
   UserSignUpCredentials,
-  SetUser
+  SetUser,
 } from './types';
 import {Dispatch} from 'redux';
 

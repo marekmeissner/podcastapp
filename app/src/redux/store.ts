@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import {rootReducer} from './rootReducer';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {AuthInitialState} from './reducers/auth/authReducer';
-import {initialRootState, RootState} from './rootState'
+import {initialRootState, RootState} from './rootState';
 
 const store = createStore(
   rootReducer,

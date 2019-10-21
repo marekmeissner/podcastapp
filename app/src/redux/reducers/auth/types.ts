@@ -3,7 +3,7 @@ export interface AuthState {
 }
 
 export enum AUTH_ACTIONS {
-  SET_USER = 'SET_USER'
+  SET_USER = 'SET_USER',
 }
 
 export interface UserCredentials {
