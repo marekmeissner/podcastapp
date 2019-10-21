@@ -4,6 +4,7 @@ import {
   AuthActions,
   AUTH_ACTIONS,
   UserCredentials,
+  UserSignUpCredentials,
   SetUser,
   RemoveUser,
 } from './types';
@@ -22,7 +23,6 @@ export const authReducer = (
       return {
         ...state,
         user: action.user,
-        credentials: action.credentials,
       };
     default:
       return state;
@@ -85,17 +85,12 @@ export const registerUser = (registerData: UserSignUpCredentials) => {
   };
 };
 
-export const removeUser = (): RemoveUser => ({
-  type: AUTH_ACTIONS.REMOVE_USER,
-});
-
-export const logoutUser = () => {
-  return (dispatch: Dispatch<RemoveUser>) => {
+export const forgotPassword = (email: string) => {
+  return async () => {
     try {
+      await firebse.auth().sendPasswordResetEmail(email);
     } catch (e) {
-      throw e;
-    } finally {
-      dispatch({type: AUTH_ACTIONS.REMOVE_USER});
+      throw new Error(e);
     }
   };
 };

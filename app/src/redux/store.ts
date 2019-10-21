@@ -8,11 +8,10 @@ export const initialRootState: RootState = {
   auth: AuthInitialState,
 };
 
-const store = (initialState: RootState = initialRootState) =>
-  createStore(
-    rootReducer,
-    initialState,
-    composeWithDevTools(applyMiddleware(thunk)),
-  );
+const store = createStore(
+  rootReducer,
+  initialRootState,
+  composeWithDevTools(applyMiddleware(thunk)),
+);
 
 export default store;

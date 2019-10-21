@@ -11,7 +11,7 @@ import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import {authReducer} from './redux/reducers/auth/authReducer';
-import {initialRootState} from './redux/store';
+import store from './redux/store';
 import {RootState} from './redux/types';
 import {StatusBar, StyleSheet, View, SafeAreaView} from 'react-native';
 
@@ -33,12 +33,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.GREY_BG,
   },
 });
-
-const store = createStore(
-  authReducer,
-  initialRootState,
-  applyMiddleware(thunk),
-);
 
 function getActiveRouteName(navigationState: any): string | null {
   if (!navigationState) {
