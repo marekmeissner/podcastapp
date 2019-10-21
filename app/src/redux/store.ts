@@ -1,12 +1,9 @@
 import {applyMiddleware, createStore} from 'redux';
 import thunk from 'redux-thunk';
-import {rootReducer, RootState} from './rootReducer';
+import {rootReducer} from './rootReducer';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {AuthInitialState} from './reducers/auth/authReducer';
-
-export const initialRootState: RootState = {
-  auth: AuthInitialState,
-};
+import {initialRootState, RootState} from './rootState'
 
 const store = createStore(
   rootReducer,

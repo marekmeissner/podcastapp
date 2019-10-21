@@ -16,7 +16,6 @@ import {UserCredentials} from '../../../redux/reducers/auth/types';
 import {Formik, FormikActions} from 'formik';
 import * as Yup from 'yup';
 import {EMAIL_REGEX} from '../../../utils/constants';
-import {EmailPasswordSignIn} from '../../../../firebase/auth/signIn';
 import InputError from '../../../components/InputError/InputError';
 import NavigatorService from '../../../helpers/navigationService';
 

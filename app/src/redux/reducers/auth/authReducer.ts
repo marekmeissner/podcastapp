@@ -5,8 +5,7 @@ import {
   AUTH_ACTIONS,
   UserCredentials,
   UserSignUpCredentials,
-  SetUser,
-  RemoveUser,
+  SetUser
 } from './types';
 import {Dispatch} from 'redux';
 
@@ -46,7 +45,7 @@ export const loginUser = (credentials: UserCredentials) => {
       const response = await firebase
         .auth()
         .signInWithEmailAndPassword(credentials.email, credentials.password);
-      const user = getUser(response.user.uid);
+      const user = await getUser(response.user.uid);
       dispatch({
         type: AUTH_ACTIONS.SET_USER,
         user,
@@ -71,6 +70,7 @@ export const registerUser = (registerData: UserSignUpCredentials) => {
         .collection('users')
         .doc(response.user.uid)
         .set({
+          uid: response.user.uid,
           email: registerData.email,
           accountName: registerData.accountName,
         });
@@ -88,7 +88,7 @@ export const registerUser = (registerData: UserSignUpCredentials) => {
 export const forgotPassword = (email: string) => {
   return async () => {
     try {
-      await firebse.auth().sendPasswordResetEmail(email);
+      await firebase.auth().sendPasswordResetEmail(email);
     } catch (e) {
       throw new Error(e);
     }

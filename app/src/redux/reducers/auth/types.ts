@@ -3,8 +3,7 @@ export interface AuthState {
 }
 
 export enum AUTH_ACTIONS {
-  SET_USER = 'SET_USER',
-  REMOVE_USER = 'REMOVE_USER',
+  SET_USER = 'SET_USER'
 }
 
 export interface UserCredentials {
@@ -27,10 +26,7 @@ export interface User {
 
 export interface SetUser {
   type: AUTH_ACTIONS.SET_USER;
-  user: Promise<void | object>;
-}
-export interface RemoveUser {
-  type: AUTH_ACTIONS.REMOVE_USER;
+  user: User | {};
 }
 
-export type AuthActions = SetUser | RemoveUser;
+export type AuthActions = SetUser;

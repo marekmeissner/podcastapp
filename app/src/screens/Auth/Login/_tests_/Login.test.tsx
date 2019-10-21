@@ -1,6 +1,7 @@
 import React from 'react';
-import {Login} from '../Login';
-import {cleanup, render} from '@testing-library/react';
+import {renderWithRedux as render} from '../../../../utils/testRenderers';
+import Login from '../Login';
+import {cleanup} from '@testing-library/react';
 
 describe('<Login/>', () => {
   afterEach(cleanup);
