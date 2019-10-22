@@ -23,14 +23,14 @@ import {EmailPasswordSignUp} from '../../../../firebase/auth/signUp';
 interface Props {
   registerUser: (registerData: UserSignUpCredentials) => Promise<void>;
 }
-export class Register extends React.Component {
-  handleSignUp = async (
+export const Register: React.FC<Props> = ({registerUser}) => {
+  const handleSignUp = async (
     newUser: UserSignUpCredentials,
     {setSubmitting, setStatus}: FormikActions<UserSignUpCredentials>,
   ) => {
     setSubmitting(true);
     try {
-      await this.props.registerUser(newUser);
+      await registerUser(newUser);
     } catch ({message}) {
       console.warn(message);
     } finally {
@@ -38,7 +38,7 @@ export class Register extends React.Component {
     }
   };
 
-  validationSchema = Yup.object().shape({
+  const validationSchema = Yup.object().shape({
     accountName: Yup.string().required('Required'),
     email: Yup.string()
       .matches(EMAIL_REGEX, 'Email address provided is invalid')
@@ -54,162 +54,160 @@ export class Register extends React.Component {
       .required('Required'),
   });
 
-  render() {
-    return (
-      <Container>
-        <View
-          style={{height: 150, justifyContent: 'center', alignItems: 'center'}}>
-          <Text
-            uppercase
-            style={{fontSize: 30, marginBottom: -50, fontWeight: '900'}}>
-            Sign up
-          </Text>
-        </View>
-        <Content>
-          <Formik
-            initialValues={{
-              accountName: '',
-              email: '',
-              password: '',
-              passwordRepeat: '',
-            }}
-            validationSchema={this.validationSchema}
-            onSubmit={this.handleSignUp}>
-            {({
-              handleChange,
-              handleSubmit,
-              values,
-              setFieldTouched,
-              errors,
-              touched,
-              isValid,
-              isSubmitting,
-            }) => {
-              return (
-                <Form style={{padding: 20}}>
-                  <Content style={{height: 80, paddingTop: 10}}>
-                    <Item
-                      floatingLabel
-                      error={touched.accountName && !!errors.accountName}>
-                      <Label>Account name</Label>
-                      <Input
-                        testID={'accountName'}
-                        onChangeText={handleChange('accountName')}
-                        value={values.accountName}
-                        onBlur={() => setFieldTouched('accountName')}
-                        autoCapitalize="none"
-                      />
-                    </Item>
-                    {errors.accountName && touched.accountName && (
-                      <InputError
-                        style={{paddingTop: 5}}
-                        testID={'accountNameError'}>
-                        {errors.accountName}
-                      </InputError>
-                    )}
-                  </Content>
-                  <Content style={{height: 80, paddingTop: 10}}>
-                    <Item floatingLabel error={touched.email && !!errors.email}>
-                      <Label>Email</Label>
-                      <Input
-                        testID={'email'}
-                        keyboardType="email-address"
-                        onChangeText={handleChange('email')}
-                        value={values.email}
-                        onBlur={() => setFieldTouched('email')}
-                        autoCapitalize="none"
-                      />
-                    </Item>
-                    {errors.email && touched.email && (
-                      <InputError style={{paddingTop: 5}} testID={'emailError'}>
-                        {errors.email}
-                      </InputError>
-                    )}
-                  </Content>
-                  <Content style={{height: 80, paddingTop: 10}}>
-                    <Item
-                      floatingLabel
-                      error={touched.password && !!errors.password}>
-                      <Label>Password</Label>
-                      <Input
-                        testID={'password'}
-                        onChangeText={handleChange('password')}
-                        value={values.password}
-                        textContentType="password"
-                        secureTextEntry
-                        onBlur={() => setFieldTouched('password')}
-                        autoCapitalize="none"
-                      />
-                    </Item>
-                    {errors.password && touched.password && (
-                      <InputError
-                        style={{paddingTop: 5}}
-                        testID={'passwordError'}>
-                        {errors.password}
-                      </InputError>
-                    )}
-                  </Content>
-                  <Content style={{height: 80, paddingTop: 10}}>
-                    <Item
-                      floatingLabel
-                      error={touched.passwordRepeat && !!errors.passwordRepeat}>
-                      <Label>Confirm password</Label>
-                      <Input
-                        testID={'passwordRepeat'}
-                        onChangeText={handleChange('passwordRepeat')}
-                        value={values.passwordRepeat}
-                        textContentType="password"
-                        secureTextEntry
-                        onBlur={() => setFieldTouched('passwordRepeat')}
-                        autoCapitalize="none"
-                      />
-                    </Item>
-                    {errors.passwordRepeat && touched.passwordRepeat && (
-                      <InputError
-                        style={{paddingTop: 5}}
-                        testID={'passwordError'}>
-                        {errors.passwordRepeat}
-                      </InputError>
-                    )}
-                  </Content>
+  return (
+    <Container>
+      <View
+        style={{height: 150, justifyContent: 'center', alignItems: 'center'}}>
+        <Text
+          uppercase
+          style={{fontSize: 30, marginBottom: -50, fontWeight: '900'}}>
+          Sign up
+        </Text>
+      </View>
+      <Content>
+        <Formik
+          initialValues={{
+            accountName: '',
+            email: '',
+            password: '',
+            passwordRepeat: '',
+          }}
+          validationSchema={validationSchema}
+          onSubmit={handleSignUp}>
+          {({
+            handleChange,
+            handleSubmit,
+            values,
+            setFieldTouched,
+            errors,
+            touched,
+            isValid,
+            isSubmitting,
+          }) => {
+            return (
+              <Form style={{padding: 20}}>
+                <Content style={{height: 80, paddingTop: 10}}>
+                  <Item
+                    floatingLabel
+                    error={touched.accountName && !!errors.accountName}>
+                    <Label>Account name</Label>
+                    <Input
+                      testID={'accountName'}
+                      onChangeText={handleChange('accountName')}
+                      value={values.accountName}
+                      onBlur={() => setFieldTouched('accountName')}
+                      autoCapitalize="none"
+                    />
+                  </Item>
+                  {errors.accountName && touched.accountName && (
+                    <InputError
+                      style={{paddingTop: 5}}
+                      testID={'accountNameError'}>
+                      {errors.accountName}
+                    </InputError>
+                  )}
+                </Content>
+                <Content style={{height: 80, paddingTop: 10}}>
+                  <Item floatingLabel error={touched.email && !!errors.email}>
+                    <Label>Email</Label>
+                    <Input
+                      testID={'email'}
+                      keyboardType="email-address"
+                      onChangeText={handleChange('email')}
+                      value={values.email}
+                      onBlur={() => setFieldTouched('email')}
+                      autoCapitalize="none"
+                    />
+                  </Item>
+                  {errors.email && touched.email && (
+                    <InputError style={{paddingTop: 5}} testID={'emailError'}>
+                      {errors.email}
+                    </InputError>
+                  )}
+                </Content>
+                <Content style={{height: 80, paddingTop: 10}}>
+                  <Item
+                    floatingLabel
+                    error={touched.password && !!errors.password}>
+                    <Label>Password</Label>
+                    <Input
+                      testID={'password'}
+                      onChangeText={handleChange('password')}
+                      value={values.password}
+                      textContentType="password"
+                      secureTextEntry
+                      onBlur={() => setFieldTouched('password')}
+                      autoCapitalize="none"
+                    />
+                  </Item>
+                  {errors.password && touched.password && (
+                    <InputError
+                      style={{paddingTop: 5}}
+                      testID={'passwordError'}>
+                      {errors.password}
+                    </InputError>
+                  )}
+                </Content>
+                <Content style={{height: 80, paddingTop: 10}}>
+                  <Item
+                    floatingLabel
+                    error={touched.passwordRepeat && !!errors.passwordRepeat}>
+                    <Label>Confirm password</Label>
+                    <Input
+                      testID={'passwordRepeat'}
+                      onChangeText={handleChange('passwordRepeat')}
+                      value={values.passwordRepeat}
+                      textContentType="password"
+                      secureTextEntry
+                      onBlur={() => setFieldTouched('passwordRepeat')}
+                      autoCapitalize="none"
+                    />
+                  </Item>
+                  {errors.passwordRepeat && touched.passwordRepeat && (
+                    <InputError
+                      style={{paddingTop: 5}}
+                      testID={'passwordError'}>
+                      {errors.passwordRepeat}
+                    </InputError>
+                  )}
+                </Content>
+                <Button
+                  testID={'submit'}
+                  rounded
+                  large
+                  onPress={handleSubmit}
+                  style={{marginTop: 40}}>
+                  {isSubmitting ? (
+                    <ActivityIndicator
+                      testID={'loader'}
+                      size="small"
+                      color="#ffffff"
+                    />
+                  ) : (
+                    <Text>Sign up</Text>
+                  )}
+                </Button>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingTop: 15,
+                  }}>
                   <Button
-                    testID={'submit'}
-                    rounded
-                    large
-                    onPress={handleSubmit}
-                    style={{marginTop: 40}}>
-                    {isSubmitting ? (
-                      <ActivityIndicator
-                        testID={'loader'}
-                        size="small"
-                        color="#ffffff"
-                      />
-                    ) : (
-                      <Text>Sign up</Text>
-                    )}
+                    transparent
+                    small
+                    onPress={() => NavigatorService.navigate('Login')}>
+                    <Text>Already have account?</Text>
                   </Button>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      paddingTop: 15,
-                    }}>
-                    <Button
-                      transparent
-                      small
-                      onPress={() => NavigatorService.navigate('Login')}>
-                      <Text>Already have account?</Text>
-                    </Button>
-                  </View>
-                </Form>
-              );
-            }}
-          </Formik>
-        </Content>
-      </Container>
-    );
-  }
-}
+                </View>
+              </Form>
+            );
+          }}
+        </Formik>
+      </Content>
+    </Container>
+  );
+};
 
 export default connect(
   null,
