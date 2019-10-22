@@ -36,6 +36,11 @@ export class Login extends React.Component<Props> {
     }
   };
 
+  shit = () => {
+    console.log('asdfdfsdfdfsdf');
+    alert('testtttt');
+  };
+
   validationSchema = Yup.object().shape({
     email: Yup.string()
       .matches(EMAIL_REGEX, 'Email address provided is invalid')
