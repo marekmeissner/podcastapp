@@ -18,7 +18,6 @@ import * as Yup from 'yup';
 import {EMAIL_REGEX, PASSWORD_REGEX} from '../../../utils/constants';
 import InputError from '../../../components/InputError/InputError';
 import NavigatorService from '../../../helpers/navigationService';
-import {EmailPasswordSignUp} from '../../../../firebase/auth/signUp';
 
 interface Props {
   registerUser: (registerData: UserSignUpCredentials) => Promise<void>;

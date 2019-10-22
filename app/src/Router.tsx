@@ -3,6 +3,7 @@ import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import Login from './screens/Auth/Login/Login';
 import Register from './screens/Auth/Register/Register';
+import ForgotPassword from './screens/Auth/ForgotPassword/ForgotPassword';
 
 const Auth = createStackNavigator(
   {
@@ -14,6 +15,12 @@ const Auth = createStackNavigator(
     },
     Register: {
       screen: Register,
+      navigationOptions: {
+        header: null,
+      },
+    },
+    ForgotPassword: {
+      screen: ForgotPassword,
       navigationOptions: {
         header: null,
       },
