@@ -26,7 +26,7 @@ export interface User {
 
 export interface SetUser {
   type: AUTH_ACTIONS.SET_USER;
-  user: User | {};
+  user: void | object;
 }
 
 export type AuthActions = SetUser;
