@@ -94,3 +94,13 @@ export const forgotPassword = (email: string) => {
     }
   };
 };
+
+export const forgodtPassword = (email: string) => {
+  return async () => {
+    try {
+         await firebase.auth().sendPasswordResetEmail(email);
+    }     catch (e) {
+      throw new Error(e);
+          }
+  };
+};
