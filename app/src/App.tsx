@@ -7,6 +7,12 @@
  */
 
 import React from 'react';
+import {Provider} from 'react-redux';
+import {createStore, applyMiddleware} from 'redux';
+import thunk from 'redux-thunk';
+import {authReducer} from './redux/reducers/auth/authReducer';
+import store from './redux/store';
+import {RootState} from './redux/types';
 import {StatusBar, StyleSheet, View, SafeAreaView} from 'react-native';
 
 import {StyleProvider, Container, Content} from 'native-base';
@@ -44,14 +50,16 @@ class App extends React.Component {
     return (
       <View style={styles.mainContainer}>
         <View style={styles.innerContainer}>
-          <StatusBar barStyle="light-content" />
-          <StyleProvider style={getTheme(platform)}>
-            <SafeAreaView style={{height: '100%'}}>
-              <Router
-                ref={navigator => NavigatorService.setContainer(navigator)}
-              />
-            </SafeAreaView>
-          </StyleProvider>
+          <Provider store={store}>
+            <StatusBar barStyle="light-content" />
+            <StyleProvider style={getTheme(platform)}>
+              <SafeAreaView style={{height: '100%'}}>
+                <Router
+                  ref={navigator => NavigatorService.setContainer(navigator)}
+                />
+              </SafeAreaView>
+            </StyleProvider>
+          </Provider>
         </View>
       </View>
     );
