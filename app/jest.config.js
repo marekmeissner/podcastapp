@@ -15,5 +15,5 @@ module.exports = {
     // block react-art
     '^react-art$': 'node-noop'
   },
-  setupFilesAfterEnv: ['./__mocks__/mockFirebase.ts'],
+  setupFilesAfterEnv: ['./__mocks__/mockFirebase.ts', './__mocks__/mockAsyncStorage.ts'],
 }
