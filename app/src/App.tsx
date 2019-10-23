@@ -20,6 +20,7 @@ import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
 import Router from './Router';
 import NavigatorService from './helpers/navigationService';
+import {getUserToken} from './redux/reducers/auth/authReducer';
 
 import {COLORS} from './utils/styles/colors.ts';
 

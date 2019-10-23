@@ -30,7 +30,7 @@ export const Login: React.FC<Props> = ({loginUser}) => {
     try {
       await loginUser(credentials);
     } catch ({message}) {
-      console.warn(message);
+      setStatus(message);
     } finally {
       setSubmitting(false);
     }
@@ -69,6 +69,7 @@ export const Login: React.FC<Props> = ({loginUser}) => {
             touched,
             isValid,
             isSubmitting,
+            status,
           }) => {
             return (
               <Form style={{padding: 20}}>
@@ -130,11 +131,15 @@ export const Login: React.FC<Props> = ({loginUser}) => {
                     <Text>Sign in</Text>
                   )}
                 </Button>
+                <InputError
+                  style={{paddingTop: 10, textAlign: 'center'}}
+                  testID={'formError'}>
+                  {status}
+                </InputError>
                 <View
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    paddingTop: 15,
                   }}>
                   <Button
                     transparent

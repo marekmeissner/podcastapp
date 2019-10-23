@@ -31,7 +31,7 @@ export const Register: React.FC<Props> = ({registerUser}) => {
     try {
       await registerUser(newUser);
     } catch ({message}) {
-      console.warn(message);
+      setStatus(message);
     } finally {
       setSubmitting(false);
     }
@@ -80,8 +80,8 @@ export const Register: React.FC<Props> = ({registerUser}) => {
             setFieldTouched,
             errors,
             touched,
-            isValid,
             isSubmitting,
+            status,
           }) => {
             return (
               <Form style={{padding: 20}}>
@@ -186,11 +186,15 @@ export const Register: React.FC<Props> = ({registerUser}) => {
                     <Text>Sign up</Text>
                   )}
                 </Button>
+                <InputError
+                  style={{paddingTop: 10, textAlign: 'center'}}
+                  testID={'formError'}>
+                  {status}
+                </InputError>
                 <View
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    paddingTop: 15,
                   }}>
                   <Button
                     transparent

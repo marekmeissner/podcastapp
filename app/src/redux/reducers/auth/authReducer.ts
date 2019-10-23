@@ -51,7 +51,7 @@ export const getUserToken = async () => {
   try {
     const value = await AsyncStorage.getItem(ACCESS_TOKEN_KEY);
     if (value !== null) {
-      return true;
+      return value;
     }
   } catch (e) {}
 };

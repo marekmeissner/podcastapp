@@ -29,9 +29,13 @@ export const ForgotPassword: React.FC<Props> = ({forgotPassword}) => {
     setSubmitting(true);
     try {
       await forgotPassword(email);
-      setStatus('Email has been sent!');
+      setStatus(
+        <Text style={{color: '#32CD32', fontSize: 13}}>
+          Email has been sent!
+        </Text>,
+      );
     } catch ({message}) {
-      console.warn(message);
+      setStatus(message);
     } finally {
       setSubmitting(false);
     }
@@ -81,6 +85,7 @@ export const ForgotPassword: React.FC<Props> = ({forgotPassword}) => {
             touched,
             isValid,
             isSubmitting,
+            status,
           }) => {
             return (
               <Form style={{padding: 20}}>
@@ -118,11 +123,15 @@ export const ForgotPassword: React.FC<Props> = ({forgotPassword}) => {
                     <Text>Send</Text>
                   )}
                 </Button>
+                <InputError
+                  style={{paddingTop: 10, textAlign: 'center'}}
+                  testID={'formError'}>
+                  {status}
+                </InputError>
                 <View
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    paddingTop: 15,
                   }}>
                   <Button
                     transparent
