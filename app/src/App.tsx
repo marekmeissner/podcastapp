@@ -17,6 +17,7 @@ import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
 import Router from './Router';
 import NavigatorService from './helpers/navigationService';
+import AuthGate from './components/AuthGate/AuthGate';
 
 import AuthService from './screens/Auth/authService';
 
@@ -47,20 +48,22 @@ function getActiveRouteName(navigationState: any): string | null {
 class App extends React.Component<{store: Store}> {
   render() {
     return (
-      <View style={styles.mainContainer}>
-        <View style={styles.innerContainer}>
-          <Provider store={this.props.store}>
-            <StatusBar barStyle="light-content" />
-            <StyleProvider style={getTheme(platform)}>
-              <SafeAreaView style={{height: '100%'}}>
-                <Router
-                  ref={navigator => NavigatorService.setContainer(navigator)}
-                />
-              </SafeAreaView>
-            </StyleProvider>
-          </Provider>
-        </View>
-      </View>
+      <Provider store={this.props.store}>
+        <AuthGate fallback={'Login'} authPath={'Home'}>
+          <View style={styles.mainContainer}>
+            <View style={styles.innerContainer}>
+              <StatusBar barStyle="light-content" />
+              <StyleProvider style={getTheme(platform)}>
+                <SafeAreaView style={{height: '100%'}}>
+                  <Router
+                    ref={navigator => NavigatorService.setContainer(navigator)}
+                  />
+                </SafeAreaView>
+              </StyleProvider>
+            </View>
+          </View>
+        </AuthGate>
+      </Provider>
     );
   }
 }

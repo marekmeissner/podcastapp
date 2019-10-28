@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {RootState} from '../../redux/rootState';
 import {selectUser} from '../Auth/authReducer';
-import {Text} from 'native-base';
 import InputError from '../../components/InputError/InputError';
 import {User} from '../Auth/types';
 
