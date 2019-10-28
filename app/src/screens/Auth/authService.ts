@@ -36,10 +36,14 @@ class AuthService {
   };
 
   static getUserId = async () => {
-    try{
-      await AsyncStorage.getItem(USER_ID);
-    } catch(error){}
-  } 
+    try {
+      const value = await AsyncStorage.getItem(USER_ID);
+
+      if (value !== null) {
+        return value;
+      }
+    } catch (error) {}
+  };
 
   static removeUserToken = async () => {
     try {
