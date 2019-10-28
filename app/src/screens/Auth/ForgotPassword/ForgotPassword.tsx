@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, ActivityIndicator} from 'react-native';
 import {connect} from 'react-redux';
-import {forgotPassword} from '../../../redux/reducers/auth/authReducer';
+import {forgotPassword} from '../authReducer';
 import {
   Container,
   Content,

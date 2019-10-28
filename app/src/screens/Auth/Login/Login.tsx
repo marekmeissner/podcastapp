@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, ActivityIndicator, Image} from 'react-native';
 import {connect} from 'react-redux';
-import {loginUser} from '../../../redux/reducers/auth/authReducer';
+import {loginUser} from '../authReducer';
 import {
   Container,
   Content,
@@ -29,6 +29,7 @@ export const Login: React.FC<Props> = ({loginUser}) => {
   ) => {
     try {
       await loginUser(credentials);
+      NavigatorService.navigate('Home');
     } catch ({message}) {
       setStatus(message);
     } finally {

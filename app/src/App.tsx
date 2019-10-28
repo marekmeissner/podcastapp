@@ -8,11 +8,8 @@
 
 import React from 'react';
 import {Provider} from 'react-redux';
-import {createStore, applyMiddleware} from 'redux';
-import thunk from 'redux-thunk';
-import {authReducer} from './redux/reducers/auth/authReducer';
-import store from './redux/store';
-import {RootState} from './redux/types';
+import {Store} from 'redux';
+import {RootState} from './redux/rootState';
 import {StatusBar, StyleSheet, View, SafeAreaView} from 'react-native';
 
 import {StyleProvider, Container, Content} from 'native-base';
@@ -20,7 +17,8 @@ import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
 import Router from './Router';
 import NavigatorService from './helpers/navigationService';
-import {getUserToken} from './redux/reducers/auth/authReducer';
+
+import AuthService from './screens/Auth/authService';
 
 import {COLORS} from './utils/styles/colors.ts';
 
@@ -40,18 +38,18 @@ function getActiveRouteName(navigationState: any): string | null {
     return null;
   }
   const route = navigationState.routes[navigationState.index];
-  // dive into nested navigators
+
   if (route.routes) {
     return getActiveRouteName(route);
   }
   return route.routeName;
 }
-class App extends React.Component {
+class App extends React.Component<{store: Store}> {
   render() {
     return (
       <View style={styles.mainContainer}>
         <View style={styles.innerContainer}>
-          <Provider store={store}>
+          <Provider store={this.props.store}>
             <StatusBar barStyle="light-content" />
             <StyleProvider style={getTheme(platform)}>
               <SafeAreaView style={{height: '100%'}}>

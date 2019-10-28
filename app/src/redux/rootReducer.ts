@@ -1,6 +1,5 @@
 import {combineReducers} from 'redux';
-import {authReducer} from './reducers/auth/authReducer';
-import {AuthActions} from './reducers/auth/types';
+import {authReducer, AuthActions} from '../screens/Auth/authReducer';
 import {initialRootState, RootState} from './rootState';
 
 export const rootReducer = (state = initialRootState, action: AuthActions) => {

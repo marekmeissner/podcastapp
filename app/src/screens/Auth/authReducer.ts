@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
 import {
   AuthState,
@@ -9,7 +8,8 @@ import {
   SetUser,
 } from './types';
 import {Dispatch} from 'redux';
-import {ACCESS_TOKEN_KEY} from '../../../utils/constants';
+import {RootState} from '../../rootState';
+import AuthService from './authService';
 
 export const AuthInitialState: AuthState = {
   user: {},
@@ -30,43 +30,18 @@ export const authReducer = (
   }
 };
 
-export const getUser = (uid: string) => {
-  const user = firebase
-    .firestore()
-    .collection('users')
-    .doc(uid)
-    .get()
-    .then(doc => doc.data());
-
-  return user;
-};
-
-export const setUserToken = async (token: string) => {
-  try {
-    await AsyncStorage.setItem(ACCESS_TOKEN_KEY, token);
-  } catch (error) {}
-};
-
-export const getUserToken = async () => {
-  try {
-    const value = await AsyncStorage.getItem(ACCESS_TOKEN_KEY);
-    if (value !== null) {
-      return value;
-    }
-  } catch (e) {}
-};
-
 export const loginUser = (credentials: UserCredentials) => {
   return async (dispatch: Dispatch<SetUser>) => {
     try {
       const response = await firebase
         .auth()
         .signInWithEmailAndPassword(credentials.email, credentials.password);
-      const user = await getUser(response.user.uid);
+      const user = await AuthService.getUser(response.user.uid);
       const userToken = await response.user
         .getIdToken()
         .then(idToken => idToken);
-      setUserToken(userToken);
+      AuthService.setUserToken(userToken);
+      AuthService.setUserId(response.user.uid);
       dispatch({
         type: AUTH_ACTIONS.SET_USER,
         user,
@@ -95,7 +70,12 @@ export const registerUser = (registerData: UserSignUpCredentials) => {
           email: registerData.email,
           accountName: registerData.accountName,
         });
-      const user = await getUser(response.user.uid);
+      const user = await AuthService.getUser(response.user.uid);
+      const userToken = await response.user
+        .getIdToken()
+        .then(idToken => idToken);
+      AuthService.setUserToken(userToken);
+      AuthService.setUserId(response.user.uid);
       dispatch({
         type: AUTH_ACTIONS.SET_USER,
         user,
@@ -115,3 +95,5 @@ export const forgotPassword = (email: string) => {
     }
   };
 };
+
+export const selectUser = (state: RootState) => state.auth.user;

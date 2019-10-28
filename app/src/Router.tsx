@@ -5,6 +5,8 @@ import Login from './screens/Auth/Login/Login';
 import Register from './screens/Auth/Register/Register';
 import ForgotPassword from './screens/Auth/ForgotPassword/ForgotPassword';
 
+import Home from './screens/Home/Home';
+
 const Auth = createStackNavigator(
   {
     Login: {
@@ -31,10 +33,25 @@ const Auth = createStackNavigator(
   },
 );
 
+const App = createStackNavigator(
+  {
+    Home: {
+      screen: Home,
+      navigationOptions: {
+        header: null,
+      },
+    },
+  },
+  {
+    initialRouteName: 'Home',
+  },
+);
+
 const Router = createAppContainer(
   createSwitchNavigator(
     {
       Auth: Auth,
+      App: App,
     },
     {
       initialRouteName: 'Auth',

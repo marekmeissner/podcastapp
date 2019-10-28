@@ -1,8 +1,6 @@
-import {applyMiddleware, createStore} from 'redux';
-import thunk from 'redux-thunk';
 import {rootReducer, RootState} from './rootReducer';
-import {AuthInitialState} from './reducers/auth/authReducer';
-import {AuthState} from './reducers/auth/types';
+import {AuthInitialState} from '../screens/Auth/authReducer';
+import {AuthState} from '../screens/Auth/types';
 
 export interface RootState {
   readonly auth: AuthState;

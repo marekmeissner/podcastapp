@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, ActivityIndicator} from 'react-native';
 import {connect} from 'react-redux';
-import {registerUser} from '../../../redux/reducers/auth/authReducer';
+import {registerUser} from '../authReducer';
 import {
   Container,
   Content,
@@ -12,7 +12,7 @@ import {
   Form,
   Label,
 } from 'native-base';
-import {UserSignUpCredentials} from '../../../redux/reducers/auth/types';
+import {UserSignUpCredentials} from '../types';
 import {Formik, FormikActions} from 'formik';
 import * as Yup from 'yup';
 import {EMAIL_REGEX, PASSWORD_REGEX} from '../../../utils/constants';
