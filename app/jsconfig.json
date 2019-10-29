@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+      "allowSyntheticDefaultImports": true,
+      "target": "esnext",
+      "baseUrl": "./",
+      "paths": {
+        "@hoc/*": ["src/HOC/*"],
+        "@hook/*": ["src/Hooks/*"],
+        "@util/*": ["src/Utils/*"],
+        "@screen/*": ["src/Screens/*"],
+        "@asset/*": ["src/Assets/*"],
+        "@component/*": ["src/Components/*"],
+        "@navigation/*": ["src/Navigation/*"],
+        "@service/*": ["src/Store/Services/*"]
+      }
+    },
+    "exclude": ["node_modules", "babel.config.js", "jest.config.js"]
+  }
+  
