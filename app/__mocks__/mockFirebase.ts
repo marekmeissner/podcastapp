@@ -14,4 +14,4 @@ export const config = jest.mock('react-native-firebase', () => ({
   analytics: jest.fn(() => ({
     logEvent: jest.fn(),
   })),
-}));
+}))

@@ -1,3 +1,3 @@
-import InputError from './InputError/InputError';
+import InputError from './InputError/InputError'
 
-export {InputError};
+export { InputError }

@@ -1,9 +1,9 @@
-import React from 'react';
-import {createStackNavigator} from 'react-navigation-stack';
+import React from 'react'
+import { createStackNavigator } from 'react-navigation-stack'
 
-import {Login, Register, ForgotPassword} from '@screen/Auth';
+import { Login, Register, ForgotPassword } from '@screen/Auth'
 
-import {SCREEN_NAMES} from '../constants';
+import { SCREEN_NAMES } from '../constants'
 
 const Auth = createStackNavigator(
   {
@@ -29,6 +29,6 @@ const Auth = createStackNavigator(
   {
     initialRouteName: SCREEN_NAMES.AUTH_LOGIN,
   },
-);
+)
 
-export default Auth;
+export default Auth

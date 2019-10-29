@@ -1,9 +1,9 @@
-import React from 'react';
-import {createStackNavigator} from 'react-navigation-stack';
+import React from 'react'
+import { createStackNavigator } from 'react-navigation-stack'
 
-import {Home} from '@screen/App';
+import { Home } from '@screen/App'
 
-import {SCREEN_NAMES} from '../constants';
+import { SCREEN_NAMES } from '../constants'
 
 const App = createStackNavigator(
   {
@@ -17,6 +17,6 @@ const App = createStackNavigator(
   {
     initialRouteName: SCREEN_NAMES.APP_HOME,
   },
-);
+)
 
-export default App;
+export default App

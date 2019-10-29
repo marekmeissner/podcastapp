@@ -1,12 +1,9 @@
-import {
-  NavigationActions,
-  NavigationContainerComponent,
-} from 'react-navigation';
+import { NavigationActions, NavigationContainerComponent } from 'react-navigation'
 
-let navigator: NavigationContainerComponent | null = null;
+let navigator: NavigationContainerComponent | null = null
 
 function setTopLevelNavigator(navigatorRef: NavigationContainerComponent) {
-  navigator = navigatorRef;
+  navigator = navigatorRef
 }
 
 function navigate(routeName: string, params?: object) {
@@ -16,11 +13,11 @@ function navigate(routeName: string, params?: object) {
         routeName,
         params,
       }),
-    );
+    )
   }
 }
 
 export default {
   navigate,
   setTopLevelNavigator,
-};
+}

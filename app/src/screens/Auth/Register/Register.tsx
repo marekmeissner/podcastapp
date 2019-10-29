@@ -1,43 +1,34 @@
-import React from 'react';
-import {View, ActivityIndicator} from 'react-native';
-import {NavigationInjectedProps} from 'react-navigation';
-import {connect} from 'react-redux';
-import {registerUser} from '@service/Auth/authReducer';
-import {UserSignUpCredentials} from '@service/Auth/types';
-import {
-  Container,
-  Content,
-  Item,
-  Input,
-  Button,
-  Text,
-  Form,
-  Label,
-} from 'native-base';
-import {Formik, FormikActions} from 'formik';
-import * as Yup from 'yup';
-import {EMAIL_REGEX, PASSWORD_REGEX} from '@util/constants/constants';
-import {InputError} from '@component';
-import {SCREEN_NAMES} from '@navigation/constants';
+import React from 'react'
+import { View, ActivityIndicator } from 'react-native'
+import { NavigationInjectedProps } from 'react-navigation'
+import { connect } from 'react-redux'
+import { registerUser } from '@service/Auth/authReducer'
+import { UserSignUpCredentials } from '@service/Auth/types'
+import { Container, Content, Item, Input, Button, Text, Form, Label } from 'native-base'
+import { Formik, FormikActions } from 'formik'
+import * as Yup from 'yup'
+import { EMAIL_REGEX, PASSWORD_REGEX } from '@util/constants/constants'
+import { InputError } from '@component'
+import { SCREEN_NAMES } from '@navigation/constants'
 
 interface Props extends NavigationInjectedProps {
-  registerUser: (registerData: UserSignUpCredentials) => Promise<void>;
+  registerUser: (registerData: UserSignUpCredentials) => Promise<void>
 }
 
-export const Register: React.FC<Props> = ({registerUser, navigation}) => {
+export const Register: React.FC<Props> = ({ registerUser, navigation }) => {
   const handleSignUp = async (
     newUser: UserSignUpCredentials,
-    {setSubmitting, setStatus}: FormikActions<UserSignUpCredentials>,
+    { setSubmitting, setStatus }: FormikActions<UserSignUpCredentials>,
   ) => {
-    setSubmitting(true);
+    setSubmitting(true)
     try {
-      await registerUser(newUser);
-    } catch ({message}) {
-      setStatus(message);
+      await registerUser(newUser)
+    } catch ({ message }) {
+      setStatus(message)
     } finally {
-      setSubmitting(false);
+      setSubmitting(false)
     }
-  };
+  }
 
   const validationSchema = Yup.object().shape({
     accountName: Yup.string().required('Required'),
@@ -45,23 +36,17 @@ export const Register: React.FC<Props> = ({registerUser, navigation}) => {
       .matches(EMAIL_REGEX, 'Email address provided is invalid')
       .required('Required'),
     password: Yup.string()
-      .matches(
-        PASSWORD_REGEX,
-        'Password should have at least 1 uppercase & number',
-      )
+      .matches(PASSWORD_REGEX, 'Password should have at least 1 uppercase & number')
       .required('Required'),
     passwordRepeat: Yup.string()
       .oneOf([Yup.ref('password'), null], 'Passwords must match')
       .required('Required'),
-  });
+  })
 
   return (
     <Container>
-      <View
-        style={{height: 150, justifyContent: 'center', alignItems: 'center'}}>
-        <Text
-          uppercase
-          style={{fontSize: 30, marginBottom: -50, fontWeight: '900'}}>
+      <View style={{ height: 150, justifyContent: 'center', alignItems: 'center' }}>
+        <Text uppercase style={{ fontSize: 30, marginBottom: -50, fontWeight: '900' }}>
           Sign up
         </Text>
       </View>
@@ -74,23 +59,13 @@ export const Register: React.FC<Props> = ({registerUser, navigation}) => {
             passwordRepeat: '',
           }}
           validationSchema={validationSchema}
-          onSubmit={handleSignUp}>
-          {({
-            handleChange,
-            handleSubmit,
-            values,
-            setFieldTouched,
-            errors,
-            touched,
-            isSubmitting,
-            status,
-          }) => {
+          onSubmit={handleSignUp}
+        >
+          {({ handleChange, handleSubmit, values, setFieldTouched, errors, touched, isSubmitting, status }) => {
             return (
-              <Form style={{padding: 20}}>
-                <Content style={{height: 80, paddingTop: 10}}>
-                  <Item
-                    floatingLabel
-                    error={touched.accountName && !!errors.accountName}>
+              <Form style={{ padding: 20 }}>
+                <Content style={{ height: 80, paddingTop: 10 }}>
+                  <Item floatingLabel error={touched.accountName && !!errors.accountName}>
                     <Label>Account name</Label>
                     <Input
                       testID={'accountName'}
@@ -101,14 +76,12 @@ export const Register: React.FC<Props> = ({registerUser, navigation}) => {
                     />
                   </Item>
                   {errors.accountName && touched.accountName && (
-                    <InputError
-                      style={{paddingTop: 5}}
-                      testID={'accountNameError'}>
+                    <InputError style={{ paddingTop: 5 }} testID={'accountNameError'}>
                       {errors.accountName}
                     </InputError>
                   )}
                 </Content>
-                <Content style={{height: 80, paddingTop: 10}}>
+                <Content style={{ height: 80, paddingTop: 10 }}>
                   <Item floatingLabel error={touched.email && !!errors.email}>
                     <Label>Email</Label>
                     <Input
@@ -121,15 +94,13 @@ export const Register: React.FC<Props> = ({registerUser, navigation}) => {
                     />
                   </Item>
                   {errors.email && touched.email && (
-                    <InputError style={{paddingTop: 5}} testID={'emailError'}>
+                    <InputError style={{ paddingTop: 5 }} testID={'emailError'}>
                       {errors.email}
                     </InputError>
                   )}
                 </Content>
-                <Content style={{height: 80, paddingTop: 10}}>
-                  <Item
-                    floatingLabel
-                    error={touched.password && !!errors.password}>
+                <Content style={{ height: 80, paddingTop: 10 }}>
+                  <Item floatingLabel error={touched.password && !!errors.password}>
                     <Label>Password</Label>
                     <Input
                       testID={'password'}
@@ -142,17 +113,13 @@ export const Register: React.FC<Props> = ({registerUser, navigation}) => {
                     />
                   </Item>
                   {errors.password && touched.password && (
-                    <InputError
-                      style={{paddingTop: 5}}
-                      testID={'passwordError'}>
+                    <InputError style={{ paddingTop: 5 }} testID={'passwordError'}>
                       {errors.password}
                     </InputError>
                   )}
                 </Content>
-                <Content style={{height: 80, paddingTop: 10}}>
-                  <Item
-                    floatingLabel
-                    error={touched.passwordRepeat && !!errors.passwordRepeat}>
+                <Content style={{ height: 80, paddingTop: 10 }}>
+                  <Item floatingLabel error={touched.passwordRepeat && !!errors.passwordRepeat}>
                     <Label>Confirm password</Label>
                     <Input
                       testID={'passwordRepeat'}
@@ -165,58 +132,41 @@ export const Register: React.FC<Props> = ({registerUser, navigation}) => {
                     />
                   </Item>
                   {errors.passwordRepeat && touched.passwordRepeat && (
-                    <InputError
-                      style={{paddingTop: 5}}
-                      testID={'passwordError'}>
+                    <InputError style={{ paddingTop: 5 }} testID={'passwordError'}>
                       {errors.passwordRepeat}
                     </InputError>
                   )}
                 </Content>
-                <Button
-                  testID={'submit'}
-                  rounded
-                  large
-                  onPress={handleSubmit}
-                  style={{marginTop: 40}}>
+                <Button testID={'submit'} rounded large onPress={handleSubmit} style={{ marginTop: 40 }}>
                   {isSubmitting ? (
-                    <ActivityIndicator
-                      testID={'loader'}
-                      size="small"
-                      color="#ffffff"
-                    />
+                    <ActivityIndicator testID={'loader'} size="small" color="#ffffff" />
                   ) : (
                     <Text>Sign up</Text>
                   )}
                 </Button>
-                <InputError
-                  style={{paddingTop: 10, textAlign: 'center'}}
-                  testID={'formError'}>
+                <InputError style={{ paddingTop: 10, textAlign: 'center' }} testID={'formError'}>
                   {status}
                 </InputError>
                 <View
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                  }}>
-                  <Button
-                    transparent
-                    small
-                    onPress={() =>
-                      navigation.navigate(SCREEN_NAMES.AUTH_LOGIN)
-                    }>
+                  }}
+                >
+                  <Button transparent small onPress={() => navigation.navigate(SCREEN_NAMES.AUTH_LOGIN)}>
                     <Text>Already have account?</Text>
                   </Button>
                 </View>
               </Form>
-            );
+            )
           }}
         </Formik>
       </Content>
     </Container>
-  );
-};
+  )
+}
 
 export default connect(
   null,
-  {registerUser},
-)(Register);
+  { registerUser },
+)(Register)
