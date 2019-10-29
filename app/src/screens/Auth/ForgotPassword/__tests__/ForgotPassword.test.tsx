@@ -1,5 +1,5 @@
 import React from 'react'
-import { renderWithRedux as render } from '@util/test/testRenderers'
+import { renderWithRedux as render } from '../../../../Utils/test/testRenderers'
 import ForgotPassword from '../ForgotPassword'
 
 describe('<ForgotPassword/>', () => {
