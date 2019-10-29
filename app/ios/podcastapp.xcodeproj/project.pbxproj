@@ -25,6 +25,7 @@
 		9C2EDAA93BC140CE99369DAC /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6D5C348282064ABE84A8E524 /* Roboto.ttf */; };
 		AC2E3E010FF3463A862C95A3 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 47A6515C7FE841B9AC8918D2 /* MaterialCommunityIcons.ttf */; };
 		AC3D18E0703847A3B59AEE52 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 818FD5BFB9C649D5B29BCFCD /* Ionicons.ttf */; };
+		C47C3D532368259D0025274F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C47C3D522368259D0025274F /* Images.xcassets */; };
 		CB65638C77E04142986C3164 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C04010B4CCBD45E4B59E1B0D /* Zocial.ttf */; };
 		D2DC85FD859D78845524A949 /* libPods-podcastapp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 740409F09BB7A39E27B4B4D5 /* libPods-podcastapp-tvOSTests.a */; };
 		D5EA090BA980416ABF0B4A15 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B706C226DB884C5891678E16 /* Fontisto.ttf */; };
@@ -95,6 +96,7 @@
 		BEF1A3F031045ABA77FE5227 /* libPods-podcastapp-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-podcastapp-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C04010B4CCBD45E4B59E1B0D /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		C1FCF06239598AFAC3358B78 /* libPods-podcastapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-podcastapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C47C3D522368259D0025274F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = podcastapp/Images.xcassets; sourceTree = "<group>"; };
 		DE60B64403E27931CAC23519 /* Pods-podcastappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-podcastappTests.release.xcconfig"; path = "Target Support Files/Pods-podcastappTests/Pods-podcastappTests.release.xcconfig"; sourceTree = "<group>"; };
 		E5A50274A76E4B64B00B6938 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -186,6 +188,7 @@
 		13B07FAE1A68108700A75B9A /* podcastapp */ = {
 			isa = PBXGroup;
 			children = (
+				C47C3D522368259D0025274F /* Images.xcassets */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -406,6 +409,7 @@
 				ECCD8AC845A442B69B25642E /* FontAwesome5_Brands.ttf in Resources */,
 				FFA8D51836624FC98A58F763 /* FontAwesome5_Regular.ttf in Resources */,
 				2864A6DBF13D4D1087D70608 /* FontAwesome5_Solid.ttf in Resources */,
+				C47C3D532368259D0025274F /* Images.xcassets in Resources */,
 				D5EA090BA980416ABF0B4A15 /* Fontisto.ttf in Resources */,
 				E019B84CDA094658BCDAAD42 /* Foundation.ttf in Resources */,
 				AC3D18E0703847A3B59AEE52 /* Ionicons.ttf in Resources */,
