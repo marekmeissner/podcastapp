@@ -8,12 +8,11 @@
 
 import React from 'react';
 import {Provider} from 'react-redux';
-import {RootState} from './Store/rootState';
 import {StatusBar, StyleSheet, View, SafeAreaView} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 
 import configureStore from './Store';
-import {StyleProvider, Container, Content} from 'native-base';
+import {StyleProvider} from 'native-base';
 import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
 import NavigationService from '@util/navigationService/navigationService';
@@ -54,6 +53,7 @@ class App extends React.Component {
         <PersistGate persistor={persistor}>
           <View style={styles.mainContainer}>
             <View style={styles.innerContainer}>
+              <StatusBar barStyle="light-content" />
               <StyleProvider style={getTheme(platform)}>
                 <SafeAreaView style={{height: '100%'}}>
                   <AppNavigation
