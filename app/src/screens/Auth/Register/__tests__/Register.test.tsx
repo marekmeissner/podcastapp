@@ -1,6 +1,6 @@
 import React from 'react'
-import { renderWithRedux as render } from '../../../../Utils/test/testRenderers'
-import Register from '../Register'
+import { render } from '@testing-library/react-native'
+import { Register } from '../Register'
 
 describe('<Login/>', () => {
   it('renders correctly', () => {
