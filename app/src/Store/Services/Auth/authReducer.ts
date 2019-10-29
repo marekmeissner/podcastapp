@@ -4,12 +4,12 @@ import {
   AuthActions,
   AUTH_ACTIONS,
   UserCredentials,
-  UserSignUpCredentials,
-  SetUser,
+  UserSignUpCredentials
 } from './types';
 import {Dispatch} from 'redux';
 import {RootState} from '../rootReducer';
 import AuthService from './authService';
+import {User} from './types'
 
 export const AuthInitialState: AuthState = {
   user: null,
@@ -26,13 +26,33 @@ export const authReducer = (
         ...state,
         user: action.user,
       };
+      case AUTH_ACTIONS.SET_LOGGED_IN:
+        return{
+          ...state,
+          isLoggedIn: true
+        }
+      case AUTH_ACTIONS.SET_LOGGED_OUT:
+        return AuthInitialState
     default:
       return state;
   }
 };
 
+export const setUser = (user: User) => ({
+  type: AUTH_ACTIONS.SET_USER,
+  user,
+})
+
+export const setLoggedIn = () => ({
+  type: AUTH_ACTIONS.SET_LOGGED_IN,
+})
+
+export const setLoggedOut = () => ({
+  type: AUTH_ACTIONS.SET_LOGGED_OUT,
+})
+
 export const loginUser = (credentials: UserCredentials) => {
-  return async (dispatch: Dispatch<SetUser>) => {
+  return async (dispatch: Dispatch) => {
     try {
       const response = await firebase
         .auth()
@@ -41,11 +61,9 @@ export const loginUser = (credentials: UserCredentials) => {
       const userToken = await response.user
         .getIdToken()
         .then(idToken => idToken);
-      AuthService.setUserToken(userToken);
-      dispatch({
-        type: AUTH_ACTIONS.SET_USER,
-        user,
-      });
+      await AuthService.setUserToken(userToken);
+      dispatch(setUser(user));
+      dispatch(setLoggedIn())
     } catch (e) {
       throw new Error(e);
     }
@@ -53,7 +71,7 @@ export const loginUser = (credentials: UserCredentials) => {
 };
 
 export const registerUser = (registerData: UserSignUpCredentials) => {
-  return async (dispatch: Dispatch<SetUser>) => {
+  return async (dispatch: Dispatch) => {
     try {
       const response = await firebase
         .auth()
@@ -74,11 +92,9 @@ export const registerUser = (registerData: UserSignUpCredentials) => {
       const userToken = await response.user
         .getIdToken()
         .then(idToken => idToken);
-      AuthService.setUserToken(userToken);
-      dispatch({
-        type: AUTH_ACTIONS.SET_USER,
-        user,
-      });
+      await AuthService.setUserToken(userToken);
+      dispatch(setUser(user));
+      dispatch(setLoggedIn())
     } catch (e) {
       throw new Error(e);
     }
@@ -94,6 +110,17 @@ export const forgotPassword = (email: string) => {
     }
   };
 };
+
+export const logout = () => {
+  return async (dispatch: Dispatch) => {
+    try {
+      await AuthService.removeUserToken()
+      dispatch(setLoggedOut())
+    } catch (e) {
+      throw new Error('Cannot logout')
+    }
+  }
+}
 
 export const selectUser = (state: RootState) => state.auth.user;
 

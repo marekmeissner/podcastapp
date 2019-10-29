@@ -18,6 +18,7 @@ import {Formik, FormikActions} from 'formik';
 import * as Yup from 'yup';
 import {EMAIL_REGEX} from '@util/constants/constants';
 import {InputError} from '@component';
+import {SCREEN_NAMES} from '@navigation/constants';
 
 interface Props extends NavigationInjectedProps {
   loginUser: (credentials: UserCredentials) => Promise<void>;
@@ -145,13 +146,17 @@ export const Login: React.FC<Props> = ({loginUser, navigation}) => {
                   <Button
                     transparent
                     small
-                    onPress={() => navigation.navigate('ForgotPassword')}>
+                    onPress={() =>
+                      navigation.navigate(SCREEN_NAMES.AUTH_FORGOT_PASSWORD)
+                    }>
                     <Text>Forgot password?</Text>
                   </Button>
                   <Button
                     transparent
                     small
-                    onPress={() => navigation.navigate('Register')}>
+                    onPress={() =>
+                      navigation.navigate(SCREEN_NAMES.AUTH_REGISTER)
+                    }>
                     <Text>Don't have account?</Text>
                   </Button>
                 </View>

@@ -1,11 +1,9 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import InputError from '@component';
+import {InputError} from '@component';
+import {NavigationInjectedProps} from 'react-navigation';
 
-class Home extends React.Component {
-  render() {
-    return <InputError>Dashboard</InputError>;
-  }
-}
+const Home: React.FC<NavigationInjectedProps> = () => {
+  return <InputError>Dashboard</InputError>;
+};
 
 export default Home;
