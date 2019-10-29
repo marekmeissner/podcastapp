@@ -1,7 +1,9 @@
 import React from 'react';
 import {View, ActivityIndicator, Image} from 'react-native';
+import {NavigationInjectedProps} from 'react-navigation';
 import {connect} from 'react-redux';
-import {loginUser} from '../authReducer';
+import {loginUser} from '@service/Auth/authReducer';
+import {UserCredentials} from '@service/Auth/types';
 import {
   Container,
   Content,
@@ -12,24 +14,22 @@ import {
   Form,
   Label,
 } from 'native-base';
-import {UserCredentials} from '../../../redux/reducers/auth/types';
 import {Formik, FormikActions} from 'formik';
 import * as Yup from 'yup';
-import {EMAIL_REGEX} from '../../../utils/constants';
-import InputError from '../../../components/InputError/InputError';
-import NavigatorService from '../../../helpers/navigationService';
+import {EMAIL_REGEX} from '@util/constants/constants';
+import {InputError} from '@component';
 
-interface Props {
+interface Props extends NavigationInjectedProps {
   loginUser: (credentials: UserCredentials) => Promise<void>;
 }
-export const Login: React.FC<Props> = ({loginUser}) => {
+export const Login: React.FC<Props> = ({loginUser, navigation}) => {
   const handleLogin = async (
     credentials: UserCredentials,
     {setSubmitting, setStatus}: FormikActions<UserCredentials>,
   ) => {
     try {
       await loginUser(credentials);
-      NavigatorService.navigate('Home');
+      navigation.navigate('Home');
     } catch ({message}) {
       setStatus(message);
     } finally {
@@ -50,7 +50,7 @@ export const Login: React.FC<Props> = ({loginUser}) => {
         style={{height: 300, justifyContent: 'center', alignItems: 'center'}}>
         <Image
           style={{width: '50%', height: '50%', marginBottom: -50}}
-          source={require('../../../assets/logo.png')}
+          source={require('../../../Assets/logo.png')}
         />
       </View>
       <Content>
@@ -145,13 +145,13 @@ export const Login: React.FC<Props> = ({loginUser}) => {
                   <Button
                     transparent
                     small
-                    onPress={() => NavigatorService.navigate('ForgotPassword')}>
+                    onPress={() => navigation.navigate('ForgotPassword')}>
                     <Text>Forgot password?</Text>
                   </Button>
                   <Button
                     transparent
                     small
-                    onPress={() => NavigatorService.navigate('Register')}>
+                    onPress={() => navigation.navigate('Register')}>
                     <Text>Don't have account?</Text>
                   </Button>
                 </View>

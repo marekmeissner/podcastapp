@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import {ACCESS_TOKEN_KEY, USER_ID} from '../../utils/constants';
+import {ACCESS_TOKEN_KEY} from '@util/constants/constants';
 import firebase from 'react-native-firebase';
 
 class AuthService {
@@ -27,22 +27,6 @@ class AuthService {
         return value;
       }
     } catch (e) {}
-  };
-
-  static setUserId = async (uid: string) => {
-    try {
-      await AsyncStorage.setItem(USER_ID, uid);
-    } catch (error) {}
-  };
-
-  static getUserId = async () => {
-    try {
-      const value = await AsyncStorage.getItem(USER_ID);
-
-      if (value !== null) {
-        return value;
-      }
-    } catch (error) {}
   };
 
   static removeUserToken = async () => {

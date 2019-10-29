@@ -1,7 +1,7 @@
 // jest.config.js
 
 module.exports = {
-  preset: 'react-native',
+  preset: '@testing-library/react-native',
   transform: {
     '\\.js$': '<rootDir>/node_modules/react-native/jest/preprocessor.js'
   },
@@ -15,5 +15,5 @@ module.exports = {
     // block react-art
     '^react-art$': 'node-noop'
   },
-  setupFilesAfterEnv: ['./__mocks__/mockFirebase.ts', './__mocks__/mockAsyncStorage.ts'],
+  setupFilesAfterEnv: ['./__mocks__/mockFirebase.ts', './__mocks__/mockAsyncStorage.ts', '@testing-library/react-native/cleanup-after-each'],
 }

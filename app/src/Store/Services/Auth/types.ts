@@ -1,5 +1,6 @@
 export interface AuthState {
-  readonly user: User | {};
+  readonly user: User | null;
+  readonly isLoggedIn: boolean;
 }
 
 export enum AUTH_ACTIONS {

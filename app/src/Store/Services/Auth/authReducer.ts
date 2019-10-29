@@ -8,11 +8,12 @@ import {
   SetUser,
 } from './types';
 import {Dispatch} from 'redux';
-import {RootState} from '../../rootState';
+import {RootState} from '../rootReducer';
 import AuthService from './authService';
 
 export const AuthInitialState: AuthState = {
-  user: {},
+  user: null,
+  isLoggedIn: false,
 };
 
 export const authReducer = (
@@ -41,7 +42,6 @@ export const loginUser = (credentials: UserCredentials) => {
         .getIdToken()
         .then(idToken => idToken);
       AuthService.setUserToken(userToken);
-      AuthService.setUserId(response.user.uid);
       dispatch({
         type: AUTH_ACTIONS.SET_USER,
         user,
@@ -75,7 +75,6 @@ export const registerUser = (registerData: UserSignUpCredentials) => {
         .getIdToken()
         .then(idToken => idToken);
       AuthService.setUserToken(userToken);
-      AuthService.setUserId(response.user.uid);
       dispatch({
         type: AUTH_ACTIONS.SET_USER,
         user,
@@ -97,3 +96,5 @@ export const forgotPassword = (email: string) => {
 };
 
 export const selectUser = (state: RootState) => state.auth.user;
+
+export const selectIsLoggedIn = (state: RootState) => state.auth.isLoggedIn;

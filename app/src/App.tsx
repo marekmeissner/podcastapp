@@ -8,20 +8,22 @@
 
 import React from 'react';
 import {Provider} from 'react-redux';
-import {Store} from 'redux';
-import {RootState} from './redux/rootState';
+import {RootState} from './Store/rootState';
 import {StatusBar, StyleSheet, View, SafeAreaView} from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 
+import configureStore from './Store';
 import {StyleProvider, Container, Content} from 'native-base';
 import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
-import Router from './Router';
-import NavigatorService from './helpers/navigationService';
-import AuthGate from './components/AuthGate/AuthGate';
+import NavigationService from '@util/navigationService/navigationService';
+import {PersistGate} from 'redux-persist/integration/react';
+import {NavigationContainerComponent} from 'react-navigation';
+import AppNavigation from './Navigation';
 
-import AuthService from './screens/Auth/authService';
+import {COLORS} from '@util/styles/colors';
 
-import {COLORS} from './utils/styles/colors.ts';
+export const {store, persistor} = configureStore();
 
 const styles = StyleSheet.create({
   mainContainer: {flex: 1},
@@ -33,36 +35,36 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.GREY_BG,
   },
 });
-
-function getActiveRouteName(navigationState: any): string | null {
-  if (!navigationState) {
-    return null;
+class App extends React.Component {
+  componentDidMount() {
+    SplashScreen.hide();
   }
-  const route = navigationState.routes[navigationState.index];
 
-  if (route.routes) {
-    return getActiveRouteName(route);
-  }
-  return route.routeName;
-}
-class App extends React.Component<{store: Store}> {
+  onInitNavigatonService = (
+    navigatorRef: NavigationContainerComponent | null,
+  ) => {
+    if (navigatorRef) {
+      NavigationService.setTopLevelNavigator(navigatorRef);
+    }
+  };
+
   render() {
     return (
-      <Provider store={this.props.store}>
-        <AuthGate fallback={'Login'} authPath={'Home'}>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
           <View style={styles.mainContainer}>
             <View style={styles.innerContainer}>
-              <StatusBar barStyle="light-content" />
               <StyleProvider style={getTheme(platform)}>
                 <SafeAreaView style={{height: '100%'}}>
-                  <Router
-                    ref={navigator => NavigatorService.setContainer(navigator)}
+                  <AppNavigation
+                    ref={this.onInitNavigatonService}
+                    uriPrefix="https://"
                   />
                 </SafeAreaView>
               </StyleProvider>
             </View>
           </View>
-        </AuthGate>
+        </PersistGate>
       </Provider>
     );
   }

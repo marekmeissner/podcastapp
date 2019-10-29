@@ -1,7 +1,9 @@
 import React from 'react';
 import {View, ActivityIndicator} from 'react-native';
+import {NavigationInjectedProps} from 'react-navigation';
 import {connect} from 'react-redux';
-import {registerUser} from '../authReducer';
+import {registerUser} from '@service/Auth/authReducer';
+import {UserSignUpCredentials} from '@service/Auth/types';
 import {
   Container,
   Content,
@@ -12,17 +14,16 @@ import {
   Form,
   Label,
 } from 'native-base';
-import {UserSignUpCredentials} from '../types';
 import {Formik, FormikActions} from 'formik';
 import * as Yup from 'yup';
-import {EMAIL_REGEX, PASSWORD_REGEX} from '../../../utils/constants';
-import InputError from '../../../components/InputError/InputError';
-import NavigatorService from '../../../helpers/navigationService';
+import {EMAIL_REGEX, PASSWORD_REGEX} from '@util/constants/constants';
+import {InputError} from '@component';
 
-interface Props {
+interface Props extends NavigationInjectedProps {
   registerUser: (registerData: UserSignUpCredentials) => Promise<void>;
 }
-export const Register: React.FC<Props> = ({registerUser}) => {
+
+export const Register: React.FC<Props> = ({registerUser, navigation}) => {
   const handleSignUp = async (
     newUser: UserSignUpCredentials,
     {setSubmitting, setStatus}: FormikActions<UserSignUpCredentials>,
@@ -199,7 +200,7 @@ export const Register: React.FC<Props> = ({registerUser}) => {
                   <Button
                     transparent
                     small
-                    onPress={() => NavigatorService.navigate('Login')}>
+                    onPress={() => navigation.navigate('Login')}>
                     <Text>Already have account?</Text>
                   </Button>
                 </View>

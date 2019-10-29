@@ -1,7 +1,8 @@
 import React from 'react';
 import {View, ActivityIndicator} from 'react-native';
+import {NavigationInjectedProps} from 'react-navigation';
 import {connect} from 'react-redux';
-import {forgotPassword} from '../authReducer';
+import {forgotPassword} from '@service/Auth/authReducer';
 import {
   Container,
   Content,
@@ -14,14 +15,16 @@ import {
 } from 'native-base';
 import {Formik, FormikActions} from 'formik';
 import * as Yup from 'yup';
-import {EMAIL_REGEX} from '../../../utils/constants';
-import InputError from '../../../components/InputError/InputError';
-import NavigatorService from '../../../helpers/navigationService';
+import {InputError} from '@component';
+import {EMAIL_REGEX} from '@util/constants/constants';
 
-interface Props {
+interface Props extends NavigationInjectedProps {
   forgotPassword: (email: string) => Promise<void>;
 }
-export const ForgotPassword: React.FC<Props> = ({forgotPassword}) => {
+export const ForgotPassword: React.FC<Props> = ({
+  forgotPassword,
+  navigation,
+}) => {
   const handleForgotPassword = async (
     {email}: {email: string},
     {setSubmitting, setStatus}: FormikActions<{email: string}>,
@@ -136,7 +139,7 @@ export const ForgotPassword: React.FC<Props> = ({forgotPassword}) => {
                   <Button
                     transparent
                     small
-                    onPress={() => NavigatorService.navigate('Login')}>
+                    onPress={() => navigation.navigate('Login')}>
                     <Text>Wanna sign in?</Text>
                   </Button>
                 </View>

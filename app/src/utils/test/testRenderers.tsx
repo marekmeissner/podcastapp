@@ -1,9 +1,8 @@
 import React, {ReactNode} from 'react';
 import {applyMiddleware, compose, createStore} from 'redux';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
-import {rootReducer} from '../redux/rootReducer';
-import {RootState, initialRootState} from '../redux/rootState';
+import {render} from '@testing-library/react-native';
+import {rootReducer, RootState, initialRootState} from '@service/rootReducer';
 import thunk from 'redux-thunk';
 
 export const renderWithRedux = (
