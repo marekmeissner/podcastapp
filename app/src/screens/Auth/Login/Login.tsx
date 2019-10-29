@@ -39,10 +39,7 @@ export const Login: React.FC<Props> = ({ loginUser, navigation }) => {
   return (
     <Container>
       <View style={{ height: 300, justifyContent: 'center', alignItems: 'center' }}>
-        <Image
-          style={{ width: '50%', height: '50%', marginBottom: -50 }}
-          source={require('../../../Assets/logo.png')}
-        />
+        <Image style={{ width: '50%', height: '50%', marginBottom: -50 }} source={require('@asset/logo.png')} />
       </View>
       <Content>
         <Formik
