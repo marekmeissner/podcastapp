@@ -3,7 +3,8 @@
 module.exports = {
   preset: '@testing-library/react-native',
   transform: {
-    '\\.js$': '<rootDir>/node_modules/react-native/jest/preprocessor.js'
+    '\\.js$': '<rootDir>/node_modules/react-native/jest/preprocessor.js',
+    "^.+\\.[t|j]sx?$": "babel-jest"
   },
   testEnvironment: 'jsdom',
   transformIgnorePatterns: [
