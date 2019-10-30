@@ -5,19 +5,6 @@ module.exports = {
   transform: {
     '\\.js$': '<rootDir>/node_modules/react-native/jest/preprocessor.js'
   },
-  "roots": [
-    "<rootDir>",
-    "./src/Utils/test",
-    "./src/Components"
-  ],
-  "modulePaths": [
-    "<rootDir>",
-    "./src/Utils/test",
-    "./src/Components"
-  ],
-  "moduleDirectories": [
-    "node_modules"
-  ],
   testEnvironment: 'jsdom',
   transformIgnorePatterns: [
     'node_modules/(?!(react-native|react-navigation|native-base|react-native-drawer|native-base-shoutem-theme|react-native-vector-icons|react-native-easy-grid|react-navigation-stack|react-native-gesture-handler|react-native-splash-screen|react-native-responsive-screen|react-native-svg|static-container|react-native-camera))'
