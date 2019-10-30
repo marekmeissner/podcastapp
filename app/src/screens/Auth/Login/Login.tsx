@@ -50,17 +50,7 @@ export const Login: React.FC<Props> = ({ loginUser, navigation }) => {
           validationSchema={validationSchema}
           onSubmit={handleLogin}
         >
-          {({
-            handleChange,
-            handleSubmit,
-            values,
-            setFieldTouched,
-            errors,
-            touched,
-            isValid,
-            isSubmitting,
-            status,
-          }) => {
+          {({ handleChange, handleSubmit, values, setFieldTouched, errors, touched, isSubmitting, status }) => {
             return (
               <Form style={{ padding: 20 }}>
                 <Content style={{ height: 80, paddingTop: 10 }}>

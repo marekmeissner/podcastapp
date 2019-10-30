@@ -32,7 +32,7 @@ class AuthService {
   static removeUserToken = async () => {
     try {
       await AsyncStorage.removeItem(ACCESS_TOKEN_KEY)
-    } catch (e) {}
+    } catch (e) { throw new Error(e) }
   }
 }
 

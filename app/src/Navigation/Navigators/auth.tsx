@@ -1,4 +1,3 @@
-import React from 'react'
 import { createStackNavigator } from 'react-navigation-stack'
 
 import { Login, Register, ForgotPassword } from '@screen/Auth'
