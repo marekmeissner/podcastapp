@@ -2,12 +2,13 @@
 
 module.exports = {
   preset: '@testing-library/react-native',
-  "modulePaths": [
-    "<rootDir>"
-  ],
   transform: {
     '\\.js$': '<rootDir>/node_modules/react-native/jest/preprocessor.js'
   },
+  moduleDirectories: [
+    "node_modules",
+    "src"
+  ],
   testEnvironment: 'jsdom',
   transformIgnorePatterns: [
     'node_modules/(?!(react-native|react-navigation|native-base|react-native-drawer|native-base-shoutem-theme|react-native-vector-icons|react-native-easy-grid|react-navigation-stack|react-native-gesture-handler|react-native-splash-screen|react-native-responsive-screen|react-native-svg|static-container|react-native-camera))'
