@@ -17,7 +17,7 @@ class AuthService {
   static setUserToken = async (token: string) => {
     try {
       await AsyncStorage.setItem(ACCESS_TOKEN_KEY, token)
-    } catch (error) {}
+    } catch (e) { throw new Error(e) }
   }
 
   static getUserToken = async () => {
@@ -26,15 +26,13 @@ class AuthService {
       if (value !== null) {
         return value
       }
-    } catch (e) {}
+    } catch (e) { throw new Error(e) }
   }
 
   static removeUserToken = async () => {
     try {
       await AsyncStorage.removeItem(ACCESS_TOKEN_KEY)
-    } catch (e) {
-      throw new Error(e)
-    }
+    } catch (e) { throw new Error(e) }
   }
 }
 
