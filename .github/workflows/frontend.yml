@@ -4,6 +4,7 @@ on:
   push:
     branches:    
       - '*'
+
 jobs:
   lint:
 
@@ -12,29 +13,10 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Run lint
-    - restore_cache:
-        key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-
-    - restore_cache:
-        key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-
-    - run: |
+      run: |
         cd app
         yarn
-
-    - save_cache:
-        paths:
-          - node_modules
-        key: v1-dependencies-{{ checksum "package.json" }}
-
-    - save_cache:
-        key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-        paths:
-          - node_modules
-    
-    - run: 
-        name: eslint
-        command: yarn lint
+        yarn lint
         
   test:
 
@@ -43,26 +25,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Run tests
-    - restore_cache:
-        key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-
-    - restore_cache:
-        key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-
-    - run: |
+      run: |
         cd app
         yarn
-
-    - save_cache:
-        paths:
-          - node_modules
-        key: v1-dependencies-{{ checksum "package.json" }}
-
-    - save_cache:
-        key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-        paths:
-          - node_modules
-    
-    - run: 
-        name: jest tests
-        command: yarn test
+        yarn test
