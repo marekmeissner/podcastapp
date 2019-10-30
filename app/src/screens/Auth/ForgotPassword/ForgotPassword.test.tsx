@@ -1,9 +1,9 @@
 import React from 'react'
 import { renderWithRedux as render } from '@util/test/testRenderers'
-import Register from '../Register'
+import ForgotPassword from './ForgotPassword'
 
-describe('<Login/>', () => {
+describe('<ForgotPassword/>', () => {
   it('renders correctly', () => {
-    render(<Register />)
+    render(<ForgotPassword />)
   })
 })
