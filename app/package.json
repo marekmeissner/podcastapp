@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "react-native start",
-    "test": "CI=true jest -i --silent --verbose  --detectOpenHandles",
+    "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint src -c .eslintrc --ext .ts,.tsx",
     "format": "prettier \"**/*.+(ts|tsx)\" --write --list-different",
