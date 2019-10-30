@@ -13,7 +13,7 @@
     "baseUrl": "./",
     "paths": {
       "@hoc/*": ["src/HOC/*"],
-      "@util/*": ["src/Utils/*"],
+      "@util/*": ["src/tils/*"],
       "@hook/*": ["src/Hooks/*"],
       "@screen/*": ["src/Screens/*"],
       "@asset/*": ["src/Assets/*"],
