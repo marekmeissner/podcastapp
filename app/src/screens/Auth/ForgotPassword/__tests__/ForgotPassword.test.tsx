@@ -1,6 +1,6 @@
 import React from 'react'
-import { render } from '@testing-library/react-native'
-import { ForgotPassword } from '../ForgotPassword'
+import { renderWithRedux as render } from '@util/test/testRenderers'
+import ForgotPassword from '../ForgotPassword'
 
 describe('<ForgotPassword/>', () => {
   it('renders correctly', () => {
