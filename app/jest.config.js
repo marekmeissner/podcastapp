@@ -2,6 +2,9 @@
 
 module.exports = {
   preset: '@testing-library/react-native',
+  "modulePaths": [
+    "<rootDir>"
+  ],
   transform: {
     '\\.js$': '<rootDir>/node_modules/react-native/jest/preprocessor.js'
   },
