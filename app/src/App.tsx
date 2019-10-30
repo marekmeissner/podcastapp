@@ -6,25 +6,26 @@
  * @flow
  */
 
-import React from 'react';
-import {Provider} from 'react-redux';
-import {createStore, applyMiddleware} from 'redux';
-import thunk from 'redux-thunk';
-import {authReducer} from './redux/reducers/auth/authReducer';
-import store from './redux/store';
-import {RootState} from './redux/types';
-import {StatusBar, StyleSheet, View, SafeAreaView} from 'react-native';
+import React from 'react'
+import { Provider } from 'react-redux'
+import { StatusBar, StyleSheet, View, SafeAreaView } from 'react-native'
+import SplashScreen from 'react-native-splash-screen'
 
-import {StyleProvider, Container, Content} from 'native-base';
-import getTheme from '../native-base-theme/components';
-import platform from '../native-base-theme/variables/platform';
-import Router from './Router';
-import NavigatorService from './helpers/navigationService';
+import configureStore from './Store'
+import { StyleProvider } from 'native-base'
+import getTheme from '../native-base-theme/components'
+import platform from '../native-base-theme/variables/platform'
+import NavigationService from '@util/navigationService/navigationService'
+import { PersistGate } from 'redux-persist/integration/react'
+import { NavigationContainerComponent } from 'react-navigation'
+import AppNavigation from './Navigation'
 
-import {COLORS} from './utils/styles/colors.ts';
+import { COLORS } from '@util/styles/colors'
+
+export const { store, persistor } = configureStore()
 
 const styles = StyleSheet.create({
-  mainContainer: {flex: 1},
+  mainContainer: { flex: 1 },
   innerContainer: {
     position: 'absolute',
     width: '100%',
@@ -32,38 +33,36 @@ const styles = StyleSheet.create({
     elevation: 0,
     backgroundColor: COLORS.GREY_BG,
   },
-});
-
-function getActiveRouteName(navigationState: any): string | null {
-  if (!navigationState) {
-    return null;
-  }
-  const route = navigationState.routes[navigationState.index];
-  // dive into nested navigators
-  if (route.routes) {
-    return getActiveRouteName(route);
-  }
-  return route.routeName;
-}
+})
 class App extends React.Component {
+  componentDidMount() {
+    SplashScreen.hide()
+  }
+
+  onInitNavigatonService = (navigatorRef: NavigationContainerComponent | null) => {
+    if (navigatorRef) {
+      NavigationService.setTopLevelNavigator(navigatorRef)
+    }
+  }
+
   render() {
     return (
-      <View style={styles.mainContainer}>
-        <View style={styles.innerContainer}>
-          <Provider store={store}>
-            <StatusBar barStyle="light-content" />
-            <StyleProvider style={getTheme(platform)}>
-              <SafeAreaView style={{height: '100%'}}>
-                <Router
-                  ref={navigator => NavigatorService.setContainer(navigator)}
-                />
-              </SafeAreaView>
-            </StyleProvider>
-          </Provider>
-        </View>
-      </View>
-    );
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <View style={styles.mainContainer}>
+            <View style={styles.innerContainer}>
+              <StatusBar barStyle="light-content" />
+              <StyleProvider style={getTheme(platform)}>
+                <SafeAreaView style={{ height: '100%' }}>
+                  <AppNavigation ref={this.onInitNavigatonService} uriPrefix="https://" />
+                </SafeAreaView>
+              </StyleProvider>
+            </View>
+          </View>
+        </PersistGate>
+      </Provider>
+    )
   }
 }
 
-export default App;
+export default App

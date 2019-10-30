@@ -4,18 +4,23 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "isolatedModules": true,
-    "jsx": "react-native",
-    "lib": ["dom", "es7", "es2017.object"],
+    "jsx": "react",
+    "lib": ["es6"],
     "moduleResolution": "node",
+    "noEmit": true,
+    "strict": true,
     "target": "esnext",
-    "rootDir": "src",
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true
+    "baseUrl": "./",
+    "paths": {
+      "@hoc/*": ["src/HOC/*"],
+      "@util/*": ["src/tils/*"],
+      "@hook/*": ["src/Hooks/*"],
+      "@screen/*": ["src/Screens/*"],
+      "@asset/*": ["src/Assets/*"],
+      "@component/*": ["src/Components/*"],
+      "@navigation/*": ["src/Navigation/*"],
+      "@service/*": ["src/Store/Services/*"]
+    }
   },
-  "exclude": ["node_modules", "src/vendors"]
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.js"]
 }
