@@ -28,7 +28,7 @@ import com.android.build.OutputFile
  *   bundleInRelease: true,
  *
  *   // whether to bundle JS and assets in another build variant (if configured).
- *   // See http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Build-Variants
+ *   // See http://tools.android.com /tech-docs/new-build-system/user-guide#TOC-Build-Variants
  *   // The configuration property can be in the following formats
  *   //         'bundleIn${productFlavor}${buildType}'
  *   //         'bundleIn${buildType}'
@@ -198,6 +198,7 @@ dependencies {
   implementation "com.google.firebase:firebase-core:16.0.9"
   implementation "com.google.firebase:firebase-auth:17.0.0"
   implementation "com.google.firebase:firebase-firestore:19.0.0"
+  implementation project(':react-native-splash-screen')
 
     if (enableHermes) {
       def hermesPath = "../../node_modules/hermesvm/android/";

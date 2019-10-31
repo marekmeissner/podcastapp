@@ -6,7 +6,7 @@ import { Platform, Dimensions, PixelRatio } from 'react-native';
 import { PLATFORM } from './commonColor';
 import {
   COLORS
-} from '../../src/Utils/styles/colors'
+} from '@util/styles/colors'
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
