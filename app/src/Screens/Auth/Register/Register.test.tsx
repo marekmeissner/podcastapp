@@ -4,7 +4,7 @@ import { fireEvent, wait } from '@testing-library/react-native'
 import Register from './Register'
 import { SCREEN_NAMES } from '@navigation/constants'
 
-describe('<Login/>', () => {
+describe('<Login />', () => {
   const getProps = (navigate?: Function) => ({
     navigation: {
       navigate,
