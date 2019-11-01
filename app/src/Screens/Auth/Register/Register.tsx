@@ -1,10 +1,11 @@
 import React from 'react'
+import styles from './styles'
 import { View, ActivityIndicator } from 'react-native'
 import { NavigationInjectedProps } from 'react-navigation'
 import { connect } from 'react-redux'
 import { registerUser } from '@service/Auth/authReducer'
 import { UserSignUpCredentials } from '@service/Auth/types'
-import { Container, Content, Item, Input, Button, Text, Form, Label } from 'native-base'
+import { Container, Item, Input, Button, Text, Form, Label } from 'native-base'
 import { Formik, FormikActions } from 'formik'
 import * as Yup from 'yup'
 import { EMAIL_REGEX, PASSWORD_REGEX } from '@util/constants/constants'
@@ -45,12 +46,12 @@ export const Register: React.FC<Props> = ({ registerUser, navigation }) => {
 
   return (
     <Container>
-      <View style={{ height: 150, justifyContent: 'center', alignItems: 'center' }}>
-        <Text uppercase style={{ fontSize: 30, marginBottom: -50, fontWeight: '900' }}>
+      <View style={styles.headerView}>
+        <Text uppercase style={styles.header}>
           Sign up
         </Text>
       </View>
-      <Content>
+      <View style={styles.formView}>
         <Formik
           initialValues={{
             accountName: '',
@@ -63,8 +64,8 @@ export const Register: React.FC<Props> = ({ registerUser, navigation }) => {
         >
           {({ handleChange, handleSubmit, values, setFieldTouched, errors, touched, isSubmitting, status }) => {
             return (
-              <Form style={{ padding: 20 }}>
-                <Content style={{ height: 80, paddingTop: 10 }}>
+              <Form style={styles.form}>
+                <View style={styles.inputView}>
                   <Item floatingLabel error={touched.accountName && !!errors.accountName}>
                     <Label>Account name</Label>
                     <Input
@@ -76,12 +77,12 @@ export const Register: React.FC<Props> = ({ registerUser, navigation }) => {
                     />
                   </Item>
                   {errors.accountName && touched.accountName && (
-                    <InputError style={{ paddingTop: 5 }} testID={'accountNameError'}>
+                    <InputError style={styles.inputError} testID={'accountNameError'}>
                       {errors.accountName}
                     </InputError>
                   )}
-                </Content>
-                <Content style={{ height: 80, paddingTop: 10 }}>
+                </View>
+                <View style={styles.inputView}>
                   <Item floatingLabel error={touched.email && !!errors.email}>
                     <Label>Email</Label>
                     <Input
@@ -94,12 +95,12 @@ export const Register: React.FC<Props> = ({ registerUser, navigation }) => {
                     />
                   </Item>
                   {errors.email && touched.email && (
-                    <InputError style={{ paddingTop: 5 }} testID={'emailError'}>
+                    <InputError style={styles.inputError} testID={'emailError'}>
                       {errors.email}
                     </InputError>
                   )}
-                </Content>
-                <Content style={{ height: 80, paddingTop: 10 }}>
+                </View>
+                <View style={styles.inputView}>
                   <Item floatingLabel error={touched.password && !!errors.password}>
                     <Label>Password</Label>
                     <Input
@@ -113,12 +114,12 @@ export const Register: React.FC<Props> = ({ registerUser, navigation }) => {
                     />
                   </Item>
                   {errors.password && touched.password && (
-                    <InputError style={{ paddingTop: 5 }} testID={'passwordError'}>
+                    <InputError style={styles.inputError} testID={'passwordError'}>
                       {errors.password}
                     </InputError>
                   )}
-                </Content>
-                <Content style={{ height: 80, paddingTop: 10 }}>
+                </View>
+                <View style={styles.inputView}>
                   <Item floatingLabel error={touched.passwordRepeat && !!errors.passwordRepeat}>
                     <Label>Confirm password</Label>
                     <Input
@@ -132,27 +133,22 @@ export const Register: React.FC<Props> = ({ registerUser, navigation }) => {
                     />
                   </Item>
                   {errors.passwordRepeat && touched.passwordRepeat && (
-                    <InputError style={{ paddingTop: 5 }} testID={'passwordError'}>
+                    <InputError style={styles.inputError} testID={'passwordError'}>
                       {errors.passwordRepeat}
                     </InputError>
                   )}
-                </Content>
-                <Button testID={'submit'} rounded large onPress={handleSubmit} style={{ marginTop: 40 }}>
+                </View>
+                <Button testID={'submit'} rounded large onPress={handleSubmit} style={styles.submitButton}>
                   {isSubmitting ? (
                     <ActivityIndicator testID={'loader'} size="small" color="#ffffff" />
                   ) : (
                     <Text>Sign up</Text>
                   )}
                 </Button>
-                <InputError style={{ paddingTop: 10, textAlign: 'center' }} testID={'formError'}>
+                <InputError style={styles.formError} testID={'formError'}>
                   {status}
                 </InputError>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}
-                >
+                <View style={styles.navigationView}>
                   <Button transparent small onPress={() => navigation.navigate(SCREEN_NAMES.AUTH_LOGIN)}>
                     <Text>Already have account?</Text>
                   </Button>
@@ -161,7 +157,7 @@ export const Register: React.FC<Props> = ({ registerUser, navigation }) => {
             )
           }}
         </Formik>
-      </Content>
+      </View>
     </Container>
   )
 }

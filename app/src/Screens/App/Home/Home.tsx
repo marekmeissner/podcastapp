@@ -2,8 +2,23 @@ import React from 'react'
 import { InputError } from '@component'
 import { NavigationInjectedProps } from 'react-navigation'
 
-const Home: React.FC<NavigationInjectedProps> = () => {
-  return <InputError>Dashboard</InputError>
+import { connect } from 'react-redux'
+import { Button } from 'native-base'
+import { logout } from '@service/Auth/authReducer'
+
+interface Props extends NavigationInjectedProps {
+  logout: () => void
 }
 
-export default Home
+const Home: React.FC<Props> = ({ logout }) => {
+  return (
+    <Button onPress={logout}>
+      <InputError>Dashboard</InputError>
+    </Button>
+  )
+}
+
+export default connect(
+  null,
+  { logout },
+)(Home)
