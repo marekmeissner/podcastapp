@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
   error: {
     color: COLORS.RED,
     fontSize: 12,
+    paddingTop: 5,
   },
 })
 

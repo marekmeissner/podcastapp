@@ -1,9 +1,10 @@
 import React from 'react'
+import styles from './styles'
 import { View, ActivityIndicator } from 'react-native'
 import { NavigationInjectedProps } from 'react-navigation'
 import { connect } from 'react-redux'
 import { forgotPassword } from '@service/Auth/authReducer'
-import { Container, Content, Item, Input, Button, Text, Form, Label } from 'native-base'
+import { Container, Item, Input, Button, Text, Form, Label } from 'native-base'
 import { Formik, FormikActions } from 'formik'
 import * as Yup from 'yup'
 import { InputError } from '@component'
@@ -36,78 +37,64 @@ export const ForgotPassword: React.FC<Props> = ({ forgotPassword, navigation }) 
   })
 
   return (
-    <Container>
-      <View style={{ height: 300, justifyContent: 'center', alignItems: 'center' }}>
-        <Text uppercase style={{ fontSize: 30, marginTop: 150, fontWeight: '900' }}>
+    <Container style={{ justifyContent: 'center' }}>
+      <View style={styles.headerView}>
+        <Text uppercase style={styles.headerText}>
           Reset password
         </Text>
 
-        <Text
-          style={{
-            fontSize: 14,
-            padding: 20,
-            paddingTop: 30,
-            fontStyle: 'italic',
-          }}
-        >
+        <Text style={styles.headerDesc}>
           In order to change lost password, type in your account's email. After a while - if email is connected to out
           app - you'll receive email with link to change your password
         </Text>
       </View>
-      <Content>
-        <Formik
-          initialValues={{
-            email: '',
-          }}
-          validationSchema={validationSchema}
-          onSubmit={handleForgotPassword}
-        >
-          {({ handleChange, handleSubmit, values, setFieldTouched, errors, touched, isSubmitting, status }) => {
-            return (
-              <Form style={{ padding: 20 }}>
-                <Content style={{ height: 80, paddingTop: 10 }}>
-                  <Item floatingLabel error={touched.email && !!errors.email}>
-                    <Label>Email</Label>
-                    <Input
-                      testID={'email'}
-                      keyboardType="email-address"
-                      onChangeText={handleChange('email')}
-                      value={values.email}
-                      onBlur={() => setFieldTouched('email')}
-                      autoCapitalize="none"
-                    />
-                  </Item>
-                  {errors.email && touched.email && (
-                    <InputError style={{ paddingTop: 5 }} testID={'emailError'}>
-                      {errors.email}
-                    </InputError>
-                  )}
-                </Content>
-                <Button testID={'submit'} rounded large onPress={handleSubmit} style={{ marginTop: 40 }}>
-                  {isSubmitting ? (
-                    <ActivityIndicator testID={'loader'} size="small" color="#ffffff" />
-                  ) : (
-                    <Text>Send</Text>
-                  )}
+      <Formik
+        initialValues={{
+          email: '',
+        }}
+        validationSchema={validationSchema}
+        onSubmit={handleForgotPassword}
+      >
+        {({ handleChange, handleSubmit, values, setFieldTouched, errors, touched, isSubmitting, status }) => {
+          return (
+            <Form style={styles.form}>
+              <View style={styles.inputView}>
+                <Item floatingLabel error={touched.email && !!errors.email}>
+                  <Label>Email</Label>
+                  <Input
+                    testID={'email'}
+                    keyboardType="email-address"
+                    onChangeText={handleChange('email')}
+                    value={values.email}
+                    onBlur={() => setFieldTouched('email')}
+                    autoCapitalize="none"
+                  />
+                </Item>
+                {errors.email && touched.email && (
+                  <InputError style={styles.inputError} testID={'emailError'}>
+                    {errors.email}
+                  </InputError>
+                )}
+              </View>
+              <Button testID={'submit'} rounded large onPress={handleSubmit} style={styles.submitButton}>
+                {isSubmitting ? (
+                  <ActivityIndicator testID={'loader'} size="small" color="#ffffff" />
+                ) : (
+                  <Text>Send</Text>
+                )}
+              </Button>
+              <InputError style={styles.formError} testID={'formError'}>
+                {status}
+              </InputError>
+              <View style={styles.navigationView}>
+                <Button transparent small onPress={() => navigation.navigate(SCREEN_NAMES.AUTH_LOGIN)}>
+                  <Text>Wanna sign in?</Text>
                 </Button>
-                <InputError style={{ paddingTop: 10, textAlign: 'center' }} testID={'formError'}>
-                  {status}
-                </InputError>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Button transparent small onPress={() => navigation.navigate(SCREEN_NAMES.AUTH_LOGIN)}>
-                    <Text>Wanna sign in?</Text>
-                  </Button>
-                </View>
-              </Form>
-            )
-          }}
-        </Formik>
-      </Content>
+              </View>
+            </Form>
+          )
+        }}
+      </Formik>
     </Container>
   )
 }

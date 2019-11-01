@@ -1,4 +1,5 @@
 import React from 'react'
+import styles from './styles.ts'
 import { View, ActivityIndicator, Image } from 'react-native'
 import { NavigationInjectedProps } from 'react-navigation'
 import { connect } from 'react-redux'
@@ -38,10 +39,10 @@ export const Login: React.FC<Props> = ({ loginUser, navigation }) => {
 
   return (
     <Container>
-      <View style={{ height: 300, justifyContent: 'center', alignItems: 'center' }}>
-        <Image style={{ width: '50%', height: '50%', marginBottom: -50 }} source={require('@asset/logo.png')} />
+      <View style={styles.imageView}>
+        <Image style={styles.image} source={require('@asset/logo.png')} />
       </View>
-      <Content>
+      <View style={styles.formView}>
         <Formik
           initialValues={{
             email: '',
@@ -52,8 +53,8 @@ export const Login: React.FC<Props> = ({ loginUser, navigation }) => {
         >
           {({ handleChange, handleSubmit, values, setFieldTouched, errors, touched, isSubmitting, status }) => {
             return (
-              <Form style={{ padding: 20 }}>
-                <Content style={{ height: 80, paddingTop: 10 }}>
+              <Form style={styles.form}>
+                <View style={styles.inputView}>
                   <Item floatingLabel error={touched.email && !!errors.email}>
                     <Label>Email</Label>
                     <Input
@@ -66,12 +67,12 @@ export const Login: React.FC<Props> = ({ loginUser, navigation }) => {
                     />
                   </Item>
                   {errors.email && touched.email && (
-                    <InputError style={{ paddingTop: 5 }} testID={'emailError'}>
+                    <InputError style={styles.inputError} testID={'emailError'}>
                       {errors.email}
                     </InputError>
                   )}
-                </Content>
-                <Content style={{ height: 80, paddingTop: 10 }}>
+                </View>
+                <View style={styles.inputView}>
                   <Item floatingLabel error={touched.password && !!errors.password}>
                     <Label>Password</Label>
                     <Input
@@ -85,28 +86,23 @@ export const Login: React.FC<Props> = ({ loginUser, navigation }) => {
                     />
                   </Item>
                   {errors.password && touched.password && (
-                    <InputError style={{ paddingTop: 5 }} testID={'passwordError'}>
+                    <InputError style={styles.inputError} testID={'passwordError'}>
                       {errors.password}
                     </InputError>
                   )}
-                </Content>
+                </View>
 
-                <Button testID={'submit'} rounded large onPress={handleSubmit} style={{ marginTop: 40 }}>
+                <Button testID={'submit'} rounded large onPress={handleSubmit} style={styles.submitButton}>
                   {isSubmitting ? (
                     <ActivityIndicator testID={'loader'} size="small" color="#ffffff" />
                   ) : (
                     <Text>Sign in</Text>
                   )}
                 </Button>
-                <InputError style={{ paddingTop: 10, textAlign: 'center' }} testID={'formError'}>
+                <InputError style={styles.formError} testID={'formError'}>
                   {status}
                 </InputError>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}
-                >
+                <View style={styles.navigationView}>
                   <Button transparent small onPress={() => navigation.navigate(SCREEN_NAMES.AUTH_FORGOT_PASSWORD)}>
                     <Text>Forgot password?</Text>
                   </Button>
@@ -118,7 +114,7 @@ export const Login: React.FC<Props> = ({ loginUser, navigation }) => {
             )
           }}
         </Formik>
-      </Content>
+      </View>
     </Container>
   )
 }

@@ -9,7 +9,6 @@ export default (variables /* : * */ = variable) => {
     },
     height: variables.inputHeightBase,
     color: variables.inputColor,
-    flex: 1,
     fontSize: variables.inputFontSize
   };
 
