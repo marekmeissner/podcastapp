@@ -87,7 +87,12 @@ export const ForgotPassword: React.FC<Props> = ({ forgotPassword, navigation }) 
                 {status}
               </InputError>
               <View style={styles.navigationView}>
-                <Button transparent small onPress={() => navigation.navigate(SCREEN_NAMES.AUTH_LOGIN)}>
+                <Button
+                  testID={'signIn'}
+                  transparent
+                  small
+                  onPress={() => navigation.navigate(SCREEN_NAMES.AUTH_LOGIN)}
+                >
                   <Text>Wanna sign in?</Text>
                 </Button>
               </View>

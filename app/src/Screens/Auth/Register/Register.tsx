@@ -32,7 +32,9 @@ export const Register: React.FC<Props> = ({ registerUser, navigation }) => {
   }
 
   const validationSchema = Yup.object().shape({
-    accountName: Yup.string().required('Required'),
+    accountName: Yup.string()
+      .required('Required')
+      .max(30, 'Must be at most 30 characters'),
     email: Yup.string()
       .matches(EMAIL_REGEX, 'Email address provided is invalid')
       .required('Required'),
@@ -149,7 +151,12 @@ export const Register: React.FC<Props> = ({ registerUser, navigation }) => {
                   {status}
                 </InputError>
                 <View style={styles.navigationView}>
-                  <Button transparent small onPress={() => navigation.navigate(SCREEN_NAMES.AUTH_LOGIN)}>
+                  <Button
+                    testID={'signIn'}
+                    transparent
+                    small
+                    onPress={() => navigation.navigate(SCREEN_NAMES.AUTH_LOGIN)}
+                  >
                     <Text>Already have account?</Text>
                   </Button>
                 </View>
