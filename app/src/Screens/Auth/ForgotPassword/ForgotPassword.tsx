@@ -37,7 +37,7 @@ export const ForgotPassword: React.FC<Props> = ({ forgotPassword, navigation }) 
   })
 
   return (
-    <Container style={{ justifyContent: 'center' }}>
+    <Container style={styles.container}>
       <View style={styles.headerView}>
         <Text uppercase style={styles.headerText}>
           Reset password

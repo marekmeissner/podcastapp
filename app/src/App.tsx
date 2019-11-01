@@ -7,7 +7,7 @@
  */
 
 import React from 'react'
-import { Provider, connect } from 'react-redux'
+import { Provider } from 'react-redux'
 import { StatusBar, StyleSheet, View, SafeAreaView } from 'react-native'
 import SplashScreen from 'react-native-splash-screen'
 
