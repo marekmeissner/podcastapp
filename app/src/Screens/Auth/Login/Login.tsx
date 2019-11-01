@@ -22,7 +22,7 @@ export const Login: React.FC<Props> = ({ loginUser, navigation }) => {
   ) => {
     try {
       await loginUser(credentials)
-      navigation.navigate('Home')
+      navigation.navigate(SCREEN_NAMES.APP_DASHBOARD)
     } catch ({ message }) {
       setStatus(message)
     } finally {
@@ -33,8 +33,8 @@ export const Login: React.FC<Props> = ({ loginUser, navigation }) => {
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .matches(EMAIL_REGEX, 'Email address provided is invalid')
-      .required('Required!'),
-    password: Yup.string().required('Required!'),
+      .required('Required'),
+    password: Yup.string().required('Required'),
   })
 
   return (
@@ -103,10 +103,20 @@ export const Login: React.FC<Props> = ({ loginUser, navigation }) => {
                   {status}
                 </InputError>
                 <View style={styles.navigationView}>
-                  <Button transparent small onPress={() => navigation.navigate(SCREEN_NAMES.AUTH_FORGOT_PASSWORD)}>
+                  <Button
+                    testID={'forgotPassword'}
+                    transparent
+                    small
+                    onPress={() => navigation.navigate(SCREEN_NAMES.AUTH_FORGOT_PASSWORD)}
+                  >
                     <Text>Forgot password?</Text>
                   </Button>
-                  <Button transparent small onPress={() => navigation.navigate(SCREEN_NAMES.AUTH_REGISTER)}>
+                  <Button
+                    testID={'register'}
+                    transparent
+                    small
+                    onPress={() => navigation.navigate(SCREEN_NAMES.AUTH_REGISTER)}
+                  >
                     <Text>Don't have account?</Text>
                   </Button>
                 </View>
