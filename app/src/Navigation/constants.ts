@@ -3,5 +3,5 @@ export enum SCREEN_NAMES {
   AUTH_REGISTER = 'Register',
   AUTH_FORGOT_PASSWORD = 'ForgotPassword',
 
-  APP_DASHBOARD = 'DASHBOARD',
+  APP_DASHBOARD = 'Dashboard',
 }

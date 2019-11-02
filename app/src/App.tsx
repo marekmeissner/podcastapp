@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     elevation: 0,
-    backgroundColor: COLORS.GREY_BG,
+    backgroundColor: COLORS.SPACE,
   },
 })
 class App extends React.Component {

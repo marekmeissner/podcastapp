@@ -393,12 +393,6 @@ export default (variables /* : * */ = variable) => {
         : 10,
     paddingRight: 10,
     justifyContent: 'center',
-    paddingTop: platform === PLATFORM.IOS ? 18 : 0,
-    borderBottomWidth:
-      platform === PLATFORM.IOS
-        ? 1 / PixelRatio.getPixelSizeForLayoutSize(1)
-        : 0,
-    borderBottomColor: variables.toolbarDefaultBorder,
     height:
       variables.platform === PLATFORM.IOS &&
       variables.platformStyle === PLATFORM.MATERIAL
