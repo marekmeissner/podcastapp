@@ -6,5 +6,5 @@ export const COLORS = {
   SPACE: '#161b22',
   PINK: '#C86567',
   RED: '#9E1420',
-  SUCCESS: '#32CD32'
+  SUCCESS: '#32CD32',
 }

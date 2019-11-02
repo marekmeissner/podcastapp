@@ -6,7 +6,7 @@ import { NavigationInjectedProps } from 'react-navigation'
 
 const DashboardHeader: React.FC<NavigationInjectedProps> = () => {
   return (
-    <Header style={styles.header}>
+    <Header style={styles.header} iosBarStyle={'light-content'}>
       <Left style={styles.content}>
         <Button transparent>
           <Image style={styles.image} source={require('@asset/logo.png')} />
