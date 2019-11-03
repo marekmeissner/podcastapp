@@ -9,7 +9,7 @@ const AuthGate: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   const isLoggedIn = useSelector(selectIsLoggedIn)
   useEffect(() => {
     if (isLoggedIn) {
-      navigation.navigate(SCREEN_NAMES.APP_DASHBOARD)
+      navigation.navigate('App')
     } else {
       navigation.navigate(SCREEN_NAMES.AUTH_LOGIN)
     }

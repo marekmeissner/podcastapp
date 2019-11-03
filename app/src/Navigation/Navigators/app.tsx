@@ -1,20 +1,23 @@
+import React from 'react'
+import { NavigationScreenProps } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 
-import { Dashboard } from '@screen/App'
+import { Tabs } from './tabs'
+import Header from '@component/Header/Header'
 
 import { SCREEN_NAMES } from '../constants'
 
 const App = createStackNavigator(
   {
-    Dashboard: {
-      screen: Dashboard,
+    Tabs: {
+      screen: Tabs,
       navigationOptions: {
-        header: null,
+        header: (navigation: NavigationScreenProps) => <Header {...navigation} />,
       },
     },
   },
   {
-    initialRouteName: SCREEN_NAMES.APP_DASHBOARD,
+    initialRouteName: 'Tabs',
   },
 )
 
