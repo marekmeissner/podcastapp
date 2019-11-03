@@ -3,7 +3,6 @@ import { COLORS } from '@util/styles/colors'
 
 const styles = StyleSheet.create({
   footer: {
-    height: 23,
     backgroundColor: COLORS.SPACE,
     borderColor: 'transparent',
     borderTopWidth: 1,

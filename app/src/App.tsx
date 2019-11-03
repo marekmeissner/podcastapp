@@ -27,7 +27,6 @@ export const { store, persistor } = configureStore()
 const styles = StyleSheet.create({
   mainContainer: { flex: 1 },
   innerContainer: {
-    position: 'absolute',
     width: '100%',
     height: '100%',
     elevation: 0,
@@ -53,9 +52,7 @@ class App extends React.Component {
             <View style={styles.innerContainer}>
               <StatusBar barStyle="light-content" />
               <StyleProvider style={getTheme(platform)}>
-                <SafeAreaView style={{ height: '100%' }}>
-                  <AppNavigation ref={this.onInitNavigatonService} uriPrefix="https://" />
-                </SafeAreaView>
+                <AppNavigation ref={this.onInitNavigatonService} uriPrefix="https://" />
               </StyleProvider>
             </View>
           </View>

@@ -8,8 +8,7 @@ export default (variables /* : * */ = variable) => {
   const platform = variables.platform;
   const darkCommon = {
     'NativeBase.Text': {
-      color: variables.brandDark
-    },
+      color: variables.brandDark    },
     'NativeBase.Icon': {
       color: variables.brandDark
     },
@@ -315,7 +314,8 @@ export default (variables /* : * */ = variable) => {
       color: variables.inverseTextColor,
       fontSize: variables.buttonTextSize,
       paddingHorizontal: 16,
-      backgroundColor: 'transparent'
+      backgroundColor: 'transparent',
+      textTransform: 'capitalize'
     },
 
     'NativeBase.Icon': {

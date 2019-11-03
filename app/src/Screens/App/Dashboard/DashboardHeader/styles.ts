@@ -3,7 +3,6 @@ import { COLORS } from '@util/styles/colors'
 
 const styles = StyleSheet.create({
   header: {
-    height: 25,
     backgroundColor: COLORS.SPACE,
     borderBottomWidth: 1,
     borderRadius: 2,
@@ -16,9 +15,6 @@ const styles = StyleSheet.create({
   image: {
     width: 35,
     height: 35,
-  },
-  content: {
-    marginTop: -25,
   },
 })
 

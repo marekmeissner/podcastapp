@@ -391,6 +391,7 @@ export default (variables /* : * */ = variable) => {
       platform === PLATFORM.IOS && variables.platformStyle !== PLATFORM.MATERIAL
         ? 6
         : 10,
+    paddingTop: platform === PLATFORM.IOS ? 18 : 0,
     paddingRight: 10,
     justifyContent: 'center',
     height:
