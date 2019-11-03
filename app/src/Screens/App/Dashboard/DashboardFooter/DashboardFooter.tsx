@@ -1,24 +1,27 @@
 import React from 'react'
 import styles from './styles'
-import { NavigationInjectedProps } from 'react-navigation'
+import { NavigationInjectedProps, NavigationState } from 'react-navigation'
 import { Footer, FooterTab, Button, Icon, Text } from 'native-base'
+import { SCREEN_NAMES } from '@navigation/constants'
 
-const DashboardFooter: React.FC<NavigationInjectedProps> = () => {
+const DashboardFooter: React.FC<NavigationInjectedProps> = ({ navigation, navigationState }) => {
+  const activeRoute = navigation.router.getPathAndParamsForState(navigation.state).path
   return (
     <Footer style={styles.footer}>
       <FooterTab>
-        <Button vertical>
-          <Icon name="home" />
-          <Text>Home</Text>
-        </Button>
-        <Button vertical>
-          <Icon name="analytics" />
-          <Text>Trending</Text>
-        </Button>
-        <Button vertical active>
-          <Icon active name="bookmarks" />
-          <Text>Bookmarks</Text>
-        </Button>
+        {navigation.state.routes.map((route, index) => {
+          return (
+            <Button
+              key={route.routeName}
+              vertical
+              onPress={() => navigation.navigate(route.routeName)}
+              active={activeRoute === route.routeName}
+            >
+              <Icon name="home" />
+              <Text>{route.routeName}</Text>
+            </Button>
+          )
+        })}
       </FooterTab>
     </Footer>
   )

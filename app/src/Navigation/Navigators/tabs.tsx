@@ -1,37 +1,36 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createBottomTabNavigator } from 'react-navigation-tabs'
 
-// import Home from '@screen/App/Home/Home'
-// import Trending from '@screen/App/Trending/Trending'
-// import Bookmarks from '@screen/App/Bookmarks/Bookmarks'
+import Home from '@screen/App/Home/Home'
+import Trending from '@screen/App/Trending/Trending'
+import Bookmarks from '@screen/App/Bookmarks/Bookmarks'
 
-// import DashboardFooter from '@screen/App/Dashboard/DashboardFooter/DashboardFooter'
+import DashboardFooter from '@screen/App/Dashboard/DashboardFooter/DashboardFooter'
+import { COLORS } from '@util/styles/colors'
 
-// import { SCREEN_NAMES } from '../constants'
+const Tabs = createBottomTabNavigator(
+  {
+    Home: {
+      screen: Home,
+      navigationOptions: {
+        tabBarLabel: 'Home',
+      },
+    },
+    Trending: {
+      screen: Trending,
+      navigationOptions: {
+        tabBarLabel: 'Trending',
+      },
+    },
+    Bookmarks: {
+      screen: Bookmarks,
+      navigationOptions: {
+        tabBarLabel: 'Bookmarks',
+      },
+    },
+  },
+  {
+    tabBarComponent: DashboardFooter,
+  },
+)
 
-// const Tabs = createBottomTabNavigator(
-//     {
-//       Home: {
-//         screen: Home,
-//         navigationOptions: {
-//           tabBarLabel: 'Home'
-//         }
-//       },
-//       Trending: {
-//         screen: Trending,
-//         navigationOptions: {
-//           tabBarLabel: 'Trending'
-//         }
-//       },
-//       Bookmarks: {
-//         screen: Bookmarks,
-//         navigationOptions: {
-//           tabBarLabel: 'Bookmarks'
-//         }
-//       }
-//     },
-//     {
-//         tabBarComponent: DashboardFooter,
-//     }
-//   )
-
-//   export default Tabs
+export default Tabs

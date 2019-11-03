@@ -3,5 +3,8 @@ export enum SCREEN_NAMES {
   AUTH_REGISTER = 'Register',
   AUTH_FORGOT_PASSWORD = 'ForgotPassword',
 
-  APP_DASHBOARD = 'Dashboard',
+  APP_HOME = 'Home',
+  APP_TRENDING = 'Trending',
+  APP_BOOKMARKS = 'Bookmarks',
+  APP_TABS = 'Tabs'
 }

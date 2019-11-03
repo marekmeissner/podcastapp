@@ -10,7 +10,6 @@ const Dashboard: React.FC<NavigationInjectedProps> = () => {
     <Container style={styles.container}>
       <DashboardHeader />
       <Content />
-      <DashboardFooter />
     </Container>
   )
 }
