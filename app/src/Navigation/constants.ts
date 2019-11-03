@@ -6,5 +6,5 @@ export enum SCREEN_NAMES {
   APP_HOME = 'Home',
   APP_TRENDING = 'Trending',
   APP_BOOKMARKS = 'Bookmarks',
-  APP_TABS = 'Tabs'
+  APP_TABS = 'Tabs',
 }

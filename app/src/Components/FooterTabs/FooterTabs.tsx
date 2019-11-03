@@ -4,7 +4,7 @@ import { NavigationInjectedProps, NavigationState } from 'react-navigation'
 import { Footer, FooterTab, Button, Icon, Text } from 'native-base'
 import { SCREEN_NAMES } from '@navigation/constants'
 
-const DashboardFooter: React.FC<NavigationInjectedProps> = ({ navigation, navigationState }) => {
+const FooterTabs: React.FC<NavigationInjectedProps> = ({ navigation, navigationState }) => {
   const activeRoute = navigation.router.getPathAndParamsForState(navigation.state).path
   return (
     <Footer style={styles.footer}>
@@ -27,4 +27,4 @@ const DashboardFooter: React.FC<NavigationInjectedProps> = ({ navigation, naviga
   )
 }
 
-export default DashboardFooter
+export default FooterTabs

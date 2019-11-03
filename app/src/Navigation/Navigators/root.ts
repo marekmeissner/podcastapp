@@ -9,7 +9,7 @@ const RootNavigator = createSwitchNavigator({
   AuthGate: AuthGate,
   Auth: Auth,
   App: App,
-  Tabs: TabsNavigation
+  Tabs: TabsNavigation,
 })
 
 export default RootNavigator

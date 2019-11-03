@@ -1,3 +1,4 @@
 import InputError from './InputError/InputError'
+import FooterTabs from './FooterTabs/FooterTabs'
 
-export { InputError }
+export { InputError, FooterTabs }

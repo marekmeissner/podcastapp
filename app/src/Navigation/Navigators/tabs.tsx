@@ -4,7 +4,7 @@ import Home from '@screen/App/Home/Home'
 import Trending from '@screen/App/Trending/Trending'
 import Bookmarks from '@screen/App/Bookmarks/Bookmarks'
 
-import DashboardFooter from '@screen/App/Dashboard/DashboardFooter/DashboardFooter'
+import FooterTabs from '@component/FooterTabs/FooterTabs'
 import { COLORS } from '@util/styles/colors'
 
 const Tabs = createBottomTabNavigator(
@@ -29,7 +29,7 @@ const Tabs = createBottomTabNavigator(
     },
   },
   {
-    tabBarComponent: DashboardFooter,
+    tabBarComponent: FooterTabs,
   },
 )
 
