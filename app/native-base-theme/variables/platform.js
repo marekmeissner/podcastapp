@@ -145,7 +145,7 @@ export default {
   brandLight: '#f4f4f4',
 
   // Container
-  containerBgColor: COLORS.GREY_BG,
+  containerBgColor: COLORS.DARK_BLUE,
 
   // Date Picker
   datePickerFlex: 1,
@@ -193,16 +193,16 @@ export default {
   footerPaddingBottom: 0,
 
   // FooterTab
-  tabBarTextColor: platform === PLATFORM.IOS ? '#6b6b6b' : '#b3c7f9',
-  tabBarTextSize: platform === PLATFORM.IOS ? 14 : 11,
+  tabBarTextColor: COLORS.WHITE,
+  tabBarTextSize: 13,
   activeTab: platform === PLATFORM.IOS ? '#007aff' : '#fff',
   sTabBarActiveTextColor: '#007aff',
-  tabBarActiveTextColor: platform === PLATFORM.IOS ? '#007aff' : '#fff',
-  tabActiveBgColor: platform === PLATFORM.IOS ? '#cde1f9' : '#3F51B5',
+  tabBarActiveTextColor: COLORS.PRIMARY,
+  tabActiveBgColor: 'transparent',
 
   // Header
-  toolbarBtnColor: platform === PLATFORM.IOS ? '#007aff' : '#fff',
-  toolbarDefaultBg: platform === PLATFORM.IOS ? '#F8F8F8' : '#3F51B5',
+  toolbarBtnColor: COLORS.WHITE,
+  toolbarDefaultBg: COLORS.SPACE,
   toolbarHeight: platform === PLATFORM.IOS ? 64 : 56,
   toolbarSearchIconSize: platform === PLATFORM.IOS ? 20 : 23,
   toolbarInputColor: platform === PLATFORM.IOS ? '#CECDD2' : '#fff',
@@ -210,7 +210,7 @@ export default {
   searchBarInputHeight: platform === PLATFORM.IOS ? 30 : 50,
   toolbarBtnTextColor: platform === PLATFORM.IOS ? '#007aff' : '#fff',
   toolbarDefaultBorder: platform === PLATFORM.IOS ? '#a7a6ab' : '#3F51B5',
-  iosStatusbar: platform === PLATFORM.IOS ? 'dark-content' : 'light-content',
+  iosStatusbar: 'light-content',
   get statusBarColor() {
     return color(this.toolbarDefaultBg)
       .darken(0.2)
@@ -225,7 +225,7 @@ export default {
   // Icon
   iconFamily: 'Ionicons',
   iconFontSize: platform === PLATFORM.IOS ? 30 : 28,
-  iconHeaderSize: platform === PLATFORM.IOS ? 33 : 24,
+  iconHeaderSize: 25,
 
   // InputGroup
   inputFontSize: 17,

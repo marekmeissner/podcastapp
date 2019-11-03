@@ -9,6 +9,7 @@ import { Formik, FormikActions } from 'formik'
 import * as Yup from 'yup'
 import { InputError } from '@component'
 import { EMAIL_REGEX } from '@util/constants/constants'
+import { COLORS } from '@util/styles/colors'
 import { SCREEN_NAMES } from '@navigation/constants'
 
 interface Props extends NavigationInjectedProps {
@@ -22,7 +23,7 @@ export const ForgotPassword: React.FC<Props> = ({ forgotPassword, navigation }) 
     setSubmitting(true)
     try {
       await forgotPassword(email)
-      setStatus(<Text style={{ color: '#32CD32', fontSize: 13 }}>Email has been sent!</Text>)
+      setStatus(<Text style={{ color: COLORS.SUCCESS, fontSize: 13 }}>Email has been sent!</Text>)
     } catch ({ message }) {
       setStatus(message)
     } finally {
