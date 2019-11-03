@@ -1,8 +1,12 @@
 import React from 'react'
-import { Text } from 'native-base'
+import { Container, Text } from 'native-base'
 
 const Bookmarks: React.FC = () => {
-  return <Text>Bookmarks</Text>
+  return (
+    <Container>
+      <Text>Bookmarks</Text>
+    </Container>
+  )
 }
 
 export default Bookmarks

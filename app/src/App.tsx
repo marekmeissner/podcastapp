@@ -12,7 +12,7 @@ import { StatusBar, StyleSheet, View, SafeAreaView } from 'react-native'
 import SplashScreen from 'react-native-splash-screen'
 
 import configureStore from './Store'
-import { StyleProvider } from 'native-base'
+import { StyleProvider, Container } from 'native-base'
 import getTheme from '../native-base-theme/components'
 import platform from '../native-base-theme/variables/platform'
 import NavigationService from '@util/navigationService/navigationService'
@@ -24,15 +24,6 @@ import { COLORS } from '@util/styles/colors'
 
 export const { store, persistor } = configureStore()
 
-const styles = StyleSheet.create({
-  mainContainer: { flex: 1 },
-  innerContainer: {
-    width: '100%',
-    height: '100%',
-    elevation: 0,
-    backgroundColor: COLORS.DARK_BLUE,
-  },
-})
 class App extends React.Component {
   componentDidMount() {
     SplashScreen.hide()
@@ -48,14 +39,10 @@ class App extends React.Component {
     return (
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-          <View style={styles.mainContainer}>
-            <View style={styles.innerContainer}>
-              <StatusBar barStyle="light-content" />
-              <StyleProvider style={getTheme(platform)}>
-                <AppNavigation ref={this.onInitNavigatonService} uriPrefix="https://" />
-              </StyleProvider>
-            </View>
-          </View>
+          <StatusBar barStyle="light-content" />
+          <StyleProvider style={getTheme(platform)}>
+            <AppNavigation ref={this.onInitNavigatonService} uriPrefix="https://" />
+          </StyleProvider>
         </PersistGate>
       </Provider>
     )

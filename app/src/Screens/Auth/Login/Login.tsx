@@ -22,7 +22,7 @@ export const Login: React.FC<Props> = ({ loginUser, navigation }) => {
   ) => {
     try {
       await loginUser(credentials)
-      navigation.navigate(SCREEN_NAMES.APP_DASHBOARD)
+      navigation.navigate(SCREEN_NAMES.APP_TABS)
     } catch ({ message }) {
       setStatus(message)
     } finally {

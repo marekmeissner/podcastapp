@@ -1,12 +1,12 @@
 import React from 'react'
 import { Container, Text } from 'native-base'
 
-const Trending: React.FC = () => {
+const Studio: React.FC = () => {
   return (
     <Container>
-      <Text>Trending</Text>
+      <Text>Studio</Text>
     </Container>
   )
 }
 
-export default Trending
+export default Studio
