@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     shadowColor: COLORS.SPACE,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
-    shadowRadius: 5
+    shadowRadius: 5,
   },
 })
 

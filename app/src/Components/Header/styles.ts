@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: COLORS.SPACE,
     borderBottomWidth: 1,
-    borderBottomWidth: 0,
+    borderTopWidth: 0,
     shadowColor: COLORS.SPACE,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,

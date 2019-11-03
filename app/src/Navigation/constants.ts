@@ -9,5 +9,5 @@ export enum SCREEN_NAMES {
   APP_TABS = 'Tabs',
 
   APP_ACCOUNT = 'Account',
-  APP_STUDIO = 'Studio'
+  APP_STUDIO = 'Studio',
 }

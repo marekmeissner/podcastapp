@@ -7,7 +7,7 @@ import App from './app'
 const RootNavigator = createSwitchNavigator({
   AuthGate: AuthGate,
   Auth: Auth,
-  App: App
+  App: App,
 })
 
 export default RootNavigator
