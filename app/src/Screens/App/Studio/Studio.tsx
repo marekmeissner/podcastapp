@@ -1,12 +1,9 @@
 import React from 'react'
-import { Container, Text } from 'native-base'
+import Welcome from './Welcome/Welcome'
 
 const Studio: React.FC = () => {
-  return (
-    <Container>
-      <Text>Studio</Text>
-    </Container>
-  )
+  const [selected, setSelected] = React.useState()
+  return <>{!selected ? <Welcome /> : null}</>
 }
 
 export default Studio
