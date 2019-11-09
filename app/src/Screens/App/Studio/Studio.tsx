@@ -3,7 +3,7 @@ import Welcome from './Welcome/Welcome'
 
 const Studio: React.FC = () => {
   const [selected, setSelected] = React.useState()
-  return <>{!selected ? <Welcome /> : null}</>
+  return <>{!selected ? <Welcome setSelected={setSelected} /> : null}</>
 }
 
 export default Studio

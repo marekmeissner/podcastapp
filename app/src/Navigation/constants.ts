@@ -10,4 +10,8 @@ export enum SCREEN_NAMES {
 
   APP_ACCOUNT = 'Account',
   APP_STUDIO = 'Studio',
+
+  STUDIO_AUDIO = 'Audio',
+  STUDIO_VIDEO = 'Video',
+  STUDIO_UPLOAD = 'Upload',
 }
