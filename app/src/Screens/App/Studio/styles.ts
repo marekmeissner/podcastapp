@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    width: '90%',
+    width: '75%',
   },
   brick: {
     display: 'flex',

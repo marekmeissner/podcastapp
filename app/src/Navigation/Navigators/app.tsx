@@ -16,13 +16,6 @@ const App = createStackNavigator(
         header: (navigation: NavigationScreenProps) => <Header {...navigation} />,
       },
     },
-    Audio: {
-      screen: AudioRecorder,
-      navigationOptions: {
-        headerTintColor: COLORS.WHITE,
-        headerTransparent: true,
-      },
-    },
   },
   {
     initialRouteName: 'Tabs',

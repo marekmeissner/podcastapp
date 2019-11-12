@@ -31,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
       // packages.add(new MyReactNativePackage());
       packages.add(new RNFirebaseAuthPackage());
       packages.add(new RNFirebaseFirestorePackage());
+      packages.add(new DocumentPickerPackage());
       return packages;
     }
 
