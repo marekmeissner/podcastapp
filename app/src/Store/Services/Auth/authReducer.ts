@@ -1,9 +1,8 @@
 import firebase from 'react-native-firebase'
-import { AuthState, AuthActions, AUTH_ACTIONS, UserCredentials, UserSignUpCredentials } from './types'
+import { AuthState, AuthActions, AUTH_ACTIONS, User, UserCredentials, UserSignUpCredentials } from './types'
 import { Dispatch } from 'redux'
 import { RootState } from '../rootReducer'
 import AuthService from './authService'
-import { User } from './types'
 
 export const AuthInitialState: AuthState = {
   user: null,

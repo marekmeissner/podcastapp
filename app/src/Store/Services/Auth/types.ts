@@ -22,7 +22,7 @@ export interface UserSignUpCredentials {
 }
 
 export interface User {
-  uid: strin
+  uid: string
   email: string
   accountName: string
 }
