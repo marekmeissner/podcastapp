@@ -26,7 +26,7 @@ const Studio: React.FC<NavigationInjectedProps> = ({ navigation }) => {
     <Container style={styles.container}>
       <Button onPress={() => pickFile()} style={styles.upload}>
         <Icon type="FontAwesome5" name="upload" style={styles.icon} />
-        <Text>Upload audio</Text>
+        <Text>Pick audio</Text>
       </Button>
     </Container>
   )
