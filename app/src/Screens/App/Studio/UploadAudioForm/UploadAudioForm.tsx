@@ -1,23 +1,42 @@
 import React from 'react'
 import styles from './styles'
 import { View, ActivityIndicator } from 'react-native'
-import { Container, Item, Input, Textarea, Button, Text, Form, Label } from 'native-base'
-import { Formik, FormikActions } from 'formik'
+import { Container, Item, Input, Button, Text, Form, Label } from 'native-base'
+import { Formik } from 'formik'
 import * as Yup from 'yup'
-import { InputError } from '@component'
+import { InputError, UploadImage } from '@component'
 import { connect } from 'react-redux'
 import { selectUser } from '@service/Auth/authReducer'
 import { User } from '@service/Auth/types'
 import { RootState } from '@service/rootReducer'
 import { NavigationInjectedProps } from 'react-navigation'
+import DocumentPicker from 'react-native-document-picker'
 
 interface Props extends NavigationInjectedProps {
   user: User | null
 }
 
 const UploadAudioForm: React.FC<Props> = ({ navigation }) => {
-  const handleUpload = () => {
+  const [avatar, setAvatar] = React.useState(
+    'http://fioextremadura.es/wp-content/uploads/placeholder-blue-800x600px.png',
+  )
+
+  const handleSubmit = () => {
     console.warn(navigation.getParam('audio', undefined))
+  }
+
+  const onUpload = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.images],
+      })
+      setAvatar(res.uri)
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+      } else {
+        throw err
+      }
+    }
   }
 
   const validationSchema = Yup.object().shape({
@@ -33,11 +52,14 @@ const UploadAudioForm: React.FC<Props> = ({ navigation }) => {
           description: '',
         }}
         validationSchema={validationSchema}
-        onSubmit={handleUpload}
+        onSubmit={handleSubmit}
       >
         {({ handleChange, handleSubmit, values, setFieldTouched, errors, touched, isSubmitting, status }) => {
           return (
             <Form style={styles.form}>
+              <UploadImage avatar={avatar} onUpload={onUpload} square large style={{ marginTop: 20 }}>
+                Upload audio thumbnail
+              </UploadImage>
               <View style={styles.inputView}>
                 <Item floatingLabel error={touched.title && !!errors.title}>
                   <Label>Title</Label>
@@ -55,18 +77,18 @@ const UploadAudioForm: React.FC<Props> = ({ navigation }) => {
                   </InputError>
                 )}
               </View>
-              <View style={styles.inputView}>
-                <Item floatingLabel error={touched.description && !!errors.description}>
+              <View style={styles.textareaView}>
+                <Item floatingLabel style={{ height: '100%' }} error={touched.description && !!errors.description}>
                   <Label>Description</Label>
-                  <Textarea
+                  <Input
                     testID={'description'}
                     onChangeText={handleChange('description')}
                     value={values.description}
                     onBlur={() => setFieldTouched('description')}
-                    rowSpan={20}
-                    bordered={false}
-                    underline={false}
                     autoCapitalize="none"
+                    multiline
+                    numberOfLines={5}
+                    style={{ height: 120 }}
                   />
                 </Item>
                 {errors.description && touched.description && (
@@ -79,7 +101,7 @@ const UploadAudioForm: React.FC<Props> = ({ navigation }) => {
                 {isSubmitting ? (
                   <ActivityIndicator testID={'loader'} size="small" color="#ffffff" />
                 ) : (
-                  <Text>Upload</Text>
+                  <Text>Add audio</Text>
                 )}
               </Button>
               <InputError style={styles.formError} testID={'formError'}>
