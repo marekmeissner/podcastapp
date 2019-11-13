@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavigationScreenProps } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
-import AudioRecorder from '@screen/App/Studio/AudioRecorder/AudioRecorder'
+import UploadAudioForm from '@screen/App/Studio/UploadAudioForm/UploadAudioForm'
 
 import { Tabs } from './tabs'
 import Header from '@component/Header/Header'
@@ -14,6 +14,14 @@ const App = createStackNavigator(
       screen: Tabs,
       navigationOptions: {
         header: (navigation: NavigationScreenProps) => <Header {...navigation} />,
+      },
+    },
+    AudioUpload: {
+      screen: UploadAudioForm,
+      navigationOptions: {
+        title: 'Upload form',
+        headerTintColor: COLORS.WHITE,
+        headerTransparent: true,
       },
     },
   },
