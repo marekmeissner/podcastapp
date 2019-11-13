@@ -1,6 +1,7 @@
 import firebase from 'react-native-firebase'
 import { Dispatch } from 'redux'
 import { AudioState, AUDIO_ACTIONS, AudioActions, Audio } from './types'
+import { omit } from 'lodash'
 
 export const AudioInitialState: AudioState = {
   collection: [],
@@ -22,8 +23,16 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
 }
 
 export const addAudio = (uid: string, data: Audio) => {
-  return (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch) => {
     try {
+      await firebase
+        .firestore()
+        .doc(`audios/${uid}/audio/${data.id}`)
+        .set(omit(data, 'details'))
+      await firebase
+        .firestore()
+        .doc(`audios/${uid}/audio/${data.id}/details/details`)
+        .set(data.details)
     } catch (err) {
       throw new Error(err)
     }

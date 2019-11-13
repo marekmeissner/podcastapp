@@ -10,12 +10,17 @@ export interface AudioState {
 }
 
 export interface Audio {
+  id: string
   thumbnail: string | null
-  audio: string | null
-  created: string
   title: string
-  description: string
-  ratings: boolean
+  author: string
+  views: number
+  details: {
+    description: string
+    ratings: boolean
+    audio: string | null
+    created: string
+  }
 }
 
 export interface AddNewAudio extends Audio {

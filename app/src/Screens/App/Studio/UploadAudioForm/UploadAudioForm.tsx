@@ -5,7 +5,7 @@ import { View, ActivityIndicator } from 'react-native'
 import { Container, Item, Input, Button, Text, Form, Label } from 'native-base'
 import { Formik, FormikActions } from 'formik'
 import * as Yup from 'yup'
-import { InputError, UploadImage } from '@component'
+import { InputError, UploadImage, ProgressScreen } from '@component'
 import { useSelector } from 'react-redux'
 import { selectUser } from '@service/Auth/authReducer'
 import { addAudio } from '@service/Audio/audioReducer'
@@ -28,20 +28,25 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
   }
 
   const handleSubmit = async (
-    values: Pick<Audio, 'title' | 'description'>,
-    { setSubmitting, setStatus }: FormikActions<Pick<Audio, 'title' | 'description'>>,
+    values: { title: string; description: string },
+    { setSubmitting, setStatus }: FormikActions<{ title: string; description: string }>,
   ) => {
     try {
       const thumbnail = await AudioService.saveFile(user.uid, avatar)
       const audio = await AudioService.saveFile(user.uid, navigation.getParam('audio', undefined), uploadProgress)
 
       const data: Audio = {
+        id: audio.metadata.generation,
         title: values.title,
-        description: values.description,
-        created: audio.metadata.timeCreated,
-        audio: audio.downloadURL,
         thumbnail: thumbnail.downloadURL,
-        ratings: true,
+        author: user.accountName,
+        views: 0,
+        details: {
+          audio: audio.downloadURL,
+          ratings: true,
+          description: values.description,
+          created: audio.metadata.timeCreated,
+        },
       }
 
       await addAudio(user.uid, data)
@@ -72,73 +77,76 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
   })
 
   return (
-    <Container>
-      <Formik
-        initialValues={{
-          title: '',
-          description: '',
-        }}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ handleChange, handleSubmit, values, setFieldTouched, errors, touched, isSubmitting, status }) => {
-          return (
-            <Form style={styles.form}>
-              <UploadImage avatar={avatar.uri} onUpload={onUpload} square large style={{ marginTop: 20 }}>
-                Upload audio thumbnail
-              </UploadImage>
-              <View style={styles.inputView}>
-                <Item floatingLabel error={touched.title && !!errors.title}>
-                  <Label>Title</Label>
-                  <Input
-                    testID={'title'}
-                    onChangeText={handleChange('title')}
-                    value={values.title}
-                    onBlur={() => setFieldTouched('title')}
-                    autoCapitalize="none"
-                  />
-                </Item>
-                {errors.title && touched.title && (
-                  <InputError style={styles.inputError} testID={'accountNameError'}>
-                    {errors.title}
-                  </InputError>
-                )}
-              </View>
-              <View style={styles.textareaView}>
-                <Item floatingLabel style={{ height: '100%' }} error={touched.description && !!errors.description}>
-                  <Label>Description</Label>
-                  <Input
-                    testID={'description'}
-                    onChangeText={handleChange('description')}
-                    value={values.description}
-                    onBlur={() => setFieldTouched('description')}
-                    autoCapitalize="none"
-                    multiline
-                    numberOfLines={5}
-                    style={{ height: 120 }}
-                  />
-                </Item>
-                {errors.description && touched.description && (
-                  <InputError style={styles.inputError} testID={'emailError'}>
-                    {errors.description}
-                  </InputError>
-                )}
-              </View>
-              <Button testID={'submit'} rounded large onPress={handleSubmit} style={styles.submitButton}>
-                {isSubmitting ? (
-                  <ActivityIndicator testID={'loader'} size="small" color="#ffffff" />
-                ) : (
-                  <Text>Add audio</Text>
-                )}
-              </Button>
-              <InputError style={styles.formError} testID={'formError'}>
-                {status}
-              </InputError>
-            </Form>
-          )
-        }}
-      </Formik>
-    </Container>
+    <>
+      <Container>
+        <Formik
+          initialValues={{
+            title: '',
+            description: '',
+          }}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ handleChange, handleSubmit, values, setFieldTouched, errors, touched, isSubmitting, status }) => {
+            return (
+              <Form style={styles.form}>
+                <UploadImage avatar={avatar.uri} onUpload={onUpload} square large style={{ marginTop: 20 }}>
+                  Upload audio thumbnail
+                </UploadImage>
+                <View style={styles.inputView}>
+                  <Item floatingLabel error={touched.title && !!errors.title}>
+                    <Label>Title</Label>
+                    <Input
+                      testID={'title'}
+                      onChangeText={handleChange('title')}
+                      value={values.title}
+                      onBlur={() => setFieldTouched('title')}
+                      autoCapitalize="none"
+                    />
+                  </Item>
+                  {errors.title && touched.title && (
+                    <InputError style={styles.inputError} testID={'accountNameError'}>
+                      {errors.title}
+                    </InputError>
+                  )}
+                </View>
+                <View style={styles.textareaView}>
+                  <Item floatingLabel style={{ height: '100%' }} error={touched.description && !!errors.description}>
+                    <Label>Description</Label>
+                    <Input
+                      testID={'description'}
+                      onChangeText={handleChange('description')}
+                      value={values.description}
+                      onBlur={() => setFieldTouched('description')}
+                      autoCapitalize="none"
+                      multiline
+                      numberOfLines={5}
+                      style={{ height: 120 }}
+                    />
+                  </Item>
+                  {errors.description && touched.description && (
+                    <InputError style={styles.inputError} testID={'emailError'}>
+                      {errors.description}
+                    </InputError>
+                  )}
+                </View>
+                <Button testID={'submit'} rounded large onPress={handleSubmit} style={styles.submitButton}>
+                  {isSubmitting ? (
+                    <ActivityIndicator testID={'loader'} size="small" color="#ffffff" />
+                  ) : (
+                    <Text>Add audio</Text>
+                  )}
+                </Button>
+                <InputError style={styles.formError} testID={'formError'}>
+                  {status}
+                </InputError>
+              </Form>
+            )
+          }}
+        </Formik>
+      </Container>
+      <ProgressScreen progress={0} title={'Uploading...'} />
+    </>
   )
 }
 
