@@ -5,7 +5,11 @@ import { RootState } from '../rootReducer'
 import AuthService from './authService'
 
 export const AuthInitialState: AuthState = {
-  user: null,
+  user: {
+    uid: '',
+    email: '',
+    accountName: '',
+  },
   isLoggedIn: false,
 }
 
@@ -28,7 +32,7 @@ export const authReducer = (state: AuthState = AuthInitialState, action: AuthAct
   }
 }
 
-export const setUser = (user: User) => ({
+export const setUser = (user: any) => ({
   type: AUTH_ACTIONS.SET_USER,
   user,
 })

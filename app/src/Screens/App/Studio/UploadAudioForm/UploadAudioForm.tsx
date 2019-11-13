@@ -1,28 +1,55 @@
 import React from 'react'
 import styles from './styles'
+import { connect } from 'react-redux'
 import { View, ActivityIndicator } from 'react-native'
 import { Container, Item, Input, Button, Text, Form, Label } from 'native-base'
-import { Formik } from 'formik'
+import { Formik, FormikActions } from 'formik'
 import * as Yup from 'yup'
 import { InputError, UploadImage } from '@component'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { selectUser } from '@service/Auth/authReducer'
-import { User } from '@service/Auth/types'
-import { RootState } from '@service/rootReducer'
+import { addAudio } from '@service/Audio/audioReducer'
 import { NavigationInjectedProps } from 'react-navigation'
 import DocumentPicker from 'react-native-document-picker'
+import AudioService from '@service/Audio/audioService'
+import { UploadTaskSnapshot, Audio } from '@service/Audio/types'
+import { DEFAULT_AUDIO_IMAGE } from '@util/constants/constants'
 
 interface Props extends NavigationInjectedProps {
-  user: User | null
+  addAudio: (uid: string, data: Audio) => Promise<void>
 }
 
-const UploadAudioForm: React.FC<Props> = ({ navigation }) => {
-  const [avatar, setAvatar] = React.useState(
-    'http://fioextremadura.es/wp-content/uploads/placeholder-blue-800x600px.png',
-  )
+const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
+  const [avatar, setAvatar] = React.useState(DEFAULT_AUDIO_IMAGE)
+  const user = useSelector(selectUser)
 
-  const handleSubmit = () => {
-    console.warn(navigation.getParam('audio', undefined))
+  const uploadProgress = (snapshot: UploadTaskSnapshot) => {
+    const percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+  }
+
+  const handleSubmit = async (
+    values: Pick<Audio, 'title' | 'description'>,
+    { setSubmitting, setStatus }: FormikActions<Pick<Audio, 'title' | 'description'>>,
+  ) => {
+    try {
+      const thumbnail = await AudioService.saveFile(user.uid, avatar)
+      const audio = await AudioService.saveFile(user.uid, navigation.getParam('audio', undefined), uploadProgress)
+
+      const data: Audio = {
+        title: values.title,
+        description: values.description,
+        created: audio.metadata.timeCreated,
+        audio: audio.downloadURL,
+        thumbnail: thumbnail.downloadURL,
+        ratings: true,
+      }
+
+      await addAudio(user.uid, data)
+    } catch ({ message }) {
+      setStatus(message)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const onUpload = async () => {
@@ -30,7 +57,7 @@ const UploadAudioForm: React.FC<Props> = ({ navigation }) => {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.images],
       })
-      setAvatar(res.uri)
+      setAvatar(res)
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
       } else {
@@ -57,7 +84,7 @@ const UploadAudioForm: React.FC<Props> = ({ navigation }) => {
         {({ handleChange, handleSubmit, values, setFieldTouched, errors, touched, isSubmitting, status }) => {
           return (
             <Form style={styles.form}>
-              <UploadImage avatar={avatar} onUpload={onUpload} square large style={{ marginTop: 20 }}>
+              <UploadImage avatar={avatar.uri} onUpload={onUpload} square large style={{ marginTop: 20 }}>
                 Upload audio thumbnail
               </UploadImage>
               <View style={styles.inputView}>
@@ -115,6 +142,7 @@ const UploadAudioForm: React.FC<Props> = ({ navigation }) => {
   )
 }
 
-export default connect((state: RootState) => ({
-  user: selectUser(state),
-}))(UploadAudioForm)
+export default connect(
+  null,
+  { addAudio },
+)(UploadAudioForm)

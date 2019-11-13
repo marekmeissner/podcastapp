@@ -1,6 +1,6 @@
 import firebase from 'react-native-firebase'
 import { Dispatch } from 'redux'
-import { Audio, AudioState, AUDIO_ACTIONS, AudioActions } from './types'
+import { AudioState, AUDIO_ACTIONS, AudioActions, Audio } from './types'
 
 export const AudioInitialState: AudioState = {
   collection: [],
@@ -21,14 +21,9 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
   }
 }
 
-export const saveAudio = (uid: string, audio: Audio) => {
-  return async (dispatch: Dispatch) => {
+export const addAudio = (uid: string, data: Audio) => {
+  return (dispatch: Dispatch) => {
     try {
-      const storageRef = firebase.storage().ref()
-      const ref = storageRef.child(uid).child(res.name)
-      await ref.putFile(res.uri).then(res => {
-        console.warn(res.metadata.generation)
-      })
     } catch (err) {
       throw new Error(err)
     }
