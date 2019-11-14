@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    width: '100%'
+    width: '100%',
   },
   title: {
     paddingBottom: 20,

@@ -10,10 +10,10 @@ import { InputError, UploadImage, ProgressScreen } from '@component'
 import { useSelector } from 'react-redux'
 import { selectUser } from '@service/Auth/authReducer'
 import { addAudio } from '@service/Audio/audioReducer'
-import { NavigationInjectedProps, NavigationActions } from 'react-navigation'
+import { NavigationInjectedProps } from 'react-navigation'
 import DocumentPicker from 'react-native-document-picker'
 import AudioService from '@service/Audio/audioService'
-import { DEFAULT_AUDIO_IMAGE } from '@util/constants/constants'
+import { DEFAULT_AUDIO_IMAGE, MAX_FILE_SIZE } from '@util/constants/constants'
 import { Audio } from '@service/Audio/types'
 import { SCREEN_NAMES } from '@navigation/constants'
 
@@ -30,7 +30,7 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
 
   const uploadProgress = (snapshot: UploadTaskSnapshot) => {
     const percentage = (snapshot.bytesTransferred * 100) / snapshot.totalBytes
-    setPercentage(Math.ceil(percentage) - 1)
+    setPercentage(percentage > 0 ? Math.ceil(percentage) - 1 : 0)
   }
 
   const handleSubmit = async (
@@ -38,9 +38,14 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
     { setSubmitting, setStatus }: FormikActions<{ title: string; description: string }>,
   ) => {
     try {
+      if (!avatar.size) {
+        return setStatus('You must pick thumbnail!')
+      } else if (avatar.size > MAX_FILE_SIZE) {
+        return setStatus('Thumbnail size must be up to 2MB!')
+      }
       setLoader(true)
-      const thumbnail = await AudioService.saveFile(user.uid, avatar)
       const audio = await AudioService.saveFile(user.uid, navigation.getParam('audio', undefined), uploadProgress)
+      const thumbnail = await AudioService.saveFile(user.uid, avatar)
       const data: Audio = {
         id: audio.metadata.generation,
         title: values.title,
@@ -57,12 +62,14 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
 
       await addAudio(user.uid, data)
       setPercentage(100)
-    } catch ({ message }) {
-      setStatus(message)
-    } finally {
       setTimeout(() => {
         setLoader(false)
+        navigation.navigate(SCREEN_NAMES.APP_TABS)
       }, 1000)
+    } catch ({ message }) {
+      setStatus(message)
+      setLoader(false)
+    } finally {
       setSubmitting(false)
     }
   }
@@ -82,6 +89,9 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
   }
 
   const validationSchema = Yup.object().shape({
+    avatar: Yup.object().shape({
+      size: Yup.number().max(2000, 'To big file'),
+    }),
     title: Yup.string().required('Required'),
     description: Yup.string(),
   })
@@ -91,6 +101,9 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
       <Container>
         <Formik
           initialValues={{
+            avatar: {
+              size: 0,
+            },
             title: '',
             description: '',
           }}
@@ -100,7 +113,15 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
           {({ handleChange, handleSubmit, values, setFieldTouched, errors, touched, isSubmitting, status }) => {
             return (
               <Form style={styles.form}>
-                <UploadImage avatar={avatar.uri} onUpload={onUpload} square large style={{ marginTop: 20 }}>
+                <UploadImage
+                  testID={'avatar'}
+                  avatar={avatar.uri}
+                  onChange={handleChange}
+                  onUpload={onUpload}
+                  square
+                  large
+                  style={{ marginTop: 20 }}
+                >
                   Upload audio thumbnail
                 </UploadImage>
                 <View style={styles.inputView}>

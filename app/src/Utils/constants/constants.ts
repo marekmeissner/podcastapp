@@ -7,3 +7,5 @@ export const DEFAULT_AUDIO_IMAGE = {
   uri: 'http://fioextremadura.es/wp-content/uploads/placeholder-blue-800x600px.png',
   name: 'default_avatar',
 }
+
+export const MAX_FILE_SIZE = 2 * 1024 * 1024
