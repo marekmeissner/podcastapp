@@ -1,6 +1,5 @@
 import firebase from 'react-native-firebase'
 import { DocumentPickerResponse } from 'react-native-document-picker'
-import { UploadTaskSnapshot } from './types'
 import uuid from 'uuid'
 
 class AudioService {
@@ -11,7 +10,7 @@ class AudioService {
     callback &&
       call.on(
         firebase.storage.TaskEvent.STATE_CHANGED,
-        function progress(snapshot: UploadTaskSnapshot) {
+        function progress(snapshot) {
           callback(snapshot)
         },
         function error(err: { message: string }) {

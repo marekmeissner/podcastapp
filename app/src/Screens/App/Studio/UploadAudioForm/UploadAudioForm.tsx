@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './styles'
 import { connect } from 'react-redux'
 import { View, ActivityIndicator } from 'react-native'
+import { UploadTaskSnapshot } from 'react-native-firebase/storage'
 import { Container, Item, Input, Button, Text, Form, Label } from 'native-base'
 import { Formik, FormikActions } from 'formik'
 import * as Yup from 'yup'
@@ -9,11 +10,12 @@ import { InputError, UploadImage, ProgressScreen } from '@component'
 import { useSelector } from 'react-redux'
 import { selectUser } from '@service/Auth/authReducer'
 import { addAudio } from '@service/Audio/audioReducer'
-import { NavigationInjectedProps } from 'react-navigation'
+import { NavigationInjectedProps, NavigationActions } from 'react-navigation'
 import DocumentPicker from 'react-native-document-picker'
 import AudioService from '@service/Audio/audioService'
-import { UploadTaskSnapshot, Audio } from '@service/Audio/types'
 import { DEFAULT_AUDIO_IMAGE } from '@util/constants/constants'
+import { Audio } from '@service/Audio/types'
+import { SCREEN_NAMES } from '@navigation/constants'
 
 interface Props extends NavigationInjectedProps {
   addAudio: (uid: string, data: Audio) => Promise<void>
@@ -21,10 +23,14 @@ interface Props extends NavigationInjectedProps {
 
 const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
   const [avatar, setAvatar] = React.useState(DEFAULT_AUDIO_IMAGE)
+  const [percentage, setPercentage] = React.useState(0)
+  const [loader, setLoader] = React.useState(false)
+
   const user = useSelector(selectUser)
 
   const uploadProgress = (snapshot: UploadTaskSnapshot) => {
-    const percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+    const percentage = (snapshot.bytesTransferred * 100) / snapshot.totalBytes
+    setPercentage(Math.ceil(percentage) - 1)
   }
 
   const handleSubmit = async (
@@ -32,9 +38,9 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
     { setSubmitting, setStatus }: FormikActions<{ title: string; description: string }>,
   ) => {
     try {
+      setLoader(true)
       const thumbnail = await AudioService.saveFile(user.uid, avatar)
       const audio = await AudioService.saveFile(user.uid, navigation.getParam('audio', undefined), uploadProgress)
-
       const data: Audio = {
         id: audio.metadata.generation,
         title: values.title,
@@ -50,9 +56,13 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
       }
 
       await addAudio(user.uid, data)
+      setPercentage(100)
     } catch ({ message }) {
       setStatus(message)
     } finally {
+      setTimeout(() => {
+        setLoader(false)
+      }, 1000)
       setSubmitting(false)
     }
   }
@@ -145,7 +155,9 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
           }}
         </Formik>
       </Container>
-      <ProgressScreen progress={0} title={'Uploading...'} />
+      {loader && (
+        <ProgressScreen progress={percentage} title={percentage === 100 ? 'Upload succeeded!' : 'Uploading...'} />
+      )}
     </>
   )
 }
