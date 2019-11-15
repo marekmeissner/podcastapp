@@ -25,12 +25,12 @@ export interface Audio {
 }
 
 export interface AddNewAudio {
-   title: string
-   description: string 
-   ratings: boolean 
-   donations: boolean 
-  }
-  
+  title: string
+  description: string
+  ratings: boolean
+  donations: boolean
+}
+
 export interface AudioSave {
   type: AUDIO_ACTIONS.SAVE
   audio: Audio
