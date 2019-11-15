@@ -8,4 +8,4 @@ export const DEFAULT_AUDIO_IMAGE = {
   name: 'default_avatar',
 }
 
-export const MAX_FILE_SIZE = 2 * 1024 * 1024
+export const MAX_THUMBNAIL_SIZE = 2 * 1024 * 1024

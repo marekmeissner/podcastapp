@@ -18,14 +18,19 @@ export interface Audio {
   details: {
     description: string
     ratings: boolean
+    donations: boolean
     audio: string | null
     created: string
   }
 }
 
-export interface AddNewAudio extends Audio {
-  audioFile: DocumentPickerResponse
-}
+export interface AddNewAudio {
+   title: string
+   description: string 
+   ratings: boolean 
+   donations: boolean 
+  }
+  
 export interface AudioSave {
   type: AUDIO_ACTIONS.SAVE
   audio: Audio

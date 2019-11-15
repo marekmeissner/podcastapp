@@ -13,6 +13,7 @@ import com.facebook.soloader.SoLoader;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import io.invertase.firebase.firestore.RNFirebaseFirestorePackage;
 import io.invertase.firebase.storage.RNFirebaseStoragePackage;
+import io.github.elyx0.reactnativedocumentpicker.DocumentPickerPackage;
 
 import java.util.List;
 
@@ -32,8 +33,8 @@ public class MainApplication extends Application implements ReactApplication {
       // packages.add(new MyReactNativePackage());
       packages.add(new RNFirebaseAuthPackage());
       packages.add(new RNFirebaseFirestorePackage());
-      packages.add(new DocumentPickerPackage());
       packages.add(new RNFirebaseStoragePackage());
+      packages.add(new DocumentPickerPackage());
       return packages;
     }
 

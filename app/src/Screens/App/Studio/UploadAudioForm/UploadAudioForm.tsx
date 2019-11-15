@@ -6,15 +6,15 @@ import { UploadTaskSnapshot } from 'react-native-firebase/storage'
 import { Container, Item, Input, Button, Text, Form, Label } from 'native-base'
 import { Formik, FormikActions } from 'formik'
 import * as Yup from 'yup'
-import { InputError, UploadImage, ProgressScreen } from '@component'
+import { InputError, UploadImage, ProgressScreen, SwitchItem } from '@component'
 import { useSelector } from 'react-redux'
 import { selectUser } from '@service/Auth/authReducer'
 import { addAudio } from '@service/Audio/audioReducer'
 import { NavigationInjectedProps } from 'react-navigation'
 import DocumentPicker from 'react-native-document-picker'
 import AudioService from '@service/Audio/audioService'
-import { DEFAULT_AUDIO_IMAGE, MAX_FILE_SIZE } from '@util/constants/constants'
-import { Audio } from '@service/Audio/types'
+import { DEFAULT_AUDIO_IMAGE, MAX_THUMBNAIL_SIZE } from '@util/constants/constants'
+import { Audio, AddNewAudio } from '@service/Audio/types'
 import { SCREEN_NAMES } from '@navigation/constants'
 
 interface Props extends NavigationInjectedProps {
@@ -22,7 +22,7 @@ interface Props extends NavigationInjectedProps {
 }
 
 const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
-  const [avatar, setAvatar] = React.useState(DEFAULT_AUDIO_IMAGE)
+  const [thumbnail, setThumbnail] = React.useState(DEFAULT_AUDIO_IMAGE)
   const [percentage, setPercentage] = React.useState(0)
   const [loader, setLoader] = React.useState(false)
 
@@ -33,28 +33,26 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
     setPercentage(percentage > 0 ? Math.ceil(percentage) - 1 : 0)
   }
 
-  const handleSubmit = async (
-    values: { title: string; description: string },
-    { setSubmitting, setStatus }: FormikActions<{ title: string; description: string }>,
-  ) => {
+  const handleSubmit = async (values: AddNewAudio, { setSubmitting, setStatus }: FormikActions<AddNewAudio>) => {
     try {
-      if (!avatar.size) {
+      if (!thumbnail.size) {
         return setStatus('You must pick thumbnail!')
-      } else if (avatar.size > MAX_FILE_SIZE) {
+      } else if (thumbnail.size > MAX_THUMBNAIL_SIZE) {
         return setStatus('Thumbnail size must be up to 2MB!')
       }
       setLoader(true)
       const audio = await AudioService.saveFile(user.uid, navigation.getParam('audio', undefined), uploadProgress)
-      const thumbnail = await AudioService.saveFile(user.uid, avatar)
+      const audioImage = await AudioService.saveFile(user.uid, thumbnail)
       const data: Audio = {
         id: audio.metadata.generation,
         title: values.title,
-        thumbnail: thumbnail.downloadURL,
+        thumbnail: audioImage.downloadURL,
         author: user.accountName,
         views: 0,
         details: {
           audio: audio.downloadURL,
-          ratings: true,
+          ratings: values.ratings,
+          donations: values.donations,
           description: values.description,
           created: audio.metadata.timeCreated,
         },
@@ -79,7 +77,7 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.images],
       })
-      setAvatar(res)
+      setThumbnail(res)
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
       } else {
@@ -89,9 +87,6 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
   }
 
   const validationSchema = Yup.object().shape({
-    avatar: Yup.object().shape({
-      size: Yup.number().max(2000, 'To big file'),
-    }),
     title: Yup.string().required('Required'),
     description: Yup.string(),
   })
@@ -101,21 +96,33 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
       <Container>
         <Formik
           initialValues={{
-            avatar: {
+            thumbnail: {
               size: 0,
             },
             title: '',
             description: '',
+            ratings: true,
+            donations: true,
           }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ handleChange, handleSubmit, values, setFieldTouched, errors, touched, isSubmitting, status }) => {
+          {({
+            handleChange,
+            handleSubmit,
+            values,
+            setFieldTouched,
+            errors,
+            touched,
+            isSubmitting,
+            status,
+            setFieldValue,
+          }) => {
             return (
               <Form style={styles.form}>
                 <UploadImage
-                  testID={'avatar'}
-                  avatar={avatar.uri}
+                  testID={'thumbnail'}
+                  avatar={thumbnail.uri}
                   onChange={handleChange}
                   onUpload={onUpload}
                   square
@@ -161,6 +168,22 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
                     </InputError>
                   )}
                 </View>
+                <SwitchItem
+                  style={{ marginTop: 35 }}
+                  icon={'heart'}
+                  value={values.ratings}
+                  onPress={() => setFieldValue('ratings', !values.ratings)}
+                >
+                  Ratings
+                </SwitchItem>
+                <SwitchItem
+                  style={{ marginTop: 10 }}
+                  icon={'donate'}
+                  value={values.donations}
+                  onPress={() => setFieldValue('donations', !values.donations)}
+                >
+                  Donations
+                </SwitchItem>
                 <Button testID={'submit'} rounded large onPress={handleSubmit} style={styles.submitButton}>
                   {isSubmitting ? (
                     <ActivityIndicator testID={'loader'} size="small" color="#ffffff" />

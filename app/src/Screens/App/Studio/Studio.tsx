@@ -24,6 +24,7 @@ const Studio: React.FC<NavigationInjectedProps> = ({ navigation }) => {
 
   return (
     <Container style={styles.container}>
+      <Text style={{ fontSize: 25, paddingBottom: 30 }}>Welcome in Studio!</Text>
       <Button onPress={() => pickFile()} style={styles.upload}>
         <Icon type="FontAwesome5" name="upload" style={styles.icon} />
         <Text>Choose audio</Text>

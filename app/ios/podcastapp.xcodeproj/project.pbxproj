@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* podcastappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* podcastappTests.m */; };
 		06A4AC15191B43F7AA25F518 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7B4892984DE04CA9918E7424 /* FontAwesome.ttf */; };
