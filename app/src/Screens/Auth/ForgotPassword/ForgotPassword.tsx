@@ -5,7 +5,7 @@ import { NavigationInjectedProps } from 'react-navigation'
 import { connect } from 'react-redux'
 import { forgotPassword } from '@service/Auth/authReducer'
 import { Container, Item, Input, Button, Text, Form, Label } from 'native-base'
-import { Formik, FormikActions } from 'formik'
+import { Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { InputError } from '@component'
 import { EMAIL_REGEX } from '@util/constants/constants'
@@ -18,7 +18,7 @@ interface Props extends NavigationInjectedProps {
 export const ForgotPassword: React.FC<Props> = ({ forgotPassword, navigation }) => {
   const handleForgotPassword = async (
     { email }: { email: string },
-    { setSubmitting, setStatus }: FormikActions<{ email: string }>,
+    { setSubmitting, setStatus }: FormikHelpers<{ email: string }>,
   ) => {
     setSubmitting(true)
     try {

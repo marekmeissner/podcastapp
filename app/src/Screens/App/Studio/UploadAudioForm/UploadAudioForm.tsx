@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { View, ActivityIndicator } from 'react-native'
 import { UploadTaskSnapshot } from 'react-native-firebase/storage'
 import { Container, Item, Input, Button, Text, Form, Label } from 'native-base'
-import { Formik, FormikActions } from 'formik'
+import { Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { InputError, UploadImage, ProgressScreen, SwitchItem } from '@component'
 import { useSelector } from 'react-redux'
@@ -33,7 +33,7 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
     setPercentage(percentage > 0 ? Math.ceil(percentage) - 1 : 0)
   }
 
-  const handleSubmit = async (values: AddNewAudio, { setSubmitting, setStatus }: FormikActions<AddNewAudio>) => {
+  const handleSubmit = async (values: AddNewAudio, { setSubmitting, setStatus }: FormikHelpers<AddNewAudio>) => {
     try {
       if (!thumbnail.size) {
         return setStatus('You must pick thumbnail!')

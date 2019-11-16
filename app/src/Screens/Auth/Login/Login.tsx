@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { loginUser } from '@service/Auth/authReducer'
 import { UserCredentials } from '@service/Auth/types'
 import { Container, Item, Input, Button, Text, Form, Label } from 'native-base'
-import { Formik, FormikActions } from 'formik'
+import { Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { EMAIL_REGEX } from '@util/constants/constants'
 import { InputError } from '@component'
@@ -18,14 +18,13 @@ interface Props extends NavigationInjectedProps {
 export const Login: React.FC<Props> = ({ loginUser, navigation }) => {
   const handleLogin = async (
     credentials: UserCredentials,
-    { setSubmitting, setStatus }: FormikActions<UserCredentials>,
+    { setSubmitting, setStatus }: FormikHelpers<UserCredentials>,
   ) => {
     try {
       await loginUser(credentials)
       navigation.navigate(SCREEN_NAMES.APP_TABS)
     } catch ({ message }) {
       setStatus(message)
-    } finally {
       setSubmitting(false)
     }
   }

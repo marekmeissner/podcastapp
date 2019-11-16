@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { registerUser } from '@service/Auth/authReducer'
 import { UserSignUpCredentials } from '@service/Auth/types'
 import { Container, Item, Input, Button, Text, Form, Label } from 'native-base'
-import { Formik, FormikActions } from 'formik'
+import { Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { EMAIL_REGEX, PASSWORD_REGEX } from '@util/constants/constants'
 import { InputError } from '@component'
@@ -19,7 +19,7 @@ interface Props extends NavigationInjectedProps {
 export const Register: React.FC<Props> = ({ registerUser, navigation }) => {
   const handleSignUp = async (
     newUser: UserSignUpCredentials,
-    { setSubmitting, setStatus }: FormikActions<UserSignUpCredentials>,
+    { setSubmitting, setStatus }: FormikHelpers<UserSignUpCredentials>,
   ) => {
     setSubmitting(true)
     try {
