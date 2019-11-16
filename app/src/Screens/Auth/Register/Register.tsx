@@ -27,7 +27,6 @@ export const Register: React.FC<Props> = ({ registerUser, navigation }) => {
       navigation.navigate(SCREEN_NAMES.APP_TABS)
     } catch ({ message }) {
       setStatus(message)
-    } finally {
       setSubmitting(false)
     }
   }
