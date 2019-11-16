@@ -3,7 +3,7 @@ import styles from './styles'
 import { connect } from 'react-redux'
 import { View, ActivityIndicator } from 'react-native'
 import { UploadTaskSnapshot } from 'react-native-firebase/storage'
-import { Container, Item, Input, Button, Text, Form, Label } from 'native-base'
+import { Container, Content, Item, Input, Button, Text, Form, Label } from 'native-base'
 import { Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { InputError, UploadImage, ProgressScreen, SwitchItem } from '@component/index'
@@ -64,8 +64,8 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
         setLoader(false)
         navigation.navigate(SCREEN_NAMES.APP_TABS)
       }, 1000)
-    } catch ({ message }) {
-      setStatus(message)
+    } catch (e) {
+      setStatus(e.message)
       setLoader(false)
     } finally {
       setSubmitting(false)
@@ -94,110 +94,111 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
   return (
     <>
       <Container>
-        <Formik
-          initialValues={{
-            thumbnail: {
-              size: 0,
-            },
-            title: '',
-            description: '',
-            ratings: true,
-            donations: true,
-          }}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-        >
-          {({
-            handleChange,
-            handleSubmit,
-            values,
-            setFieldTouched,
-            errors,
-            touched,
-            isSubmitting,
-            status,
-            setFieldValue,
-          }) => {
-            return (
-              <Form style={styles.form}>
-                <UploadImage
-                  testID={'thumbnail'}
-                  avatar={thumbnail.uri}
-                  onChange={handleChange}
-                  onUpload={onUpload}
-                  square
-                  large
-                  style={{ marginTop: 20 }}
-                >
-                  Upload audio thumbnail
-                </UploadImage>
-                <View style={styles.inputView}>
-                  <Item floatingLabel error={touched.title && !!errors.title}>
-                    <Label>Title</Label>
-                    <Input
-                      testID={'title'}
-                      onChangeText={handleChange('title')}
-                      value={values.title}
-                      onBlur={() => setFieldTouched('title')}
-                      autoCapitalize="none"
-                    />
-                  </Item>
-                  {errors.title && touched.title && (
-                    <InputError style={styles.inputError} testID={'accountNameError'}>
-                      {errors.title}
-                    </InputError>
-                  )}
-                </View>
-                <View style={styles.textareaView}>
-                  <Item floatingLabel style={{ height: '100%' }} error={touched.description && !!errors.description}>
-                    <Label>Description</Label>
-                    <Input
-                      testID={'description'}
-                      onChangeText={handleChange('description')}
-                      value={values.description}
-                      onBlur={() => setFieldTouched('description')}
-                      autoCapitalize="none"
-                      multiline
-                      numberOfLines={5}
-                      style={{ height: 120 }}
-                    />
-                  </Item>
-                  {errors.description && touched.description && (
-                    <InputError style={styles.inputError} testID={'emailError'}>
-                      {errors.description}
-                    </InputError>
-                  )}
-                </View>
-                <SwitchItem
-                  style={{ marginTop: 35 }}
-                  icon={'heart'}
-                  value={values.ratings}
-                  onPress={() => setFieldValue('ratings', !values.ratings)}
-                >
-                  Ratings
-                </SwitchItem>
-                <SwitchItem
-                  style={{ marginTop: 10 }}
-                  icon={'donate'}
-                  value={values.donations}
-                  onPress={() => setFieldValue('donations', !values.donations)}
-                >
-                  Donations
-                </SwitchItem>
-                <Button testID={'submit'} rounded large onPress={handleSubmit} style={styles.submitButton}>
-                  {isSubmitting ? (
-                    <ActivityIndicator testID={'loader'} size="small" color="#ffffff" />
-                  ) : (
-                    <Text>Add audio</Text>
-                  )}
-                </Button>
-                <InputError style={styles.formError} testID={'formError'}>
-                  {status}
-                </InputError>
-              </Form>
-            )
-          }}
-        </Formik>
+        <Content>
+          <Formik
+            initialValues={{
+              thumbnail: {
+                size: 0,
+              },
+              title: '',
+              description: '',
+              ratings: true,
+              donations: true,
+            }}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({
+              handleChange,
+              handleSubmit,
+              values,
+              setFieldTouched,
+              errors,
+              touched,
+              isSubmitting,
+              status,
+              setFieldValue,
+            }) => {
+              return (
+                <Form style={styles.form}>
+                  <UploadImage
+                    testID={'thumbnail'}
+                    avatar={thumbnail.uri}
+                    onChange={handleChange}
+                    onUpload={onUpload}
+                    square
+                    large
+                  >
+                    Upload audio thumbnail
+                  </UploadImage>
+                  <View style={styles.inputView}>
+                    <Item floatingLabel error={touched.title && !!errors.title}>
+                      <Label>Title</Label>
+                      <Input
+                        testID={'title'}
+                        onChangeText={handleChange('title')}
+                        value={values.title}
+                        onBlur={() => setFieldTouched('title')}
+                        autoCapitalize="none"
+                      />
+                    </Item>
+                    {errors.title && touched.title && (
+                      <InputError style={styles.inputError} testID={'accountNameError'}>
+                        {errors.title}
+                      </InputError>
+                    )}
+                  </View>
+                  <View style={styles.textareaView}>
+                    <Item floatingLabel style={{ height: '100%' }} error={touched.description && !!errors.description}>
+                      <Label>Description</Label>
+                      <Input
+                        testID={'description'}
+                        onChangeText={handleChange('description')}
+                        value={values.description}
+                        onBlur={() => setFieldTouched('description')}
+                        autoCapitalize="none"
+                        multiline
+                        numberOfLines={5}
+                        style={{ height: 120 }}
+                      />
+                    </Item>
+                    {errors.description && touched.description && (
+                      <InputError style={styles.inputError} testID={'emailError'}>
+                        {errors.description}
+                      </InputError>
+                    )}
+                  </View>
+                  <SwitchItem
+                    style={{ marginTop: 35 }}
+                    icon={'heart'}
+                    value={values.ratings}
+                    onPress={() => setFieldValue('ratings', !values.ratings)}
+                  >
+                    Ratings
+                  </SwitchItem>
+                  <SwitchItem
+                    style={{ marginTop: 10 }}
+                    icon={'donate'}
+                    value={values.donations}
+                    onPress={() => setFieldValue('donations', !values.donations)}
+                  >
+                    Donations
+                  </SwitchItem>
+                  <Button testID={'submit'} rounded large onPress={handleSubmit} style={styles.submitButton}>
+                    {isSubmitting ? (
+                      <ActivityIndicator testID={'loader'} size="small" color="#ffffff" />
+                    ) : (
+                      <Text>Add audio</Text>
+                    )}
+                  </Button>
+                  <InputError style={styles.formError} testID={'formError'}>
+                    {status}
+                  </InputError>
+                </Form>
+              )
+            }}
+          </Formik>
+        </Content>
       </Container>
       {loader && (
         <ProgressScreen progress={percentage} title={percentage === 100 ? 'Upload succeeded!' : 'Uploading...'} />

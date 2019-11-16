@@ -3,6 +3,7 @@ import { Thumbnail, Button, Text } from 'native-base'
 import { View, StyleSheet } from 'react-native'
 
 interface Props {
+  testID: string
   children: string
   avatar: string
   style?: { [key: string]: number | string }
@@ -26,9 +27,9 @@ const styles = StyleSheet.create({
   },
 })
 
-const UploadImage: React.FC<Props> = ({ children, onUpload, style, avatar, ...props }) => {
+const UploadImage: React.FC<Props> = ({ testID, children, onUpload, style, avatar, ...props }) => {
   return (
-    <View style={[styles.upload, style]}>
+    <View testID={testID} style={[styles.upload, style]}>
       <Thumbnail style={styles.trumbnail} source={{ uri: avatar }} {...props} />
       <Button style={styles.button} testID={'upload'} transparent small onPress={() => onUpload()}>
         <Text>{children}</Text>
