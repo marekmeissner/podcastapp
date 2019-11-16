@@ -20,7 +20,7 @@
     "appcenter-crashes": "^2.4.0",
     "babel-plugin-module-resolver": "^3.2.0",
     "firebase": "^7.1.0",
-    "formik": "^1.5.8",
+    "formik": "^2.0.4",
     "native-base": "^2.13.8",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
