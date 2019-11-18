@@ -193,16 +193,9 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
   // Firebase dependencies
-  implementation project(':react-native-firebase')
   implementation "com.google.android.gms:play-services-base:16.1.0"
-  implementation "com.google.firebase:firebase-core:16.0.9"
-  implementation "com.google.firebase:firebase-auth:17.0.0"
-  implementation "com.google.firebase:firebase-firestore:19.0.0"
-  implementation "com.google.firebase:firebase-storage:17.0.0"
-  implementation project(':react-native-splash-screen')
   implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
   implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02'
-  implementation project(':react-native-document-picker')
 
     if (enableHermes) {
       def hermesPath = "../../node_modules/hermesvm/android/";

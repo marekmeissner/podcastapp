@@ -2,11 +2,7 @@ platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 target 'podcastapp' do
-  # Pods for podcastapp
-  pod 'Firebase/Core', '~> 6.3.0'
-  pod 'Firebase/Auth', '~> 6.3.0'
-  pod 'Firebase/Firestore', '~> 6.3.0'
-  pod 'Firebase/Storage', '~> 6.3.0'
+  # Pods for podcastappą
   pod 'React', :path => '../node_modules/react-native/'
   pod 'React-CoreModules', :path => '../node_modules/react-native/React/CoreModules'
   pod 'React-Core', :path => '../node_modules/react-native/'

@@ -1,4 +1,5 @@
-import firebase from 'react-native-firebase'
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import { AuthState, AuthActions, AUTH_ACTIONS, User, UserCredentials, UserSignUpCredentials } from './types'
 import { Dispatch } from 'redux'
 import { RootState } from '../rootReducer'
@@ -48,7 +49,7 @@ export const setLoggedOut = () => ({
 export const loginUser = (credentials: UserCredentials) => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password)
+      const response = await auth().signInWithEmailAndPassword(credentials.email, credentials.password)
       const user = await AuthService.getUser(response.user.uid)
       const userToken = await response.user.getIdToken().then(idToken => idToken)
       await AuthService.setUserToken(userToken)
@@ -63,9 +64,8 @@ export const loginUser = (credentials: UserCredentials) => {
 export const registerUser = (registerData: UserSignUpCredentials) => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await firebase.auth().createUserWithEmailAndPassword(registerData.email, registerData.password)
-      await firebase
-        .firestore()
+      const response = await auth().createUserWithEmailAndPassword(registerData.email, registerData.password)
+      await firestore()
         .collection('users')
         .doc(response.user.uid)
         .set({
@@ -87,7 +87,7 @@ export const registerUser = (registerData: UserSignUpCredentials) => {
 export const forgotPassword = (email: string) => {
   return async () => {
     try {
-      await firebase.auth().sendPasswordResetEmail(email)
+      await auth().sendPasswordResetEmail(email)
     } catch (e) {
       throw new Error(e)
     }
