@@ -1,4 +1,4 @@
-import firestore from '@react-native-firebase/firestore';
+import firestore from '@react-native-firebase/firestore'
 import { Dispatch } from 'redux'
 import { AudioState, AUDIO_ACTIONS, AudioActions, Audio } from './types'
 import { omit } from 'lodash'

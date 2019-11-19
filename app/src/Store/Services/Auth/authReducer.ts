@@ -1,5 +1,5 @@
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth'
+import firestore from '@react-native-firebase/firestore'
 import { AuthState, AuthActions, AUTH_ACTIONS, User, UserCredentials, UserSignUpCredentials } from './types'
 import { Dispatch } from 'redux'
 import { RootState } from '../rootReducer'

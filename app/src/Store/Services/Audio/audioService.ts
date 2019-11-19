@@ -1,4 +1,4 @@
-import storage from '@react-native-firebase/storage';
+import storage from '@react-native-firebase/storage'
 import { DocumentPickerResponse } from 'react-native-document-picker'
 import uuid from 'uuid'
 
