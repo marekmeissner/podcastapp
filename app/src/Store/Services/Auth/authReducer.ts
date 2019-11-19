@@ -1,12 +1,16 @@
-import firebase from 'react-native-firebase'
-import { AuthState, AuthActions, AUTH_ACTIONS, UserCredentials, UserSignUpCredentials } from './types'
+import auth from '@react-native-firebase/auth'
+import firestore from '@react-native-firebase/firestore'
+import { AuthState, AuthActions, AUTH_ACTIONS, User, UserCredentials, UserSignUpCredentials } from './types'
 import { Dispatch } from 'redux'
 import { RootState } from '../rootReducer'
 import AuthService from './authService'
-import { User } from './types'
 
 export const AuthInitialState: AuthState = {
-  user: null,
+  user: {
+    uid: '',
+    email: '',
+    accountName: '',
+  },
   isLoggedIn: false,
 }
 
@@ -29,7 +33,7 @@ export const authReducer = (state: AuthState = AuthInitialState, action: AuthAct
   }
 }
 
-export const setUser = (user: User) => ({
+export const setUser = (user: any) => ({
   type: AUTH_ACTIONS.SET_USER,
   user,
 })
@@ -45,7 +49,7 @@ export const setLoggedOut = () => ({
 export const loginUser = (credentials: UserCredentials) => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password)
+      const response = await auth().signInWithEmailAndPassword(credentials.email, credentials.password)
       const user = await AuthService.getUser(response.user.uid)
       const userToken = await response.user.getIdToken().then(idToken => idToken)
       await AuthService.setUserToken(userToken)
@@ -60,9 +64,8 @@ export const loginUser = (credentials: UserCredentials) => {
 export const registerUser = (registerData: UserSignUpCredentials) => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await firebase.auth().createUserWithEmailAndPassword(registerData.email, registerData.password)
-      await firebase
-        .firestore()
+      const response = await auth().createUserWithEmailAndPassword(registerData.email, registerData.password)
+      await firestore()
         .collection('users')
         .doc(response.user.uid)
         .set({
@@ -84,7 +87,7 @@ export const registerUser = (registerData: UserSignUpCredentials) => {
 export const forgotPassword = (email: string) => {
   return async () => {
     try {
-      await firebase.auth().sendPasswordResetEmail(email)
+      await auth().sendPasswordResetEmail(email)
     } catch (e) {
       throw new Error(e)
     }

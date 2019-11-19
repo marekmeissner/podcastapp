@@ -1,25 +1,34 @@
 import React from 'react'
 import styles from './styles'
-import { Container, Button, View, Text, Icon } from 'native-base'
+import { Container, Button, Text, Icon } from 'native-base'
 import { NavigationInjectedProps } from 'react-navigation'
+import DocumentPicker from 'react-native-document-picker'
 import { SCREEN_NAMES } from '@navigation/constants'
 
 const Studio: React.FC<NavigationInjectedProps> = ({ navigation }) => {
+  const pickFile = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.audio],
+      })
+      navigation.navigate(SCREEN_NAMES.AUDIO_UPLOAD, {
+        audio: res,
+      })
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+      } else {
+        throw err
+      }
+    }
+  }
+
   return (
     <Container style={styles.container}>
-      <Text style={styles.welcomeText}>Welcome in studio!</Text>
-      <View style={styles.grid}>
-        <Button onPress={() => navigation.navigate(SCREEN_NAMES.STUDIO_AUDIO)} style={styles.largeBrick}>
-          <Icon type="FontAwesome5" name="microphone-alt" style={styles.icon} />
-          <Text>Record audio</Text>
-        </Button>
-      </View>
-      <View style={styles.grid}>
-        <Button onPress={() => navigation.navigate(SCREEN_NAMES.STUDIO_UPLOAD)} style={styles.largeBrick}>
-          <Icon type="FontAwesome5" name="upload" style={styles.icon} />
-          <Text>Upload audio</Text>
-        </Button>
-      </View>
+      <Text style={{ fontSize: 25, paddingBottom: 30 }}>Welcome in Studio!</Text>
+      <Button onPress={() => pickFile()} style={styles.upload}>
+        <Icon type="FontAwesome5" name="upload" style={styles.icon} />
+        <Text>Choose audio</Text>
+      </Button>
     </Container>
   )
 }

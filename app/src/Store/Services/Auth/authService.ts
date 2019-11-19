@@ -1,11 +1,10 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import { ACCESS_TOKEN_KEY } from '@util/constants/constants'
-import firebase from 'react-native-firebase'
+import firestore from '@react-native-firebase/firestore'
 
 class AuthService {
   static getUser = (uid: string) => {
-    const user = firebase
-      .firestore()
+    const user = firestore()
       .collection('users')
       .doc(uid)
       .get()

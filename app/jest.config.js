@@ -12,7 +12,10 @@ module.exports = {
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   setupFilesAfterEnv: [
-    './__mocks__/mockFirebase.ts',
+    './__mocks__/mockFirebaseApp.ts',
+    './__mocks__/mockFirebaseStorage.ts',
+    './__mocks__/mockFirebaseAuth.ts',
+    './__mocks__/mockFirebaseFirestore.ts',
     './__mocks__/mockAsyncStorage.ts',
     '@testing-library/react-native/cleanup-after-each',
   ],

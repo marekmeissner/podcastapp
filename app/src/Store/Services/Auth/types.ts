@@ -1,5 +1,5 @@
 export interface AuthState {
-  readonly user: User | null
+  readonly user: User
   readonly isLoggedIn: boolean
 }
 
@@ -22,14 +22,14 @@ export interface UserSignUpCredentials {
 }
 
 export interface User {
-  uid: strin
+  uid: string
   email: string
   accountName: string
 }
 
 export interface SetUser {
   type: AUTH_ACTIONS.SET_USER
-  user: void | object
+  user: any
 }
 
 export interface SetLoggedIn {

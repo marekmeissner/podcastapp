@@ -1,5 +1,5 @@
 /* eslint-disable */
-export const config = jest.mock('react-native-firebase', () => ({
+export const config = jest.mock('@react-native-firebase/app', () => ({
   messaging: jest.fn(() => ({
     hasPermission: jest.fn(() => Promise.resolve(true)),
     subscribeToTopic: jest.fn(),

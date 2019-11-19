@@ -14,21 +14,30 @@ interface Props extends NavigationInjectedProps {
 }
 
 const HeaderBar: React.FC<Props> = ({ logout, navigation }) => {
+  const activeRoute = navigation.router.getPathAndParamsForState(navigation.state).path
   return (
     <Header style={styles.header}>
-      <Left style={styles.content}>
+      <Left>
         <Button transparent onPress={logout}>
           <Image style={styles.image} source={require('@asset/logo.png')} />
         </Button>
       </Left>
-      <Right style={styles.content}>
-        <Button transparent onPress={() => navigation.navigate(SCREEN_NAMES.APP_STUDIO)}>
+      <Right>
+        <Button
+          transparent
+          onPress={() => navigation.navigate(SCREEN_NAMES.APP_STUDIO)}
+          active={activeRoute.includes(SCREEN_NAMES.APP_STUDIO)}
+        >
           <Icon name="microphone" />
         </Button>
         <Button transparent>
           <Icon name="search" />
         </Button>
-        <Button transparent onPress={() => navigation.navigate(SCREEN_NAMES.APP_ACCOUNT)}>
+        <Button
+          transparent
+          onPress={() => navigation.navigate(SCREEN_NAMES.APP_ACCOUNT)}
+          active={activeRoute.includes(SCREEN_NAMES.APP_ACCOUNT)}
+        >
           <Icon name="settings" />
         </Button>
       </Right>
