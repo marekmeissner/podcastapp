@@ -46,15 +46,15 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
       const data: Audio = {
         id: audio.metadata.generation,
         title: values.title,
-        thumbnail: audioImage.downloadURL,
+        thumbnail: audioImage.metadata.fullPath,
         author: user.accountName,
         views: 0,
+        created: audio.metadata.timeCreated,
         details: {
-          audio: audio.downloadURL,
+          audio: audio.metadata.fullPath,
           ratings: values.ratings,
           donations: values.donations,
           description: values.description,
-          created: audio.metadata.timeCreated,
         },
       }
 
