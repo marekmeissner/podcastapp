@@ -25,6 +25,8 @@ export interface User {
   uid: string
   email: string
   accountName: string
+  avatar?: string
+  subscribers?: string[]
 }
 
 export interface SetUser {

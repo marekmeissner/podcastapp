@@ -23,7 +23,7 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
 }
 
 export const addAudio = (uid: string, data: Audio) => {
-  return async (dispatch: Dispatch) => {
+  return async () => {
     try {
       await firestore()
         .doc(`audios/${uid}/audio/${data.id}`)

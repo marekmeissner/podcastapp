@@ -14,7 +14,10 @@ export interface Audio {
   id: string
   thumbnail: string
   title: string
-  author: string
+  author: {
+    name: string
+    uid: string
+  }
   views: number
   created: string
   details: {
@@ -22,10 +25,10 @@ export interface Audio {
     ratings: boolean
     donations: boolean
     audio: string | null
-    }
+  }
 }
 
-export type AudioSmall = Omit<Audio, 'details'> 
+export type AudioSmall = Omit<Audio, 'details'>
 
 export interface AddNewAudio {
   title: string
