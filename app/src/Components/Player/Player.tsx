@@ -1,9 +1,23 @@
 import React from 'react'
+import { Container } from 'native-base'
 import Video from 'react-native-video'
+import AudioService from '@service/Audio/audioService'
 
-class Player extends React.Component {
+interface Props {
+  audio?: string
+  thumbnail?: string
+  playInBackground: boolean
+  playWhenInactive: boolean
+}
+
+interface State {
+  audio?: string
+  thumbnail?: string
+}
+class Player extends React.Component<Props> {
   render() {
-    return <Video source={{ uri: 'audio.mp3' }} />
+    const { audio, thumbnail } = this.props
+    return <Container>{audio && <Video source={{ uri: audio }} {...this.props} />}</Container>
   }
 }
 

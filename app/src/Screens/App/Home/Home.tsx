@@ -31,7 +31,7 @@ class Home extends React.Component<Props> {
               return (
                 <React.Fragment key={audio.id}>
                   <AudioTile
-                    onPress={() => this.props.navigation.navigate(SCREEN_NAMES.APP_PLAYER)}
+                    onPress={() => this.props.navigation.navigate(SCREEN_NAMES.APP_PLAYER, { audio })}
                     thumbnail={audio.thumbnail}
                     title={audio.title}
                     views={audio.views}

@@ -22,6 +22,12 @@ class AudioService {
       )
     return call
   }
+
+  static getDownloadUrl = async (ref: string) => {
+    return await storage()
+      .ref(ref)
+      .getDownloadURL()
+  }
 }
 
 export default AudioService

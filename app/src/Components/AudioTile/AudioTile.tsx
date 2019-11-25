@@ -6,6 +6,7 @@ import { AudioSmall } from '@service/Audio/types'
 import { useAsyncEffect } from '@hook/useAsyncEffect'
 import { DEFAULT_AUDIO_IMAGE } from '@util/constants/constants'
 import moment from 'moment'
+import AudioService from '@service/Audio/audioService'
 
 interface Props extends Omit<AudioSmall, 'id'> {
   onPress: () => void
@@ -15,8 +16,7 @@ const AudioTile: React.FC<Props> = ({ thumbnail, title, views, author, created, 
   const [audioThumbnail, setAudioThumbnail] = React.useState(DEFAULT_AUDIO_IMAGE.uri)
 
   useAsyncEffect(async () => {
-    const ref = storage().ref(thumbnail)
-    const url = await ref.getDownloadURL()
+    const url = await AudioService.getDownloadUrl(thumbnail)
     setAudioThumbnail(url)
   }, [thumbnail])
 
