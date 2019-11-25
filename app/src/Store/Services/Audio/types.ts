@@ -1,4 +1,5 @@
 import { DocumentPickerResponse } from 'react-native-document-picker'
+import { ImageSourcePropType } from 'react-native'
 
 export enum AUDIO_ACTIONS {
   SAVE = 'AUDIO_SAVE',
@@ -11,18 +12,23 @@ export interface AudioState {
 
 export interface Audio {
   id: string
-  thumbnail: string | null
+  thumbnail: string
   title: string
-  author: string
+  author: {
+    name: string
+    uid: string
+  }
   views: number
+  created: string
   details: {
     description: string
     ratings: boolean
     donations: boolean
     audio: string | null
-    created: string
   }
 }
+
+export type AudioSmall = Omit<Audio, 'details'>
 
 export interface AddNewAudio {
   title: string
