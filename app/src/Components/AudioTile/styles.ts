@@ -10,6 +10,9 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginBottom: 5,
     backgroundColor: 'transparent',
+    shadowOffset: { height: 0, width: 0 },
+    shadowOpacity: 0,
+    elevation:0
   },
   thumbnail: {
     height: 77.25,
