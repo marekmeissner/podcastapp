@@ -1,9 +1,13 @@
 import React from 'react'
-import { Container } from 'native-base'
+import { Container, Text } from 'native-base'
 
 class PlayerView extends React.Component {
   render() {
-    return <Container></Container>
+    return (
+      <Container>
+        <Text>Player view</Text>
+      </Container>
+    )
   }
 }
 

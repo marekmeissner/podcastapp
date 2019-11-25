@@ -3,13 +3,11 @@ import { createBottomTabNavigator, createMaterialTopTabNavigator } from 'react-n
 import Home from '@screen/App/Home/Home'
 import Trending from '@screen/App/Trending/Trending'
 import Bookmarks from '@screen/App/Bookmarks/Bookmarks'
-
 import Account from '@screen/App/Account/Account'
 import Studio from '@screen/App/Studio/Studio'
+import PlayerView from '@screen/App/PlayerView/PlayerView'
 
-import HeaderBar from '@component/Header/Header'
 import FooterTabs from '@component/FooterTabs/FooterTabs'
-import { COLORS } from '@util/styles/colors'
 
 export const Tabs = createBottomTabNavigator(
   {
@@ -36,6 +34,9 @@ export const Tabs = createBottomTabNavigator(
     },
     Studio: {
       screen: Studio,
+    },
+    Player: {
+      screen: PlayerView,
     },
   },
   {

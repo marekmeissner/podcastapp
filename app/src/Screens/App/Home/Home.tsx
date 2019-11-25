@@ -4,11 +4,10 @@ import { connect } from 'react-redux'
 import { Container, Content, Root } from 'native-base'
 import { AudioTile } from '@component/index'
 import { NavigationInjectedProps } from 'react-navigation'
-import { DEFAULT_AUDIO_IMAGE } from '@util/constants/constants'
 import { getSubscribedAudios, sortAudiosByTimeOfCreation } from '@service/Subscribe/subscribeReducer'
 import { RootState } from '@service/rootReducer'
 import { AudioSmall } from '@service/Audio/types'
-import AudioService from '@service/Audio/audioService'
+import { SCREEN_NAMES } from '@navigation/constants'
 
 interface Props extends NavigationInjectedProps {
   audios: AudioSmall[]
@@ -32,6 +31,7 @@ class Home extends React.Component<Props> {
               return (
                 <React.Fragment key={audio.id}>
                   <AudioTile
+                    onPress={() => this.props.navigation.navigate(SCREEN_NAMES.APP_PLAYER)}
                     thumbnail={audio.thumbnail}
                     title={audio.title}
                     views={audio.views}

@@ -7,7 +7,11 @@ import { useAsyncEffect } from '@hook/useAsyncEffect'
 import { DEFAULT_AUDIO_IMAGE } from '@util/constants/constants'
 import moment from 'moment'
 
-const AudioTile: React.FC<Omit<AudioSmall, 'id'>> = ({ thumbnail, title, views, author, created }) => {
+interface Props extends Omit<AudioSmall, 'id'> {
+  onPress: () => void
+}
+
+const AudioTile: React.FC<Props> = ({ thumbnail, title, views, author, created, onPress }) => {
   const [audioThumbnail, setAudioThumbnail] = React.useState(DEFAULT_AUDIO_IMAGE.uri)
 
   useAsyncEffect(async () => {
@@ -17,7 +21,7 @@ const AudioTile: React.FC<Omit<AudioSmall, 'id'>> = ({ thumbnail, title, views, 
   }, [thumbnail])
 
   return (
-    <Button style={styles.audioTile}>
+    <Button style={styles.audioTile} onPress={onPress}>
       <View>
         <Thumbnail style={styles.thumbnail} source={{ uri: audioThumbnail }} />
       </View>
