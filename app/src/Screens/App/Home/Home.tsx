@@ -40,26 +40,25 @@ class Home extends React.Component<Props> {
 
     return (
       <Container>
-        <Content style={styles.content}>
-          {audios && !loading ? (
-            audios.map(audio => {
+        {audios && !loading ? (
+          <Content style={styles.content}>
+            {audios.map(audio => {
               return (
-                <React.Fragment key={audio.id}>
-                  <AudioTile
-                    onPress={() => this.props.navigation.navigate(SCREEN_NAMES.APP_PLAYER, { audio })}
-                    thumbnail={audio.thumbnail}
-                    title={audio.title}
-                    views={audio.views}
-                    author={audio.author}
-                    created={audio.created}
-                  />
-                </React.Fragment>
+                <AudioTile
+                  key={audio.id}
+                  onPress={() => this.props.navigation.navigate(SCREEN_NAMES.APP_PLAYER, { audio })}
+                  thumbnail={audio.thumbnail}
+                  title={audio.title}
+                  views={audio.views}
+                  author={audio.author}
+                  created={audio.created}
+                />
               )
-            })
-          ) : (
-            <SpinnerLoader />
-          )}
-        </Content>
+            })}
+          </Content>
+        ) : (
+          <SpinnerLoader />
+        )}
       </Container>
     )
   }

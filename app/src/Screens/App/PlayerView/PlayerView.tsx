@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Container, Content } from 'native-base'
 import Player from './Player/Player'
 import PlayerToolkit from './PlayerToolkit/PlayerToolkit'
-import { NavigationInjectedProps, ScrollView } from 'react-navigation'
+import { NavigationInjectedProps } from 'react-navigation'
 import { getAudioDetails } from '@service/Audio/audioReducer'
 import { Audio, AudioSmall } from '@service/Audio/types'
 
@@ -20,11 +20,13 @@ class PlayerView extends React.Component<Props> {
   }
 
   async componentDidMount() {
-    const audio = await this.props.getAudioDetails(this.props.navigation.getParam('audio'))
+    try {
+      const audio = await this.props.getAudioDetails(this.props.navigation.getParam('audio'))
 
-    this.setState({
-      audio,
-    })
+      this.setState({
+        audio,
+      })
+    } catch (e) {}
   }
   render() {
     const { audio } = this.state

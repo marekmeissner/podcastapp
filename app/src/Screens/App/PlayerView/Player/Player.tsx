@@ -3,7 +3,8 @@ import styles from './styles'
 import { Image, View, TouchableOpacity } from 'react-native'
 import { Container } from 'native-base'
 import Video from 'react-native-video'
-import SeekBar from '../SeekBar/SeekBar'
+import PlayerSeekBar from '../PlayerSeekBar/PlayerSeekBar'
+import { SpinnerLoader } from '@component/index'
 
 interface Props {
   audio?: string
@@ -24,19 +25,21 @@ class Player extends React.Component<Props> {
     const { audio, thumbnail } = this.props
     return (
       <View style={styles.player}>
-        {audio && thumbnail && (
+        {audio && thumbnail ? (
           <React.Fragment>
             <TouchableOpacity style={styles.imageOverlay} onPress={() => console.warn('pressed')}>
               <Image style={styles.image} source={{ uri: thumbnail }} />
             </TouchableOpacity>
             <Video source={{ uri: audio }} {...this.props} />
-            <SeekBar
+            <PlayerSeekBar
               onSeek={this.onSeek}
               onSlidingStart={this.onSlidingStart}
               trackLength={1233}
               currentPosition={123}
             />
           </React.Fragment>
+        ) : (
+          <SpinnerLoader />
         )}
       </View>
     )

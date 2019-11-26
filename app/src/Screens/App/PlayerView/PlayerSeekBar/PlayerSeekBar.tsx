@@ -12,7 +12,7 @@ interface Props {
   onSlidingStart: () => void
 }
 
-const SeekBar: React.FC<Props> = ({ trackLength, currentPosition, onSeek, onSlidingStart }) => {
+const PlayerSeekBar: React.FC<Props> = ({ trackLength, currentPosition, onSeek, onSlidingStart }) => {
   const elapsed = getMinutesAndSeconds(currentPosition)
   const remaining = getMinutesAndSeconds(trackLength - currentPosition)
   return (
@@ -38,4 +38,4 @@ const SeekBar: React.FC<Props> = ({ trackLength, currentPosition, onSeek, onSlid
   )
 }
 
-export default SeekBar
+export default PlayerSeekBar
