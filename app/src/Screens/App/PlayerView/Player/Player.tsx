@@ -3,6 +3,7 @@ import styles from './styles'
 import { Image, View, TouchableOpacity } from 'react-native'
 import { Container } from 'native-base'
 import Video from 'react-native-video'
+import SeekBar from '../SeekBar/SeekBar'
 
 interface Props {
   audio?: string
@@ -12,6 +13,13 @@ interface Props {
 }
 
 class Player extends React.Component<Props> {
+  onSeek = () => {
+    console.warn('seek')
+  }
+
+  onSlidingStart = () => {
+    console.warn('sliding start')
+  }
   render() {
     const { audio, thumbnail } = this.props
     return (
@@ -22,6 +30,12 @@ class Player extends React.Component<Props> {
               <Image style={styles.image} source={{ uri: thumbnail }} />
             </TouchableOpacity>
             <Video source={{ uri: audio }} {...this.props} />
+            <SeekBar
+              onSeek={this.onSeek}
+              onSlidingStart={this.onSlidingStart}
+              trackLength={1233}
+              currentPosition={123}
+            />
           </React.Fragment>
         )}
       </View>

@@ -325,6 +325,8 @@ PODS:
   - React-jsinspector (0.61.4)
   - react-native-document-picker (3.2.4):
     - React
+  - react-native-slider (2.0.7):
+    - React
   - react-native-splash-screen (3.2.0):
     - React
   - react-native-video (5.0.2):
@@ -416,6 +418,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
+  - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-video (from `../node_modules/react-native-video`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -503,6 +506,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
+  react-native-slider:
+    :path: "../node_modules/@react-native-community/slider"
   react-native-splash-screen:
     :path: "../node_modules/react-native-splash-screen"
   react-native-video:
@@ -589,6 +594,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 8dfb73b987afa9324e4009bdce62a18ce23d983c
   React-jsinspector: d15478d0a8ada19864aa4d1cc1c697b41b3fa92f
   react-native-document-picker: c36bf5f067a581657ecaf7124dcd921a8be19061
+  react-native-slider: 718ed45db20672b26a92fcf4217ced078b1ac7ce
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-video: d01ed7ff1e38fa7dcc6c15c94cf505e661b7bfd0
   React-RCTActionSheet: 7369b7c85f99b6299491333affd9f01f5a130c22
@@ -611,6 +617,6 @@ SPEC CHECKSUMS:
   RNScreens: f28b48b8345f2f5f39ed6195518291515032a788
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
-PODFILE CHECKSUM: 694576f4988844d005c8e13014683c2e3975065f
+PODFILE CHECKSUM: 4584c007d66bfec0850a1ad7dd8699d37959a44c
 
 COCOAPODS: 1.7.5
