@@ -48,6 +48,7 @@ export const getAudioDetails = (audioSmall: AudioSmall) => {
         .doc(`audios/${audioSmall.author.uid}/audio/${audioSmall.id}/details/details`)
         .get()
         .then(res => res.data())
+        if(details){
       const audioUrl = await AudioService.getDownloadUrl(details.audio)
       const thumbnailUrl = await AudioService.getDownloadUrl(audioSmall.thumbnail)
 
@@ -62,6 +63,8 @@ export const getAudioDetails = (audioSmall: AudioSmall) => {
 
       dispatch({ type: AUDIO_ACTIONS.LOAD_AUDIO, uid: audioSmall.author.uid, audio })
       return audio
+    }
+    return undefined
     } catch (e) {
       throw new Error(e)
     }

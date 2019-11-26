@@ -1,13 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Container } from 'native-base'
-import { Player } from '@component/index'
-import { NavigationInjectedProps } from 'react-navigation'
+import { Container, Content } from 'native-base'
+import Player from './Player/Player'
+import PlayerToolkit from './PlayerToolkit/PlayerToolkit'
+import { NavigationInjectedProps, ScrollView } from 'react-navigation'
 import { getAudioDetails } from '@service/Audio/audioReducer'
 import { Audio, AudioSmall } from '@service/Audio/types'
 
 interface Props extends NavigationInjectedProps {
-  getAudioDetails: (audioSmall: AudioSmall) => Promise<Audio>
+  getAudioDetails: (audioSmall: AudioSmall) => Promise<any>
 }
 
 interface State {
@@ -28,13 +29,14 @@ class PlayerView extends React.Component<Props> {
   render() {
     const { audio } = this.state
     return (
-      <Container>
+      <Container style={{ flex: 1 }}>
         <Player
           audio={audio && audio.details.audio}
           thumbnail={audio && audio.thumbnail}
           playInBackground
           playWhenInactive
         />
+        <PlayerToolkit />
       </Container>
     )
   }
