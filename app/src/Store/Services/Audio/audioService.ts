@@ -13,7 +13,6 @@ class AudioService {
         function progress(snapshot) {
           callback(snapshot)
         },
-        function error(err: { message: string }) {},
         function complete() {
           return call
         },

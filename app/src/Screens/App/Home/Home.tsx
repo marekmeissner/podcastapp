@@ -37,7 +37,6 @@ class Home extends React.Component<Props> {
   render() {
     const { audios } = this.props
     const { loading } = this.state
-
     return (
       <Container>
         {audios && !loading ? (
