@@ -8,7 +8,7 @@ import { COLORS } from '@util/styles/colors'
 interface Props {
   trackLength: number
   currentPosition: number
-  onSeek: () => void
+  onSeek: (time: number) => void
   onSlidingStart: () => void
 }
 

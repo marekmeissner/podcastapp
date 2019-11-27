@@ -27,14 +27,6 @@ class Player extends React.Component<Props> {
     paused: false,
   }
 
-  onSeek = () => {
-    console.warn('seek')
-  }
-
-  onSlidingStart = () => {
-    console.warn('sliding start')
-  }
-
   onAudioImagePress = () => {
     if (!this.state.displayControls) {
       this.setState({ displayControls: true })
@@ -65,10 +57,22 @@ class Player extends React.Component<Props> {
     this.setState({ paused: true })
   }
 
+  onSlidingStart = () => {
+    this.setState({ paused: true })
+  }
+
+  onSeek = (time: number) => {
+    time = Math.round(time)
+    this.refs.audioPlayer && this.refs.audioPlayer.seek(time)
+    this.setState({
+      currentPosition: time,
+      paused: false,
+    })
+  }
+
   render() {
     const { audio, thumbnail } = this.props
     const { displayControls, currentPosition, totalLength, paused } = this.state
-
     return (
       <View style={styles.player}>
         {audio && thumbnail ? (
@@ -83,6 +87,7 @@ class Player extends React.Component<Props> {
               />
             </TouchableOpacity>
             <Video
+              ref={'audioPlayer'}
               source={{ uri: audio }}
               onProgress={this.setTime}
               onLoad={this.onLoad}
