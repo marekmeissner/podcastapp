@@ -11,30 +11,30 @@ const styles = StyleSheet.create({
     display: 'none',
     justifyContent: 'space-around',
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   mainButton: {
-      width: 70,
-      height: 70,
-      borderWidth: 2,
-      borderColor: COLORS.WHITE,
-      borderRadius: 50
+    width: 70,
+    height: 70,
+    borderWidth: 2,
+    borderColor: COLORS.WHITE,
+    borderRadius: 50,
   },
   mainIcon: {
-      fontSize: 35,
-      color: COLORS.WHITE
+    fontSize: 35,
+    color: COLORS.WHITE,
   },
   moveButton: {
     width: 50,
     height: 50,
     borderWidth: 2,
     borderColor: COLORS.WHITE,
-    borderRadius: 50
+    borderRadius: 50,
   },
   moveIcon: {
     fontSize: 25,
-    color: COLORS.WHITE
-  }
+    color: COLORS.WHITE,
+  },
 })
 
 export default styles
