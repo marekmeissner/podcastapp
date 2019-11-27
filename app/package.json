@@ -55,7 +55,7 @@
     "@react-native-community/eslint-config": "^0.0.5",
     "@storybook/react-native": "^5.2.6",
     "@storybook/react-native-server": "^5.2.6",
-    "@testing-library/jest-dom": "^4.2.3",
+    "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react-native": "^5.0.1",
     "@types/jest": "^24.0.23",
     "@types/lodash": "^4.14.146",
