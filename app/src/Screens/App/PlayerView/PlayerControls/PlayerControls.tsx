@@ -5,9 +5,12 @@ import { Button, Icon } from 'native-base'
 
 interface Props {
   display: boolean
+  paused: boolean
+  onPressPlay: () => void
+  onPressPause: () => void
 }
 
-const PlayerControls: React.FC<Props> = ({ display }) => {
+const PlayerControls: React.FC<Props> = ({ display, paused, onPressPause, onPressPlay }) => {
   const [fadeOpacity] = React.useState(new Animated.Value(0))
   const [displayPanel, setDisplayPanel] = React.useState('none')
 
@@ -18,7 +21,7 @@ const PlayerControls: React.FC<Props> = ({ display }) => {
         toValue: 1,
         duration: 1000,
       }).start()
-    } else {
+    } else if (!display && !paused) {
       Animated.timing(fadeOpacity, {
         toValue: 0,
         duration: 500,
@@ -26,15 +29,15 @@ const PlayerControls: React.FC<Props> = ({ display }) => {
         setDisplayPanel('none')
       })
     }
-  }, [display])
+  }, [display, paused])
 
   return (
     <Animated.View style={[styles.controlsView, { opacity: fadeOpacity, display: displayPanel }]}>
       <Button style={[styles.moveButton, { marginRight: -50 }]} transparent onPress={() => console.warn('back')}>
         <Icon name={'skip-backward'} style={styles.moveIcon} />
       </Button>
-      <Button style={styles.mainButton} transparent onPress={() => console.warn('play')}>
-        <Icon name={'play'} style={styles.mainIcon} />
+      <Button style={styles.mainButton} transparent onPress={paused ? onPressPlay : onPressPause}>
+        {paused ? <Icon name={'play'} style={styles.mainIcon} /> : <Icon name={'pause'} style={styles.mainIcon} />}
       </Button>
       <Button style={[styles.moveButton, { marginLeft: -50 }]} transparent onPress={() => console.warn('forward')}>
         <Icon name={'skip-forward'} style={styles.moveIcon} />

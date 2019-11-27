@@ -32,12 +32,7 @@ class PlayerView extends React.Component<Props> {
     const { audio } = this.state
     return (
       <Container style={{ flex: 1 }}>
-        <Player
-          audio={audio && audio.details.audio}
-          thumbnail={audio && audio.thumbnail}
-          playInBackground
-          playWhenInactive
-        />
+        <Player audio={audio && audio.details.audio} thumbnail={audio && audio.thumbnail} playInBackground />
         <PlayerToolkit />
       </Container>
     )
