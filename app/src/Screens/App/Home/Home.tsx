@@ -45,7 +45,9 @@ class Home extends React.Component<Props> {
               return (
                 <AudioTile
                   key={audio.id}
-                  onPress={() => this.props.navigation.navigate(SCREEN_NAMES.APP_PLAYER, { audio })}
+                  onPress={() =>
+                    this.props.navigation.navigate(SCREEN_NAMES.APP_PLAYER, { audios, audio: audios.indexOf(audio) })
+                  }
                   thumbnail={audio.thumbnail}
                   title={audio.title}
                   views={audio.views}

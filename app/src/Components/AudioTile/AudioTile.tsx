@@ -1,6 +1,5 @@
 import React from 'react'
 import styles from './styles'
-import storage from '@react-native-firebase/storage'
 import { Button, Thumbnail, Text, View } from 'native-base'
 import { AudioSmall } from '@service/Audio/types'
 import { useAsyncEffect } from '@hook/useAsyncEffect'

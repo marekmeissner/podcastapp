@@ -1,6 +1,3 @@
-import { DocumentPickerResponse } from 'react-native-document-picker'
-import { ImageSourcePropType } from 'react-native'
-
 export enum AUDIO_ACTIONS {
   SAVE = 'AUDIO_SAVE',
   LOAD_AUDIO = 'LOAD_USER_AUDIO',

@@ -8,9 +8,18 @@ interface Props {
   paused: boolean
   onPressPlay: () => void
   onPressPause: () => void
+  onPressBackward: () => void
+  onPressForward: () => void
 }
 
-const PlayerControls: React.FC<Props> = ({ display, paused, onPressPause, onPressPlay }) => {
+const PlayerControls: React.FC<Props> = ({
+  display,
+  paused,
+  onPressPause,
+  onPressPlay,
+  onPressBackward,
+  onPressForward,
+}) => {
   const [fadeOpacity] = React.useState(new Animated.Value(0))
   const [displayPanel, setDisplayPanel] = React.useState('none')
 
@@ -33,13 +42,13 @@ const PlayerControls: React.FC<Props> = ({ display, paused, onPressPause, onPres
 
   return (
     <Animated.View style={[styles.controlsView, { opacity: fadeOpacity, display: displayPanel }]}>
-      <Button style={[styles.moveButton, { marginRight: -50 }]} transparent onPress={() => console.warn('back')}>
+      <Button style={[styles.moveButton, { marginRight: -50 }]} transparent onPress={onPressBackward}>
         <Icon name={'skip-backward'} style={styles.moveIcon} />
       </Button>
       <Button style={styles.mainButton} transparent onPress={paused ? onPressPlay : onPressPause}>
         {paused ? <Icon name={'play'} style={styles.mainIcon} /> : <Icon name={'pause'} style={styles.mainIcon} />}
       </Button>
-      <Button style={[styles.moveButton, { marginLeft: -50 }]} transparent onPress={() => console.warn('forward')}>
+      <Button style={[styles.moveButton, { marginLeft: -50 }]} transparent onPress={onPressForward}>
         <Icon name={'skip-forward'} style={styles.moveIcon} />
       </Button>
     </Animated.View>

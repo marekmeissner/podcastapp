@@ -1,15 +1,17 @@
-import React, { RefObject } from 'react'
+import React from 'react'
 import styles from './styles'
 import { Image, View, TouchableOpacity } from 'react-native'
-import Video, { VideoProperties, OnProgressData, OnLoadData } from 'react-native-video'
+import Video, { OnProgressData, OnLoadData } from 'react-native-video'
 import PlayerSeekBar from '../PlayerSeekBar/PlayerSeekBar'
-import { SpinnerLoader } from '@component/index'
 import PlayerControls from '../PlayerControls/PlayerControls'
 
 interface Props {
-  audio?: string
-  thumbnail?: string
+  audio: string
+  thumbnail: string
   playInBackground: boolean
+  selectedAudio?: number
+  trackLength?: number
+  onChangeAudio: (selectedAudioIndex: number) => void
 }
 
 interface State {
@@ -40,6 +42,8 @@ class Player extends React.Component<Props> {
     this.setState({
       currentPosition: Math.floor(data.currentTime),
       totalLength: Math.floor(data.duration),
+      paused: false,
+      displayControls: false,
     })
   }
 
@@ -63,11 +67,37 @@ class Player extends React.Component<Props> {
 
   onSeek = (time: number) => {
     time = Math.round(time)
-    this.refs.audioPlayer && this.refs.audioPlayer.seek(time)
+    ;(this.refs.audioPlayer as Video).seek(time)
     this.setState({
       currentPosition: time,
       paused: false,
     })
+  }
+
+  onPressBackward = () => {
+    const { selectedAudio, onChangeAudio } = this.props
+
+    if (this.state.currentPosition < 10 && typeof selectedAudio !== 'undefined' && selectedAudio > 0) {
+      onChangeAudio(selectedAudio - 1)
+    } else {
+      ;(this.refs.audioPlayer as Video).seek(0)
+      this.setState({
+        currentPosition: 0,
+      })
+    }
+  }
+
+  onPressForward = () => {
+    const { selectedAudio, onChangeAudio, trackLength } = this.props
+
+    if (selectedAudio !== undefined && trackLength !== undefined && selectedAudio < trackLength) {
+      onChangeAudio(selectedAudio + 1)
+    } else {
+      ;(this.refs.audioPlayer as Video).seek(0)
+      this.setState({
+        currentPosition: 0,
+      })
+    }
   }
 
   render() {
@@ -75,36 +105,32 @@ class Player extends React.Component<Props> {
     const { displayControls, currentPosition, totalLength, paused } = this.state
     return (
       <View style={styles.player}>
-        {audio && thumbnail ? (
-          <React.Fragment>
-            <TouchableOpacity style={styles.imageOverlay} onPress={this.onAudioImagePress}>
-              <Image style={styles.image} source={{ uri: thumbnail }} />
-              <PlayerControls
-                display={displayControls}
-                onPressPlay={this.onPressPlay}
-                onPressPause={this.onPressPause}
-                paused={paused}
-              />
-            </TouchableOpacity>
-            <Video
-              ref={'audioPlayer'}
-              source={{ uri: audio }}
-              onProgress={this.setTime}
-              onLoad={this.onLoad}
-              {...this.props}
-              repeat={false}
-              paused={paused}
-            />
-            <PlayerSeekBar
-              onSeek={this.onSeek}
-              onSlidingStart={this.onSlidingStart}
-              trackLength={totalLength}
-              currentPosition={currentPosition}
-            />
-          </React.Fragment>
-        ) : (
-          <SpinnerLoader />
-        )}
+        <TouchableOpacity style={styles.imageOverlay} onPress={this.onAudioImagePress}>
+          <Image style={styles.image} source={{ uri: thumbnail }} />
+          <PlayerControls
+            display={displayControls}
+            onPressPlay={this.onPressPlay}
+            onPressPause={this.onPressPause}
+            onPressBackward={this.onPressBackward}
+            onPressForward={this.onPressForward}
+            paused={paused}
+          />
+        </TouchableOpacity>
+        <Video
+          ref={'audioPlayer'}
+          source={{ uri: audio }}
+          onProgress={this.setTime}
+          onLoad={this.onLoad}
+          {...this.props}
+          repeat={false}
+          paused={paused}
+        />
+        <PlayerSeekBar
+          onSeek={this.onSeek}
+          onSlidingStart={this.onSlidingStart}
+          trackLength={totalLength}
+          currentPosition={currentPosition}
+        />
       </View>
     )
   }

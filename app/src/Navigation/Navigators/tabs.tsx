@@ -1,4 +1,4 @@
-import { createBottomTabNavigator, createMaterialTopTabNavigator } from 'react-navigation-tabs'
+import { createBottomTabNavigator } from 'react-navigation-tabs'
 
 import Home from '@screen/App/Home/Home'
 import Trending from '@screen/App/Trending/Trending'

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styles from './styles'
 import { View, Text } from 'react-native'
 import Slider from '@react-native-community/slider'
