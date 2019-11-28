@@ -8,19 +8,17 @@
 
 import React from 'react'
 import { Provider } from 'react-redux'
-import { StatusBar, StyleSheet, View, SafeAreaView } from 'react-native'
+import { StatusBar } from 'react-native'
 import SplashScreen from 'react-native-splash-screen'
 
 import configureStore from './Store'
-import { StyleProvider, Container } from 'native-base'
+import { StyleProvider } from 'native-base'
 import getTheme from '../native-base-theme/components'
 import platform from '../native-base-theme/variables/platform'
 import NavigationService from '@util/navigationService/navigationService'
 import { PersistGate } from 'redux-persist/integration/react'
 import { NavigationContainerComponent } from 'react-navigation'
 import AppNavigation from './Navigation'
-
-import { COLORS } from '@util/styles/colors'
 
 export const { store, persistor } = configureStore()
 

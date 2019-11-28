@@ -1,23 +1,26 @@
 import React from 'react'
 import styles from './styles'
-import storage from '@react-native-firebase/storage'
 import { Button, Thumbnail, Text, View } from 'native-base'
 import { AudioSmall } from '@service/Audio/types'
 import { useAsyncEffect } from '@hook/useAsyncEffect'
 import { DEFAULT_AUDIO_IMAGE } from '@util/constants/constants'
 import moment from 'moment'
+import AudioService from '@service/Audio/audioService'
 
-const AudioTile: React.FC<Omit<AudioSmall, 'id'>> = ({ thumbnail, title, views, author, created }) => {
+interface Props extends Omit<AudioSmall, 'id'> {
+  onPress: () => void
+}
+
+const AudioTile: React.FC<Props> = ({ thumbnail, title, views, author, created, onPress }) => {
   const [audioThumbnail, setAudioThumbnail] = React.useState(DEFAULT_AUDIO_IMAGE.uri)
 
   useAsyncEffect(async () => {
-    const ref = storage().ref(thumbnail)
-    const url = await ref.getDownloadURL()
+    const url = await AudioService.getDownloadUrl(thumbnail)
     setAudioThumbnail(url)
   }, [thumbnail])
 
   return (
-    <Button style={styles.audioTile}>
+    <Button style={styles.audioTile} onPress={onPress}>
       <View>
         <Thumbnail style={styles.thumbnail} source={{ uri: audioThumbnail }} />
       </View>

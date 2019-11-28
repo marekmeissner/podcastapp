@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import styles from './styles'
 import { Modal } from 'react-native'
 import { Container, Text } from 'native-base'

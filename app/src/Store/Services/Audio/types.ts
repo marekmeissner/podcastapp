@@ -1,13 +1,13 @@
-import { DocumentPickerResponse } from 'react-native-document-picker'
-import { ImageSourcePropType } from 'react-native'
-
 export enum AUDIO_ACTIONS {
   SAVE = 'AUDIO_SAVE',
-  GET_COLLECTION = 'AUDIO_GET_COLLECTION',
+  LOAD_AUDIO = 'LOAD_USER_AUDIO',
 }
 
 export interface AudioState {
-  collection: Audio[]
+  readonly collection: Audio[]
+  readonly audios: {
+    [uid: string]: Audio[]
+  }
 }
 
 export interface Audio {
@@ -24,7 +24,7 @@ export interface Audio {
     description: string
     ratings: boolean
     donations: boolean
-    audio: string | null
+    audio: string
   }
 }
 
@@ -47,9 +47,10 @@ export interface UploadTaskSnapshot {
   totalBytes: number
 }
 
-export interface GetAudioCollection {
-  type: AUDIO_ACTIONS.GET_COLLECTION
-  collection: Audio[]
+export interface LoadUserAudio {
+  type: AUDIO_ACTIONS.LOAD_AUDIO
+  uid: string
+  audio: Audio
 }
 
-export type AudioActions = GetAudioCollection | AudioSave
+export type AudioActions = LoadUserAudio | AudioSave

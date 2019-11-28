@@ -1,48 +1,65 @@
 import React from 'react'
 import styles from './styles'
 import { connect } from 'react-redux'
-import { Container, Content, Root } from 'native-base'
-import { AudioTile } from '@component/index'
+import { Container, Content } from 'native-base'
+import { AudioTile, SpinnerLoader } from '@component/index'
 import { NavigationInjectedProps } from 'react-navigation'
-import { DEFAULT_AUDIO_IMAGE } from '@util/constants/constants'
 import { getSubscribedAudios, sortAudiosByTimeOfCreation } from '@service/Subscribe/subscribeReducer'
 import { RootState } from '@service/rootReducer'
 import { AudioSmall } from '@service/Audio/types'
-import AudioService from '@service/Audio/audioService'
+import { SCREEN_NAMES } from '@navigation/constants'
 
 interface Props extends NavigationInjectedProps {
   audios: AudioSmall[]
   getSubscribedAudios: (uids: string[]) => Promise<void>
 }
 
+interface State {
+  loading: boolean
+}
+
 class Home extends React.Component<Props> {
+  state: State = {
+    loading: false,
+  }
+
   async componentDidMount() {
-    await this.props.getSubscribedAudios([
-      'a5zpRQgdsvVqowtMQW5BArjFxDo2',
-      '9LcNRpay6BhqlujLO7UIKDA9MF63',
-      'KiqT1I0CKFYLJwkCfpovMHjXCcx1',
-    ])
+    try {
+      this.setState({ loading: true })
+      await this.props.getSubscribedAudios([
+        'a5zpRQgdsvVqowtMQW5BArjFxDo2',
+        '9LcNRpay6BhqlujLO7UIKDA9MF63',
+        'KiqT1I0CKFYLJwkCfpovMHjXCcx1',
+      ])
+      this.setState({ loading: false })
+    } catch (e) {}
   }
   render() {
+    const { audios } = this.props
+    const { loading } = this.state
     return (
       <Container>
-        <Content style={styles.content}>
-          <>
-            {this.props.audios.map(audio => {
+        {audios && !loading ? (
+          <Content style={styles.content}>
+            {audios.map(audio => {
               return (
-                <React.Fragment key={audio.id}>
-                  <AudioTile
-                    thumbnail={audio.thumbnail}
-                    title={audio.title}
-                    views={audio.views}
-                    author={audio.author}
-                    created={audio.created}
-                  />
-                </React.Fragment>
+                <AudioTile
+                  key={audio.id}
+                  onPress={() =>
+                    this.props.navigation.navigate(SCREEN_NAMES.APP_PLAYER, { audios, audio: audios.indexOf(audio) })
+                  }
+                  thumbnail={audio.thumbnail}
+                  title={audio.title}
+                  views={audio.views}
+                  author={audio.author}
+                  created={audio.created}
+                />
               )
             })}
-          </>
-        </Content>
+          </Content>
+        ) : (
+          <SpinnerLoader />
+        )}
       </Container>
     )
   }

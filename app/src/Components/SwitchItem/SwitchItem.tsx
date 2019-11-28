@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch, Text, ListItem, Left, Button, Body, Right, Icon } from 'native-base'
+import { Switch, Text, Left, Button, Right, Icon } from 'native-base'
 
 interface Props {
   value: boolean
