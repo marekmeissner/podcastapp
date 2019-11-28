@@ -5139,9 +5139,9 @@ format@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/format/-/format-0.2.2.tgz#d6170107e9efdc4ed30c9dc39016df942b5cb58b"
 
-formik@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/formik/-/formik-2.0.4.tgz#0743a9a5c7ab0a247d3fa2c072d599f221fc8e75"
+formik@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/formik/-/formik-2.0.6.tgz#e22e3452399a69ad057ba9828ba8fb0d2319df53"
   dependencies:
     deepmerge "^2.1.1"
     hoist-non-react-statics "^3.3.0"
@@ -9538,13 +9538,6 @@ scheduler@0.15.0:
 scheduler@^0.17.0:
   version "0.17.0"
   resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.17.0.tgz#7c9c673e4ec781fac853927916d1c426b6f3ddfe"
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-
-scheduler@^0.18.0:
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.18.0.tgz#5901ad6659bc1d8f3fdaf36eb7a67b0d6746b1c4"
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
