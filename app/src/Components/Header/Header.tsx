@@ -14,7 +14,7 @@ interface Props extends NavigationInjectedProps {
 }
 
 const HeaderBar: React.FC<Props> = ({ logout, navigation }) => {
-  const activeRoute = navigation.router.getPathAndParamsForState(navigation.state).path
+  const activeRoute = navigation.router!.getPathAndParamsForState(navigation.state).path
   return (
     <Header style={styles.header}>
       <Left>
