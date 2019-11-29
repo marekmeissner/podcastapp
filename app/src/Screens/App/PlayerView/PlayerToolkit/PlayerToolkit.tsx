@@ -3,6 +3,7 @@ import styles from './styles'
 import { Container, Header, Content, Icon, Accordion, Text, View, Button } from 'native-base'
 import moment from 'moment'
 import { ShareFab, AvatarListItem } from '@component/index'
+import { Audio } from '@service/Audio/types'
 interface Props {
   audio: Audio
 }

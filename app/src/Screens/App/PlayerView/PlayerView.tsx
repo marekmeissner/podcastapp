@@ -4,15 +4,14 @@ import { Container } from 'native-base'
 import Player from './Player/Player'
 import PlayerToolkit from './PlayerToolkit/PlayerToolkit'
 import { NavigationInjectedProps } from 'react-navigation'
-import { getAudioDetails } from '@service/Audio/audioReducer'
 import { Audio, AudioSmall } from '@service/Audio/types'
 import { SpinnerLoader } from '@component/index'
-import { selectUsersAudios } from '@service/Audio/audioReducer'
+import { selectUsersAudios, getAudioDetails } from '@service/Audio/audioReducer'
 import { RootState } from '@service/rootReducer'
 
 interface Props extends NavigationInjectedProps {
   getAudioDetails: (audioSmall: AudioSmall) => Promise<any>
-  audios: { [uid: string]: Audio[] }
+  audios: { [uid: string]: Audio[] | AudioSmall[] }
 }
 
 interface State {
@@ -55,8 +54,9 @@ class PlayerView extends React.Component<Props> {
       const selectedAudioSmall = audios[selectedAudio]
       const selectFullAudio =
         this.props.audios.hasOwnProperty(selectedAudioSmall.author.uid) &&
-        this.props.audios[selectedAudioSmall.author.uid].find(audio => audio.id === selectedAudioSmall.id)
-
+        this.props.audios[selectedAudioSmall.author.uid].find(
+          audio => audio.id === selectedAudioSmall.id && audio.details,
+        )
       !selectFullAudio && (audio = await this.props.getAudioDetails(selectedAudioSmall))
 
       this.setState({
