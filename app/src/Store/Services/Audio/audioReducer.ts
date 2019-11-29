@@ -20,7 +20,13 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
     case AUDIO_ACTIONS.LOAD_AUDIO:
       return {
         ...state,
-        audios: merge({}, state.audios, state.audios.hasOwnProperty(action.uid) ? {[action.uid] : uniqBy([...state.audios[action.uid], action.audio], 'id')} : {[action.uid]: [action.audio] }),
+        audios: merge(
+          {},
+          state.audios,
+          state.audios.hasOwnProperty(action.uid)
+            ? { [action.uid]: uniqBy([...state.audios[action.uid], action.audio], 'id') }
+            : { [action.uid]: [action.audio] },
+        ),
       }
     default:
       return state

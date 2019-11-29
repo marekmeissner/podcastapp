@@ -30,14 +30,12 @@ class PlayerView extends React.Component<Props> {
   }
 
   async componentDidMount() {
-    console.warn(this.props.audios)
     try {
       await this.getAudioDetails(this.props.navigation.getParam('audio'))
     } catch (e) {}
   }
 
   async componentDidUpdate(prevProps: Props, prevState: State) {
-    console.warn(this.props.audios)
     const { selectedAudio } = this.state
     try {
       if (prevProps.navigation.getParam('audio') !== this.props.navigation.getParam('audio')) {
@@ -52,12 +50,17 @@ class PlayerView extends React.Component<Props> {
     try {
       !this.state.playerReload && this.setState({ playerReload: true })
       const audios = this.props.navigation.getParam('audios') as AudioSmall[]
+      let audio: Audio | undefined = undefined
 
       const selectedAudioSmall = audios[selectedAudio]
-      const audio = await this.props.getAudioDetails(selectedAudioSmall)
+      const selectFullAudio =
+        this.props.audios.hasOwnProperty(selectedAudioSmall.author.uid) &&
+        this.props.audios[selectedAudioSmall.author.uid].find(audio => audio.id === selectedAudioSmall.id)
+
+      !selectFullAudio && (audio = await this.props.getAudioDetails(selectedAudioSmall))
 
       this.setState({
-        audio,
+        audio: selectFullAudio || audio,
         selectedAudio,
         trackLength: audios.length,
       })
