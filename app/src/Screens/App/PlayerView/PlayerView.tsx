@@ -39,11 +39,7 @@ class PlayerView extends React.Component<Props> {
     try {
       if (prevProps.navigation.getParam('audio') !== this.props.navigation.getParam('audio')) {
         await this.getAudioDetails(this.props.navigation.getParam('audio'))
-      } else if (
-        typeof selectedAudio !== 'undefined' &&
-        prevState.selectedAudio &&
-        prevState.selectedAudio !== selectedAudio
-      ) {
+      } else if (typeof selectedAudio !== 'undefined' && prevState.selectedAudio !== selectedAudio) {
         await this.getAudioDetails(selectedAudio)
       }
     } catch (e) {}

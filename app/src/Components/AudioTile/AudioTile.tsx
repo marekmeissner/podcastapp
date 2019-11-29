@@ -15,8 +15,10 @@ const AudioTile: React.FC<Props> = ({ thumbnail, title, views, author, created, 
   const [audioThumbnail, setAudioThumbnail] = React.useState(DEFAULT_AUDIO_IMAGE.uri)
 
   useAsyncEffect(async () => {
-    const url = await AudioService.getDownloadUrl(thumbnail)
-    setAudioThumbnail(url)
+    if (!thumbnail.includes('http')) {
+      const url = await AudioService.getDownloadUrl(thumbnail)
+      setAudioThumbnail(url)
+    }
   }, [thumbnail])
 
   return (

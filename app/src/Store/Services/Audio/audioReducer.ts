@@ -26,7 +26,7 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
           {},
           state.audios,
           state.audios.hasOwnProperty(action.uid)
-            ? { [action.uid]: uniqBy([action.audio, ...state.audios[action.uid]], 'id') }
+          ? { [action.uid]: uniqBy([action.audio, ...state.audios[action.uid]], 'id') }
             : { [action.uid]: [action.audio] },
         ),
       }
