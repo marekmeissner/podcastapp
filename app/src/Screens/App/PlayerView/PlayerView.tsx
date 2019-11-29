@@ -7,9 +7,12 @@ import { NavigationInjectedProps } from 'react-navigation'
 import { getAudioDetails } from '@service/Audio/audioReducer'
 import { Audio, AudioSmall } from '@service/Audio/types'
 import { SpinnerLoader } from '@component/index'
+import { selectUsersAudios } from '@service/Audio/audioReducer'
+import { RootState } from '@service/rootReducer'
 
 interface Props extends NavigationInjectedProps {
   getAudioDetails: (audioSmall: AudioSmall) => Promise<any>
+  audios: { [uid: string]: Audio[] }
 }
 
 interface State {
@@ -27,12 +30,14 @@ class PlayerView extends React.Component<Props> {
   }
 
   async componentDidMount() {
+    console.warn(this.props.audios)
     try {
       await this.getAudioDetails(this.props.navigation.getParam('audio'))
     } catch (e) {}
   }
 
   async componentDidUpdate(prevProps: Props, prevState: State) {
+    console.warn(this.props.audios)
     const { selectedAudio } = this.state
     try {
       if (prevProps.navigation.getParam('audio') !== this.props.navigation.getParam('audio')) {
@@ -94,4 +99,9 @@ class PlayerView extends React.Component<Props> {
   }
 }
 
-export default connect(null, { getAudioDetails })(PlayerView)
+export default connect(
+  (state: RootState) => ({
+    audios: selectUsersAudios(state),
+  }),
+  { getAudioDetails },
+)(PlayerView)

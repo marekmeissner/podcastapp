@@ -2,8 +2,8 @@ import { combineReducers } from 'redux'
 
 import { AuthInitialState, authReducer } from './Auth/authReducer'
 import { AuthState, AuthActions } from './Auth/types'
-import {AudioInitialState, audioReducer} from './Audio/audioReducer'
-import {AudioState, AudioActions} from './Audio/types'
+import { AudioInitialState, audioReducer } from './Audio/audioReducer'
+import { AudioState, AudioActions } from './Audio/types'
 import { SubscribeState, SubscribeActions } from './Subscribe/types'
 import { subscribeReducer, SubscribeInitialState } from './Subscribe/subscribeReducer'
 
