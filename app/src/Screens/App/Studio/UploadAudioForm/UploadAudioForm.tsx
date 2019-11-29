@@ -210,7 +210,4 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
   )
 }
 
-export default connect(
-  null,
-  { addAudio },
-)(UploadAudioForm)
+export default connect(null, { addAudio })(UploadAudioForm)

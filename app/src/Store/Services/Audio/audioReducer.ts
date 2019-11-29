@@ -19,7 +19,7 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
     case AUDIO_ACTIONS.LOAD_AUDIO:
       return {
         ...state,
-        history: merge({}, state.audios, { [action.uid]: action.audio }),
+        audios: merge({}, state.audios, { [action.uid]: action.audio }),
       }
     default:
       return state
@@ -70,3 +70,5 @@ export const getAudioDetails = (audioSmall: AudioSmall) => {
     }
   }
 }
+
+export const selectUsersAudios = (state: RootState) => state.audio.audios

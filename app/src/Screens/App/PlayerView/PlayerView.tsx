@@ -84,7 +84,7 @@ class PlayerView extends React.Component<Props> {
               onChangeAudio={this.onChangeAudio}
               playInBackground
             />
-            <PlayerToolkit />
+            <PlayerToolkit audio={audio} />
           </React.Fragment>
         ) : (
           <SpinnerLoader />
@@ -94,7 +94,4 @@ class PlayerView extends React.Component<Props> {
   }
 }
 
-export default connect(
-  null,
-  { getAudioDetails },
-)(PlayerView)
+export default connect(null, { getAudioDetails })(PlayerView)

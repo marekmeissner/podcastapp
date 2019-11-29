@@ -45,7 +45,4 @@ const HeaderBar: React.FC<Props> = ({ logout, navigation }) => {
   )
 }
 
-export default connect(
-  null,
-  { logout },
-)(HeaderBar)
+export default connect(null, { logout })(HeaderBar)
