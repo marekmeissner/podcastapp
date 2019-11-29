@@ -1,13 +1,16 @@
 export enum AUDIO_ACTIONS {
   SAVE = 'AUDIO_SAVE',
   LOAD_AUDIO = 'LOAD_USER_AUDIO',
+  GET_SUBSCRIBED_AUDIOS = 'GET_SUBSCRIBED_AUDIOS_COLLECTION',
+  SET_SUBSCRIBED_IDS = 'SET_SUBSCRIBED_IDS'
 }
 
 export interface AudioState {
   readonly collection: Audio[]
   readonly audios: {
-    [uid: string]: Audio[]
+    [uid: string]: Audio[] | AudioSmall[]
   }
+  readonly subscribedIds: string[]
 }
 
 export interface Audio {
@@ -53,4 +56,16 @@ export interface LoadUserAudio {
   audio: Audio
 }
 
-export type AudioActions = LoadUserAudio | AudioSave
+export interface GetSubscribedAudios {
+  type: AUDIO_ACTIONS.GET_SUBSCRIBED_AUDIOS
+  audios: {
+    [uid: string]: AudioSmall[]
+  } 
+}
+
+export interface SetSubscribedIds {
+  type: AUDIO_ACTIONS.SET_SUBSCRIBED_IDS,
+  uids: string[]
+}
+
+export type AudioActions = LoadUserAudio | AudioSave | GetSubscribedAudios | SetSubscribedIds
