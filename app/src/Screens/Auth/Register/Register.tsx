@@ -169,7 +169,4 @@ export const Register: React.FC<Props> = ({ registerUser, navigation }) => {
   )
 }
 
-export default connect(
-  null,
-  { registerUser },
-)(Register)
+export default connect(null, { registerUser })(Register)

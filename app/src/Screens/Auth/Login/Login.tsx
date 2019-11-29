@@ -128,7 +128,4 @@ export const Login: React.FC<Props> = ({ loginUser, navigation }) => {
   )
 }
 
-export default connect(
-  null,
-  { loginUser },
-)(Login)
+export default connect(null, { loginUser })(Login)

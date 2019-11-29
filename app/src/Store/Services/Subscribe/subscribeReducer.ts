@@ -51,11 +51,8 @@ export const getSubscribedAudios = (uids: string[]) => {
 
 export const selectSubscribedAudiosCollection = (state: RootState) => state.subscribe.collection
 
-export const sortAudiosByTimeOfCreation = createSelector(
-  selectSubscribedAudiosCollection,
-  audios => {
-    return audios.sort(function(a: AudioSmall, b: AudioSmall) {
-      return new Date(b.created) - new Date(a.created)
-    })
-  },
-)
+export const sortAudiosByTimeOfCreation = createSelector(selectSubscribedAudiosCollection, audios => {
+  return audios.sort(function(a: AudioSmall, b: AudioSmall) {
+    return new Date(b.created) - new Date(a.created)
+  })
+})

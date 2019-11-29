@@ -7,9 +7,12 @@ import { NavigationInjectedProps } from 'react-navigation'
 import { getAudioDetails } from '@service/Audio/audioReducer'
 import { Audio, AudioSmall } from '@service/Audio/types'
 import { SpinnerLoader } from '@component/index'
+import { selectUsersAudios } from '@service/Audio/audioReducer'
+import { RootState } from '@service/rootReducer'
 
 interface Props extends NavigationInjectedProps {
   getAudioDetails: (audioSmall: AudioSmall) => Promise<any>
+  audios: { [uid: string]: Audio[] }
 }
 
 interface State {
@@ -47,12 +50,17 @@ class PlayerView extends React.Component<Props> {
     try {
       !this.state.playerReload && this.setState({ playerReload: true })
       const audios = this.props.navigation.getParam('audios') as AudioSmall[]
+      let audio: Audio | undefined = undefined
 
       const selectedAudioSmall = audios[selectedAudio]
-      const audio = await this.props.getAudioDetails(selectedAudioSmall)
+      const selectFullAudio =
+        this.props.audios.hasOwnProperty(selectedAudioSmall.author.uid) &&
+        this.props.audios[selectedAudioSmall.author.uid].find(audio => audio.id === selectedAudioSmall.id)
+
+      !selectFullAudio && (audio = await this.props.getAudioDetails(selectedAudioSmall))
 
       this.setState({
-        audio,
+        audio: selectFullAudio || audio,
         selectedAudio,
         trackLength: audios.length,
       })
@@ -84,7 +92,7 @@ class PlayerView extends React.Component<Props> {
               onChangeAudio={this.onChangeAudio}
               playInBackground
             />
-            <PlayerToolkit />
+            <PlayerToolkit audio={audio} />
           </React.Fragment>
         ) : (
           <SpinnerLoader />
@@ -95,6 +103,8 @@ class PlayerView extends React.Component<Props> {
 }
 
 export default connect(
-  null,
+  (state: RootState) => ({
+    audios: selectUsersAudios(state),
+  }),
   { getAudioDetails },
 )(PlayerView)

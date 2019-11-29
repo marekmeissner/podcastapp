@@ -1,8 +1,9 @@
 import firestore from '@react-native-firebase/firestore'
 import { Dispatch } from 'redux'
 import { AudioState, AUDIO_ACTIONS, AudioActions, Audio, AudioSmall } from './types'
-import { omit, merge } from 'lodash'
+import { omit, merge, uniqBy } from 'lodash'
 import AudioService from './audioService'
+import { RootState } from '@service/rootReducer'
 
 export const AudioInitialState: AudioState = {
   collection: [],
@@ -19,7 +20,13 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
     case AUDIO_ACTIONS.LOAD_AUDIO:
       return {
         ...state,
-        history: merge({}, state.audios, { [action.uid]: action.audio }),
+        audios: merge(
+          {},
+          state.audios,
+          state.audios.hasOwnProperty(action.uid)
+            ? { [action.uid]: uniqBy([...state.audios[action.uid], action.audio], 'id') }
+            : { [action.uid]: [action.audio] },
+        ),
       }
     default:
       return state
@@ -70,3 +77,5 @@ export const getAudioDetails = (audioSmall: AudioSmall) => {
     }
   }
 }
+
+export const selectUsersAudios = (state: RootState) => state.audio.audios
