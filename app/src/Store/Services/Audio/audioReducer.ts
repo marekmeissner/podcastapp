@@ -1,6 +1,6 @@
 import firestore from '@react-native-firebase/firestore'
 import { Dispatch } from 'redux'
-import {createSelector} from 'reselect'
+import { createSelector } from 'reselect'
 import { AudioState, AUDIO_ACTIONS, AudioActions, Audio, AudioSmall } from './types'
 import { omit, merge, uniqBy } from 'lodash'
 import AudioService from './audioService'
@@ -33,13 +33,13 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
     case AUDIO_ACTIONS.SET_SUBSCRIBED_IDS:
       return {
         ...state,
-        subscribedIds: merge([], state.subscribedIds, action.uids)
+        subscribedIds: merge([], state.subscribedIds, action.uids),
       }
-    case AUDIO_ACTIONS.GET_SUBSCRIBED_AUDIOS: 
-    return {
-      ...state,
-      audios: action.audios
-    }
+    case AUDIO_ACTIONS.GET_SUBSCRIBED_AUDIOS:
+      return {
+        ...state,
+        audios: action.audios,
+      }
     default:
       return state
   }
@@ -67,9 +67,9 @@ export const getAudioDetails = (audioSmall: AudioSmall) => {
         .doc(`audios/${audioSmall.author.uid}/audio/${audioSmall.id}/details/details`)
         .get()
         .then(res => res.data())
-      if (details ) {
-        const audioUrl = !details.audio.includes('http') && await AudioService.getDownloadUrl(details.audio)
-        const thumbnailUrl = !audioSmall.thumbnail.includes('http') && await AudioService.getDownloadUrl(audioSmall.thumbnail)
+      if (details) {
+        const audioUrl = await AudioService.getDownloadUrl(details.audio)
+        const thumbnailUrl = await AudioService.getDownloadUrl(audioSmall.thumbnail)
 
         const audio = {
           ...audioSmall,
@@ -92,7 +92,7 @@ export const getAudioDetails = (audioSmall: AudioSmall) => {
 
 export const getSubscribedAudios = (uids: string[]) => {
   return async (dispatch: Dispatch) => {
-    const audios: {[uid: string]: AudioSmall[]} = {}
+    const audios: { [uid: string]: AudioSmall[] } = {}
 
     try {
       const audiosRef = firestore().collection('audios')
@@ -103,13 +103,13 @@ export const getSubscribedAudios = (uids: string[]) => {
           .get()
           .then(querySnapshot => {
             return querySnapshot.forEach(doc => {
-              audios[uid] = audios[uid] ? [...audios[uid], (doc.data() as AudioSmall)] : [(doc.data() as AudioSmall)];
+              audios[uid] = audios[uid] ? [...audios[uid], doc.data() as AudioSmall] : [doc.data() as AudioSmall]
             })
           })
       })
       Promise.all(requests).then(() => {
         dispatch({ type: AUDIO_ACTIONS.GET_SUBSCRIBED_AUDIOS, audios })
-        dispatch({ type: AUDIO_ACTIONS.SET_SUBSCRIBED_IDS, uids})
+        dispatch({ type: AUDIO_ACTIONS.SET_SUBSCRIBED_IDS, uids })
       })
     } catch (e) {
       throw new Error(e)
@@ -121,14 +121,18 @@ export const selectAudiosCollection = (state: RootState) => state.audio.audios
 
 export const selectSubscribedIds = (state: RootState) => state.audio.subscribedIds
 
-export const selectSubscribedAudiosCollection = createSelector(selectAudiosCollection, selectSubscribedIds, (audios, ids) => {
-  const subscribedAudios: Audio[] = []
-  ids.map(function(key) {
-    audios[key] && (audios[key] as AudioSmall[]).map(audio => subscribedAudios.push(audio))
-  });
+export const selectSubscribedAudiosCollection = createSelector(
+  selectAudiosCollection,
+  selectSubscribedIds,
+  (audios, ids) => {
+    const subscribedAudios: Audio[] = []
+    ids.map(function(key) {
+      audios[key] && (audios[key] as AudioSmall[]).map(audio => subscribedAudios.push(audio))
+    })
 
-  return subscribedAudios
-})
+    return subscribedAudios
+  },
+)
 
 export const sortAudiosByTimeOfCreation = createSelector(selectSubscribedAudiosCollection, audios => {
   return audios.sort(function(a: AudioSmall, b: AudioSmall) {

@@ -12,11 +12,12 @@ export interface RootState {
 
 export const initialRootState: RootState = {
   auth: AuthInitialState,
-  audio: AudioInitialState}
+  audio: AudioInitialState,
+}
 
 export const rootReducer = (state = initialRootState, action: AuthActions | AudioActions) => {
   return combineReducers<RootState>({
     auth: authReducer,
-    audio: audioReducer
-   })(state, action)
+    audio: audioReducer,
+  })(state, action)
 }

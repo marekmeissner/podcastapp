@@ -21,14 +21,15 @@ class AudioService {
   }
 
   static getDownloadUrl = async (ref: string) => {
-    try{
-    return await storage()
-      .ref(ref)
-      .getDownloadURL()
-    }
-    catch(e){
+    if(!ref.includes('http')){
+    try {
+      return await storage()
+        .ref(ref)
+        .getDownloadURL()
+    } catch (e) {
       console.warn(e)
     }
+  }
   }
 }
 

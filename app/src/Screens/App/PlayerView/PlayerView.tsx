@@ -11,7 +11,7 @@ import { RootState } from '@service/rootReducer'
 
 interface Props extends NavigationInjectedProps {
   getAudioDetails: (audioSmall: AudioSmall) => Promise<any>
-  audios: { [uid: string]: Audio[] }
+  audios: { [uid: string]: Audio[] | AudioSmall[] }
 }
 
 interface State {
