@@ -6,11 +6,12 @@ import PlayerToolkit from './PlayerToolkit/PlayerToolkit'
 import { NavigationInjectedProps } from 'react-navigation'
 import { Audio, AudioSmall } from '@service/Audio/types'
 import { SpinnerLoader } from '@component/index'
-import { selectUsersAudios, getAudioDetails } from '@service/Audio/audioReducer'
+import { selectUsersAudios, getAudioDetails, incrementAudioViews } from '@service/Audio/audioReducer'
 import { RootState } from '@service/rootReducer'
 
 interface Props extends NavigationInjectedProps {
   getAudioDetails: (audioSmall: AudioSmall) => Promise<any>
+  incrementAudioViews: (userId: string, audioId: string) => Promise<void>
   audios: { [uid: string]: Audio[] | AudioSmall[] }
 }
 
@@ -64,6 +65,10 @@ class PlayerView extends React.Component<Props> {
         selectedAudio,
         trackLength: audios.length,
       })
+
+      audio && this.props.incrementAudioViews(audio.author.uid, audio.id)
+
+      return audio
     } catch (e) {
     } finally {
       this.setState({
@@ -106,5 +111,5 @@ export default connect(
   (state: RootState) => ({
     audios: selectUsersAudios(state),
   }),
-  { getAudioDetails },
+  { getAudioDetails, incrementAudioViews },
 )(PlayerView)
