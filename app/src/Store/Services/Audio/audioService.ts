@@ -26,7 +26,7 @@ class AudioService {
         .ref(ref)
         .getDownloadURL()
     } catch (e) {
-      console.warn(e)
+      throw new Error(e)
     }
   }
 }

@@ -7,7 +7,7 @@ export enum AUTH_ACTIONS {
   SET_USER = 'SET_USER',
   SET_LOGGED_IN = 'SET_LOGGED_IN',
   SET_LOGGED_OUT = 'SET_LOGGED_OUT',
-  FOLLOWING_FLOW = 'SET_FOLLOWING_ARRAY'
+  FOLLOWING_FLOW = 'SET_FOLLOWING_ARRAY',
 }
 
 export interface UserCredentials {
@@ -44,7 +44,7 @@ export interface SetLoggedOut {
 }
 
 export interface FollowingFlow {
-  type: AUTH_ACTIONS.FOLLOWING_FLOW,
+  type: AUTH_ACTIONS.FOLLOWING_FLOW
   followArray: string[]
 }
 

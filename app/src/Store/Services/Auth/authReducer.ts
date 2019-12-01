@@ -32,7 +32,7 @@ export const authReducer = (state: AuthState = AuthInitialState, action: AuthAct
     case AUTH_ACTIONS.FOLLOWING_FLOW:
       return {
         ...state,
-        user: {...state.user, following: action.followArray}
+        user: { ...state.user, following: action.followArray },
       }
     default:
       return state
@@ -78,7 +78,7 @@ export const registerUser = (registerData: UserSignUpCredentials) => {
           uid: response.user.uid,
           email: registerData.email,
           accountName: registerData.accountName,
-          following: []
+          following: [],
         })
       const user = await AuthService.getUser(response.user.uid)
       const userToken = await response.user.getIdToken().then(idToken => idToken)
@@ -114,12 +114,14 @@ export const logout = () => {
 
 export const followingFlow = (userId: string, followArray: string[]) => {
   return async (dispatch: Dispatch) => {
-    try{
-      await firestore().doc(`users/${userId}`).update({
-        following: followArray,
-      })
-      dispatch({type: AUTH_ACTIONS.FOLLOWING_FLOW, followArray})
-    }catch(e){
+    try {
+      await firestore()
+        .doc(`users/${userId}`)
+        .update({
+          following: followArray,
+        })
+      dispatch({ type: AUTH_ACTIONS.FOLLOWING_FLOW, followArray })
+    } catch (e) {
       throw new Error(e)
     }
   }
