@@ -144,11 +144,11 @@ export const incrementAudioViews = (userId: string, audioId: string) => {
 
 export const selectAudiosCollection = (state: RootState) => state.audio.audios
 
-export const selectSubscribedIds = (state: RootState) => state.auth.user.following
+export const selectFollowingIds = (state: RootState) => state.auth.user.following
 
 export const selectSubscribedAudiosCollection = createSelector(
   selectAudiosCollection,
-  selectSubscribedIds,
+  selectFollowingIds,
   (audios, ids) => {
     const subscribedAudios: Audio[] = []
     ids.map(function(key) {

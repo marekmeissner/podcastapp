@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './styles'
-import { Container, Header, Content, Icon, Accordion, Text, View, Button } from 'native-base'
+import { Content, Icon, Text, View, Button } from 'native-base'
 import moment from 'moment'
 import { ShareFab, AvatarListItem } from '@component/index'
 import { Audio } from '@service/Audio/types'
@@ -33,7 +33,7 @@ const PlayerToolkit: React.FC<Props> = ({ audio }) => {
             </Button>
           </View>
         </View>
-        <AvatarListItem author={audio.author.name} />
+        <AvatarListItem author={audio.author} />
         <Text style={styles.description}>{audio.details.description}</Text>
       </Content>
       <ShareFab />
