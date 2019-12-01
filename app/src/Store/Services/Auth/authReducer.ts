@@ -10,6 +10,7 @@ export const AuthInitialState: AuthState = {
     uid: '',
     email: '',
     accountName: '',
+    following: []
   },
   isLoggedIn: false,
 }

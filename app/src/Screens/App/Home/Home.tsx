@@ -8,9 +8,12 @@ import { getSubscribedAudios, sortAudiosByTimeOfCreation } from '@service/Audio/
 import { RootState } from '@service/rootReducer'
 import { AudioSmall } from '@service/Audio/types'
 import { SCREEN_NAMES } from '@navigation/constants'
+import { selectUser } from '@service/Auth/authReducer'
+import { User } from '@service/Auth/types'
 
 interface Props extends NavigationInjectedProps {
   audios: AudioSmall[]
+  user: User
   getSubscribedAudios: (uids: string[]) => Promise<void>
 }
 
@@ -26,11 +29,7 @@ class Home extends React.Component<Props> {
   async componentDidMount() {
     try {
       this.setState({ loading: true })
-      await this.props.getSubscribedAudios([
-        'a5zpRQgdsvVqowtMQW5BArjFxDo2',
-        '9LcNRpay6BhqlujLO7UIKDA9MF63',
-        'KiqT1I0CKFYLJwkCfpovMHjXCcx1',
-      ])
+      await this.props.getSubscribedAudios(this.props.user.following)
       this.setState({ loading: false })
     } catch (e) {}
   }
@@ -67,6 +66,7 @@ class Home extends React.Component<Props> {
 
 export default connect(
   (state: RootState) => ({
+    user: selectUser(state),
     audios: sortAudiosByTimeOfCreation(state),
   }),
   { getSubscribedAudios },
