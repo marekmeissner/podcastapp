@@ -8,9 +8,12 @@ import { getSubscribedAudios, sortAudiosByTimeOfCreation } from '@service/Audio/
 import { RootState } from '@service/rootReducer'
 import { AudioSmall } from '@service/Audio/types'
 import { SCREEN_NAMES } from '@navigation/constants'
+import { selectUser } from '@service/Auth/authReducer'
+import { User } from '@service/Auth/types'
 
 interface Props extends NavigationInjectedProps {
-  audios: AudioSmall[]
+  followingAudios: AudioSmall[]
+  user: User
   getSubscribedAudios: (uids: string[]) => Promise<void>
 }
 
@@ -26,27 +29,26 @@ class Home extends React.Component<Props> {
   async componentDidMount() {
     try {
       this.setState({ loading: true })
-      await this.props.getSubscribedAudios([
-        'a5zpRQgdsvVqowtMQW5BArjFxDo2',
-        '9LcNRpay6BhqlujLO7UIKDA9MF63',
-        'KiqT1I0CKFYLJwkCfpovMHjXCcx1',
-      ])
+      await this.props.getSubscribedAudios(this.props.user.following)
       this.setState({ loading: false })
     } catch (e) {}
   }
   render() {
-    const { audios } = this.props
+    const { followingAudios } = this.props
     const { loading } = this.state
     return (
       <Container>
-        {audios && !loading ? (
+        {followingAudios && !loading ? (
           <Content style={styles.content}>
-            {audios.map(audio => {
+            {followingAudios.map(audio => {
               return (
                 <AudioTile
                   key={audio.id}
                   onPress={() =>
-                    this.props.navigation.navigate(SCREEN_NAMES.APP_PLAYER, { audios, audio: audios.indexOf(audio) })
+                    this.props.navigation.navigate(SCREEN_NAMES.APP_PLAYER, {
+                      audios: followingAudios,
+                      audio: followingAudios.indexOf(audio),
+                    })
                   }
                   thumbnail={audio.thumbnail}
                   title={audio.title}
@@ -67,7 +69,8 @@ class Home extends React.Component<Props> {
 
 export default connect(
   (state: RootState) => ({
-    audios: sortAudiosByTimeOfCreation(state),
+    user: selectUser(state),
+    followingAudios: sortAudiosByTimeOfCreation(state),
   }),
   { getSubscribedAudios },
 )(Home)

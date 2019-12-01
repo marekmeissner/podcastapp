@@ -10,6 +10,7 @@ export const AuthInitialState: AuthState = {
     uid: '',
     email: '',
     accountName: '',
+    following: [],
   },
   isLoggedIn: false,
 }
@@ -28,6 +29,11 @@ export const authReducer = (state: AuthState = AuthInitialState, action: AuthAct
       }
     case AUTH_ACTIONS.SET_LOGGED_OUT:
       return AuthInitialState
+    case AUTH_ACTIONS.FOLLOWING_FLOW:
+      return {
+        ...state,
+        user: { ...state.user, following: action.followArray },
+      }
     default:
       return state
   }
@@ -72,6 +78,7 @@ export const registerUser = (registerData: UserSignUpCredentials) => {
           uid: response.user.uid,
           email: registerData.email,
           accountName: registerData.accountName,
+          following: [],
         })
       const user = await AuthService.getUser(response.user.uid)
       const userToken = await response.user.getIdToken().then(idToken => idToken)
@@ -105,6 +112,23 @@ export const logout = () => {
   }
 }
 
+export const followingFlow = (userId: string, followArray: string[]) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      await firestore()
+        .doc(`users/${userId}`)
+        .update({
+          following: followArray,
+        })
+      dispatch({ type: AUTH_ACTIONS.FOLLOWING_FLOW, followArray })
+    } catch (e) {
+      throw new Error(e)
+    }
+  }
+}
+
 export const selectUser = (state: RootState) => state.auth.user
 
 export const selectIsLoggedIn = (state: RootState) => state.auth.isLoggedIn
+
+export const selectUserFollowing = (state: RootState) => state.auth.user.following
