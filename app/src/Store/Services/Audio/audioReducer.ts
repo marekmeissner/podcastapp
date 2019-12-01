@@ -40,6 +40,16 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
         ...state,
         audios: action.audios,
       }
+    case AUDIO_ACTIONS.INCREMENT_VIEWS:
+      return {
+        ...state,
+        audios: {
+          ...state.audios,
+          [action.userId]: (state.audios[action.userId] as Audio[]).map(audio =>
+            audio.id === action.audioId ? { ...audio, views: ++audio.views } : audio,
+          ),
+        },
+      }
     default:
       return state
   }
@@ -111,6 +121,21 @@ export const getSubscribedAudios = (uids: string[]) => {
         dispatch({ type: AUDIO_ACTIONS.GET_SUBSCRIBED_AUDIOS, audios })
         dispatch({ type: AUDIO_ACTIONS.SET_SUBSCRIBED_IDS, uids })
       })
+    } catch (e) {
+      throw new Error(e)
+    }
+  }
+}
+
+export const incrementAudioViews = (userId: string, audioId: string) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      await firestore()
+        .doc(`audios/${userId}/audio/${audioId}`)
+        .update({
+          views: firestore.FieldValue.increment(1),
+        })
+      dispatch({ type: AUDIO_ACTIONS.INCREMENT_VIEWS, userId, audioId })
     } catch (e) {
       throw new Error(e)
     }
