@@ -16,13 +16,13 @@ export interface RootState {
 export const initialRootState: RootState = {
   auth: AuthInitialState,
   audio: AudioInitialState,
-  player: PlayerInitialState
+  player: PlayerInitialState,
 }
 
 export const rootReducer = (state = initialRootState, action: AuthActions | AudioActions | PlayerActions) => {
   return combineReducers<RootState>({
     auth: authReducer,
     audio: audioReducer,
-    player: playerReducer
+    player: playerReducer,
   })(state, action)
 }

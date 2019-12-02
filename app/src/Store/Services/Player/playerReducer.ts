@@ -4,7 +4,7 @@ import { RootState } from '../rootReducer'
 import { AudioSmall } from '@service/Audio/types'
 
 export const PlayerInitialState: PlayerState = {
-  currentAudio: undefined
+  currentAudio: undefined,
 }
 
 export const playerReducer = (state: PlayerState = PlayerInitialState, action: PlayerActions) => {
@@ -12,7 +12,7 @@ export const playerReducer = (state: PlayerState = PlayerInitialState, action: P
     case PLAYER_ACTIONS.SET_CURRENT_AUDIO:
       return {
         ...state,
-        currentAudio: action.currentAudio
+        currentAudio: action.currentAudio,
       }
     default:
       return state
@@ -20,8 +20,7 @@ export const playerReducer = (state: PlayerState = PlayerInitialState, action: P
 }
 
 export const setCurrentAudio = (currentAudio: number) => {
-  return (dispatch: Dispatch) => dispatch({type: PLAYER_ACTIONS.SET_CURRENT_AUDIO, currentAudio})
+  return (dispatch: Dispatch) => dispatch({ type: PLAYER_ACTIONS.SET_CURRENT_AUDIO, currentAudio })
 }
 
 export const selectCurrentAudio = (state: RootState) => state.player.currentAudio
-
