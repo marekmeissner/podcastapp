@@ -36,12 +36,12 @@ class PlayerView extends React.Component<Props> {
   }
 
   async componentDidUpdate(prevProps: Props, prevState: State) {
-    const { selectedAudio } = this.state
+    const propsAudio = this.props.navigation.getParam('audio')
+    const prevPropsAudio = prevProps.navigation.getParam('audio')
     try {
-      if (prevProps.navigation.getParam('audio') !== this.props.navigation.getParam('audio')) {
-        await this.getAudioDetails(this.props.navigation.getParam('audio'))
-      } else if (typeof selectedAudio !== 'undefined' && prevState.selectedAudio !== selectedAudio) {
-        await this.getAudioDetails(selectedAudio)
+      if (prevPropsAudio !== propsAudio) {
+        await this.getAudioDetails(propsAudio)
+        console.warn('1')
       }
     } catch (e) {}
   }
@@ -50,23 +50,20 @@ class PlayerView extends React.Component<Props> {
     try {
       !this.state.playerReload && this.setState({ playerReload: true })
       const audios = this.props.navigation.getParam('audios') as AudioSmall[]
-      let audio: Audio | undefined = undefined
 
       const selectedAudioSmall = audios[selectedAudio]
-      const selectFullAudio =
-        this.props.audios.hasOwnProperty(selectedAudioSmall.author.uid) &&
-        this.props.audios[selectedAudioSmall.author.uid].find(
-          audio => audio.id === selectedAudioSmall.id && audio.details,
-        )
-      !selectFullAudio && (audio = await this.props.getAudioDetails(selectedAudioSmall))
+      const audio = this.props.audios[selectedAudioSmall.author.uid].find(audio => audio.id === selectedAudioSmall.id)
+
+      const fullAudio =
+        audio && !audio.hasOwnProperty('details') ? await this.props.getAudioDetails(selectedAudioSmall) : audio
 
       this.setState({
-        audio: selectFullAudio || audio,
+        audio: fullAudio,
         selectedAudio,
         trackLength: audios.length,
       })
 
-      audio && this.props.incrementAudioViews(audio.author.uid, audio.id)
+      audio && audios[selectedAudio].id !== audio.id && this.props.incrementAudioViews(audio.author.uid, audio.id)
 
       return audio
     } catch (e) {
@@ -77,10 +74,9 @@ class PlayerView extends React.Component<Props> {
     }
   }
 
-  onChangeAudio = (selectedAudio: number) => {
-    this.setState({
-      selectedAudio,
-    })
+  onChangeAudio = async (selectedAudio: number) => {
+    await this.getAudioDetails(selectedAudio)
+    console.warn('2')
   }
 
   render() {

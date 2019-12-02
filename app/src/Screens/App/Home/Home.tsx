@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Container, Content } from 'native-base'
 import { AudioTile, SpinnerLoader } from '@component/index'
 import { NavigationInjectedProps } from 'react-navigation'
-import { getSubscribedAudios, sortAudiosByTimeOfCreation } from '@service/Audio/audioReducer'
+import { getFollowingAudios, sortAudiosByTimeOfCreation } from '@service/Audio/audioReducer'
 import { RootState } from '@service/rootReducer'
 import { AudioSmall } from '@service/Audio/types'
 import { SCREEN_NAMES } from '@navigation/constants'
@@ -14,7 +14,7 @@ import { User } from '@service/Auth/types'
 interface Props extends NavigationInjectedProps {
   followingAudios: AudioSmall[]
   user: User
-  getSubscribedAudios: (uids: string[]) => Promise<void>
+  getFollowingAudios: (uids: string[]) => Promise<void>
 }
 
 interface State {
@@ -29,9 +29,11 @@ class Home extends React.Component<Props> {
   async componentDidMount() {
     try {
       this.setState({ loading: true })
-      await this.props.getSubscribedAudios(this.props.user.following)
+      await this.props.getFollowingAudios(this.props.user.following)
+    } catch (e) {
+    } finally {
       this.setState({ loading: false })
-    } catch (e) {}
+    }
   }
   render() {
     const { followingAudios } = this.props
@@ -72,5 +74,5 @@ export default connect(
     user: selectUser(state),
     followingAudios: sortAudiosByTimeOfCreation(state),
   }),
-  { getSubscribedAudios },
+  { getFollowingAudios },
 )(Home)
