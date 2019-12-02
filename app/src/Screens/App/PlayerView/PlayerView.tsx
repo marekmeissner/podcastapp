@@ -33,7 +33,7 @@ class PlayerView extends React.Component<Props> {
   async componentDidMount() {
     const { currentAudio } = this.props
     try {
-      currentAudio && (await this.getAudioDetails(currentAudio))
+      currentAudio !== 'undefined' && (await this.getAudioDetails(currentAudio))
     } catch (e) {}
   }
 

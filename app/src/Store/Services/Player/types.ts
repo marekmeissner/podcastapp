@@ -1,5 +1,3 @@
-import { AudioSmall } from '@service/Audio/types'
-
 export interface PlayerState {
   readonly currentAudio?: number
 }

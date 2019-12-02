@@ -1,7 +1,6 @@
 import { PlayerState, PlayerActions, PLAYER_ACTIONS } from './types'
 import { Dispatch } from 'redux'
 import { RootState } from '../rootReducer'
-import { AudioSmall } from '@service/Audio/types'
 
 export const PlayerInitialState: PlayerState = {
   currentAudio: undefined,
