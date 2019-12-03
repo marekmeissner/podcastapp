@@ -105,7 +105,4 @@ export const ForgotPassword: React.FC<Props> = ({ forgotPassword, navigation }) 
   )
 }
 
-export default connect(
-  null,
-  { forgotPassword },
-)(ForgotPassword)
+export default connect(null, { forgotPassword })(ForgotPassword)

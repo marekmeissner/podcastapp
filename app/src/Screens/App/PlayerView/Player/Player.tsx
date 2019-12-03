@@ -124,6 +124,7 @@ class Player extends React.Component<Props> {
           {...this.props}
           repeat={false}
           paused={paused}
+          onEnd={this.onPressForward}
         />
         <PlayerSeekBar
           onSeek={this.onSeek}
