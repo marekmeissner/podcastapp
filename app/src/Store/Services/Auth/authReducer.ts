@@ -54,10 +54,10 @@ export const loginUser = (credentials: UserCredentials) => {
 
 export const getCurrentUser = (uid: string) => {
   return async (dispatch: Dispatch) => {
-    try{
+    try {
       const user = await AuthService.getUser(uid)
       dispatch(setUser(user))
-    }catch(e){
+    } catch (e) {
       throw new Error(e)
     }
   }

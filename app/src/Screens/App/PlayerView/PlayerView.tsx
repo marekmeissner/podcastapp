@@ -33,7 +33,7 @@ class PlayerView extends React.Component<Props> {
   async componentDidMount() {
     const { currentAudio } = this.props
     try {
-      currentAudio !== 'undefined' && (await this.getAudioDetails(currentAudio))
+      currentAudio !== undefined && (await this.getAudioDetails(currentAudio))
     } catch (e) {}
   }
 
@@ -41,7 +41,7 @@ class PlayerView extends React.Component<Props> {
     const propsAudio = this.props.currentAudio
     const prevPropsAudio = prevProps.currentAudio
     try {
-      if (propsAudio && prevPropsAudio && prevPropsAudio !== propsAudio) {
+      if (propsAudio !== undefined && prevPropsAudio !== undefined && prevPropsAudio !== propsAudio) {
         await this.getAudioDetails(propsAudio)
       }
     } catch (e) {}
