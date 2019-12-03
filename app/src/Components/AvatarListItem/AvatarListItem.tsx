@@ -2,9 +2,6 @@ import React from 'react'
 import styles from './styles'
 import { ListItem, Left, Body, Right, Thumbnail, Text, Button } from 'native-base'
 import { DEFAULT_AUDIO_IMAGE } from '@util/constants/constants'
-import { useSelector, connect } from 'react-redux'
-import { RootState } from '@service/rootReducer'
-import { selectUserFollowing, followingFlow } from '@service/Auth/authReducer'
 import { COLORS } from '@util/styles/colors'
 
 interface Props {

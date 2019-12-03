@@ -8,7 +8,6 @@ import { RootState } from '@service/rootReducer'
 
 export const AudioInitialState: AudioState = {
   collection: [],
-  subscribedIds: [],
   audios: {},
 }
 
@@ -30,15 +29,10 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
             : { [action.uid]: [action.audio] },
         ),
       }
-    case AUDIO_ACTIONS.SET_SUBSCRIBED_IDS:
-      return {
-        ...state,
-        subscribedIds: merge([], state.subscribedIds, action.uids),
-      }
     case AUDIO_ACTIONS.GET_SUBSCRIBED_AUDIOS:
       return {
         ...state,
-        audios: action.audios,
+        audios: merge({}, state.audios, action.audios),
       }
     case AUDIO_ACTIONS.INCREMENT_VIEWS:
       return {
@@ -100,7 +94,7 @@ export const getAudioDetails = (audioSmall: AudioSmall) => {
   }
 }
 
-export const getSubscribedAudios = (uids: string[]) => {
+export const getFollowingAudios = (uids: string[]) => {
   return async (dispatch: Dispatch) => {
     const audios: { [uid: string]: AudioSmall[] } = {}
 
@@ -112,14 +106,12 @@ export const getSubscribedAudios = (uids: string[]) => {
           .collection('audio')
           .get()
           .then(querySnapshot => {
-            return querySnapshot.forEach(doc => {
-              audios[uid] = audios[uid] ? [...audios[uid], doc.data() as AudioSmall] : [doc.data() as AudioSmall]
-            })
+            audios[uid] = querySnapshot.docs.map(doc => doc.data() as AudioSmall) as []
           })
       })
+
       Promise.all(requests).then(() => {
         dispatch({ type: AUDIO_ACTIONS.GET_SUBSCRIBED_AUDIOS, audios })
-        dispatch({ type: AUDIO_ACTIONS.SET_SUBSCRIBED_IDS, uids })
       })
     } catch (e) {
       throw new Error(e)
@@ -146,7 +138,7 @@ export const selectAudiosCollection = (state: RootState) => state.audio.audios
 
 export const selectFollowingIds = (state: RootState) => state.auth.user.following
 
-export const selectSubscribedAudiosCollection = createSelector(
+export const selectFollowingAudiosCollection = createSelector(
   selectAudiosCollection,
   selectFollowingIds,
   (audios, ids) => {
@@ -154,12 +146,11 @@ export const selectSubscribedAudiosCollection = createSelector(
     ids.map(function(key) {
       audios[key] && (audios[key] as AudioSmall[]).map(audio => subscribedAudios.push(audio))
     })
-
     return subscribedAudios
   },
 )
 
-export const sortAudiosByTimeOfCreation = createSelector(selectSubscribedAudiosCollection, audios => {
+export const sortAudiosByTimeOfCreation = createSelector(selectFollowingAudiosCollection, audios => {
   return audios.sort(function(a: AudioSmall, b: AudioSmall) {
     return new Date(b.created) - new Date(a.created)
   })

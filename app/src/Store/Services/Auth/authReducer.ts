@@ -6,12 +6,7 @@ import { RootState } from '../rootReducer'
 import AuthService from './authService'
 
 export const AuthInitialState: AuthState = {
-  user: {
-    uid: '',
-    email: '',
-    accountName: '',
-    following: [],
-  },
+  user: undefined,
   isLoggedIn: false,
 }
 
@@ -21,11 +16,6 @@ export const authReducer = (state: AuthState = AuthInitialState, action: AuthAct
       return {
         ...state,
         user: action.user,
-      }
-    case AUTH_ACTIONS.SET_LOGGED_IN:
-      return {
-        ...state,
-        isLoggedIn: true,
       }
     case AUTH_ACTIONS.SET_LOGGED_OUT:
       return AuthInitialState
@@ -44,10 +34,6 @@ export const setUser = (user: any) => ({
   user,
 })
 
-export const setLoggedIn = () => ({
-  type: AUTH_ACTIONS.SET_LOGGED_IN,
-})
-
 export const setLoggedOut = () => ({
   type: AUTH_ACTIONS.SET_LOGGED_OUT,
 })
@@ -60,7 +46,17 @@ export const loginUser = (credentials: UserCredentials) => {
       const userToken = await response.user.getIdToken().then(idToken => idToken)
       await AuthService.setUserToken(userToken)
       dispatch(setUser(user))
-      dispatch(setLoggedIn())
+    } catch (e) {
+      throw new Error(e)
+    }
+  }
+}
+
+export const getCurrentUser = (uid: string) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const user = await AuthService.getUser(uid)
+      dispatch(setUser(user))
     } catch (e) {
       throw new Error(e)
     }
@@ -84,7 +80,6 @@ export const registerUser = (registerData: UserSignUpCredentials) => {
       const userToken = await response.user.getIdToken().then(idToken => idToken)
       await AuthService.setUserToken(userToken)
       dispatch(setUser(user))
-      dispatch(setLoggedIn())
     } catch (e) {
       throw new Error(e)
     }
@@ -128,7 +123,5 @@ export const followingFlow = (userId: string, followArray: string[]) => {
 }
 
 export const selectUser = (state: RootState) => state.auth.user
-
-export const selectIsLoggedIn = (state: RootState) => state.auth.isLoggedIn
 
 export const selectUserFollowing = (state: RootState) => state.auth.user.following

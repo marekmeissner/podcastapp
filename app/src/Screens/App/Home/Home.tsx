@@ -2,66 +2,67 @@ import React from 'react'
 import styles from './styles'
 import { connect } from 'react-redux'
 import { Container, Content } from 'native-base'
-import { AudioTile, SpinnerLoader } from '@component/index'
+import { AudioTile } from '@component/index'
 import { NavigationInjectedProps } from 'react-navigation'
-import { getSubscribedAudios, sortAudiosByTimeOfCreation } from '@service/Audio/audioReducer'
+import { getFollowingAudios, sortAudiosByTimeOfCreation } from '@service/Audio/audioReducer'
 import { RootState } from '@service/rootReducer'
 import { AudioSmall } from '@service/Audio/types'
 import { SCREEN_NAMES } from '@navigation/constants'
 import { selectUser } from '@service/Auth/authReducer'
 import { User } from '@service/Auth/types'
+import { setCurrentAudio } from '@service/Player/playerReducer'
 
 interface Props extends NavigationInjectedProps {
   followingAudios: AudioSmall[]
   user: User
-  getSubscribedAudios: (uids: string[]) => Promise<void>
-}
-
-interface State {
-  loading: boolean
+  getFollowingAudios: (uids: string[]) => Promise<void>
+  setCurrentAudio: (currentAudio: number) => void
 }
 
 class Home extends React.Component<Props> {
-  state: State = {
-    loading: false,
-  }
-
   async componentDidMount() {
     try {
-      this.setState({ loading: true })
-      await this.props.getSubscribedAudios(this.props.user.following)
-      this.setState({ loading: false })
+      await this.loadFollowingAudios()
     } catch (e) {}
   }
+
+  async componentDidUpdate(prevProps: Props) {
+    if (prevProps.user.following !== this.props.user.following) {
+      try {
+        await this.loadFollowingAudios()
+      } catch (e) {}
+    }
+  }
+
+  loadFollowingAudios = () => {
+    this.props.getFollowingAudios(this.props.user.following)
+  }
+
+  runPlayer = (currentAudio: number) => {
+    const { navigation, setCurrentAudio, followingAudios } = this.props
+    setCurrentAudio(currentAudio)
+    navigation.navigate(SCREEN_NAMES.APP_PLAYER, { audios: followingAudios })
+  }
+
   render() {
     const { followingAudios } = this.props
-    const { loading } = this.state
     return (
       <Container>
-        {followingAudios && !loading ? (
-          <Content style={styles.content}>
-            {followingAudios.map(audio => {
-              return (
-                <AudioTile
-                  key={audio.id}
-                  onPress={() =>
-                    this.props.navigation.navigate(SCREEN_NAMES.APP_PLAYER, {
-                      audios: followingAudios,
-                      audio: followingAudios.indexOf(audio),
-                    })
-                  }
-                  thumbnail={audio.thumbnail}
-                  title={audio.title}
-                  views={audio.views}
-                  author={audio.author}
-                  created={audio.created}
-                />
-              )
-            })}
-          </Content>
-        ) : (
-          <SpinnerLoader />
-        )}
+        <Content style={styles.content}>
+          {followingAudios.map(audio => {
+            return (
+              <AudioTile
+                key={audio.id}
+                onPress={() => this.runPlayer(followingAudios.indexOf(audio))}
+                thumbnail={audio.thumbnail}
+                title={audio.title}
+                views={audio.views}
+                author={audio.author}
+                created={audio.created}
+              />
+            )
+          })}
+        </Content>
       </Container>
     )
   }
@@ -72,5 +73,5 @@ export default connect(
     user: selectUser(state),
     followingAudios: sortAudiosByTimeOfCreation(state),
   }),
-  { getSubscribedAudios },
+  { getFollowingAudios, setCurrentAudio },
 )(Home)
