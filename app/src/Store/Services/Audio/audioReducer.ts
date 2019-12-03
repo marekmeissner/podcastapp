@@ -32,7 +32,7 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
     case AUDIO_ACTIONS.GET_SUBSCRIBED_AUDIOS:
       return {
         ...state,
-        audios: action.audios,
+        audios: merge({}, state.audios, action.audios),
       }
     case AUDIO_ACTIONS.INCREMENT_VIEWS:
       return {

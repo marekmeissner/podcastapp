@@ -8,6 +8,7 @@ export enum SCREEN_NAMES {
   APP_BOOKMARKS = 'Bookmarks',
   APP_TABS = 'Tabs',
 
+  APP = 'App',
   APP_ACCOUNT = 'Account',
   APP_STUDIO = 'Studio',
   APP_PLAYER = 'Player',

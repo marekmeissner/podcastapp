@@ -1,15 +1,22 @@
 import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, connect } from 'react-redux'
 import { NavigationInjectedProps } from 'react-navigation'
 
-import { selectIsLoggedIn } from '@service/Auth/authReducer'
+import { selectIsLoggedIn, getCurrentUser, selectUser } from '@service/Auth/authReducer'
+import { User } from '@service/Auth/types'
 import { SCREEN_NAMES } from '@navigation/constants'
+import { RootState } from '@service/rootReducer'
 
-const AuthGate: React.FC<NavigationInjectedProps> = ({ navigation }) => {
-  const isLoggedIn = useSelector(selectIsLoggedIn)
+interface Props extends NavigationInjectedProps {
+  user?: User
+  getCurrentUser: (uid: string) => Promise<void>
+}
+
+const AuthGate: React.FC<Props> = ({ navigation, user, getCurrentUser }) => {
   useEffect(() => {
-    if (isLoggedIn) {
-      navigation.navigate('App')
+    if (user) {
+      getCurrentUser(user.uid)
+      navigation.navigate(SCREEN_NAMES.APP)
     } else {
       navigation.navigate(SCREEN_NAMES.AUTH_LOGIN)
     }
@@ -18,4 +25,9 @@ const AuthGate: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   return null
 }
 
-export default AuthGate
+export default connect(
+  (state: RootState) => ({
+    user: selectUser(state),
+  }),
+  { getCurrentUser },
+)(AuthGate)

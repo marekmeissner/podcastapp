@@ -22,8 +22,20 @@ interface Props extends NavigationInjectedProps {
 class Home extends React.Component<Props> {
   async componentDidMount() {
     try {
-      await this.props.getFollowingAudios(this.props.user.following)
+      await this.loadFollowingAudios()
     } catch (e) {}
+  }
+
+  async componentDidUpdate(prevProps: Props) {
+    if (prevProps.user.following !== this.props.user.following) {
+      try {
+        await this.loadFollowingAudios()
+      } catch (e) {}
+    }
+  }
+
+  loadFollowingAudios = () => {
+    this.props.getFollowingAudios(this.props.user.following)
   }
 
   runPlayer = (currentAudio: number) => {
