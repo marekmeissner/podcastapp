@@ -5,6 +5,7 @@ import { AudioState, AUDIO_ACTIONS, AudioActions, Audio, AudioSmall } from './ty
 import { omit, merge, uniqBy } from 'lodash'
 import AudioService from './audioService'
 import { RootState } from '@service/rootReducer'
+import {SavedAudio} from '@service/Auth/types'
 
 export const AudioInitialState: AudioState = {
   collection: [],
@@ -29,7 +30,7 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
             : { [action.uid]: [action.audio] },
         ),
       }
-    case AUDIO_ACTIONS.GET_SUBSCRIBED_AUDIOS:
+    case AUDIO_ACTIONS.GET_SELECTED_AUDIOS:
       return {
         ...state,
         audios: merge({}, state.audios, action.audios),
@@ -111,7 +112,32 @@ export const getFollowingAudios = (uids: string[]) => {
       })
 
       Promise.all(requests).then(() => {
-        dispatch({ type: AUDIO_ACTIONS.GET_SUBSCRIBED_AUDIOS, audios })
+        dispatch({ type: AUDIO_ACTIONS.GET_SELECTED_AUDIOS, audios })
+      })
+    } catch (e) {
+      throw new Error(e)
+    }
+  }
+}
+
+export const getSavedAudios = (saved: SavedAudio[]) => {
+  return async (dispatch: Dispatch) => {
+    const audios: { [uid: string]: AudioSmall[] } = {}
+
+    try {
+      const audiosRef = firestore().collection('audios')
+      const requests = await saved.map(savedAudio => {
+        return audiosRef
+          .doc(savedAudio.uid)
+          .collection('audio')
+          .get()
+          .then(querySnapshot => {
+            audios[savedAudio.uid] = audios[savedAudio.uid] ? [...audios[savedAudio.uid], querySnapshot.docs.find(doc => (doc.data() as AudioSmall).id === savedAudio.id )] : [querySnapshot.docs.find(doc => (doc.data() as AudioSmall).id === savedAudio.id )]
+          })
+      })
+
+      Promise.all(requests).then(() => {
+        dispatch({ type: AUDIO_ACTIONS.GET_SELECTED_AUDIOS, audios })
       })
     } catch (e) {
       throw new Error(e)
@@ -136,24 +162,33 @@ export const incrementAudioViews = (userId: string, audioId: string) => {
 
 export const selectAudiosCollection = (state: RootState) => state.audio.audios
 
-export const selectFollowingIds = (state: RootState) => state.auth.user.following
+export const selectFollowingIds = (state: RootState) => state.auth.user && state.auth.user.following
 
 export const selectFollowingAudiosCollection = createSelector(
   selectAudiosCollection,
   selectFollowingIds,
   (audios, ids) => {
     const subscribedAudios: Audio[] = []
-    ids.map(function(key) {
-      audios[key] && (audios[key] as AudioSmall[]).map(audio => subscribedAudios.push(audio))
+    ids && ids.map(function(key) {
+      audios[key] && (audios[key] as Audio[]).map(audio => subscribedAudios.push(audio))
     })
     return subscribedAudios
   },
 )
 
-export const sortAudiosByTimeOfCreation = createSelector(selectFollowingAudiosCollection, audios => {
-  return audios.sort(function(a: AudioSmall, b: AudioSmall) {
-    return new Date(b.created) - new Date(a.created)
+export const sortAudiosByTimeOfCreation = createSelector(selectFollowingAudiosCollection, audios => AudioService.sortAudiosByTimeOfCreation(audios))
+
+const selectSavedAudios = (state: RootState) => state.auth.user && state.auth.user.saved
+
+export const selectSavedAudiosCollection = createSelector(selectAudiosCollection, selectSavedAudios, (audios, saved) => {
+  const savedAudios: Audio[] = []
+  saved && saved.map(function(savedAudio) {
+    audios[savedAudio.uid] && (audios[savedAudio.uid] as Audio[]).map(audio => audio.id === savedAudio.id && savedAudios.push({...audio, created: savedAudio.time}))
   })
+
+  return savedAudios
 })
+
+export const sortSavedAudiosByTimeOfAdd = createSelector(selectSavedAudiosCollection, audios => AudioService.sortAudiosByTimeOfCreation(audios))
 
 export const selectUsersAudios = (state: RootState) => state.audio.audios

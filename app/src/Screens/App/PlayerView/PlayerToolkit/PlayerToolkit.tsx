@@ -6,26 +6,43 @@ import { ShareFab, AvatarListItem } from '@component/index'
 import { Audio } from '@service/Audio/types'
 import { connect } from 'react-redux'
 import { RootState } from '@service/rootReducer'
-import { selectUser, selectUserFollowing, followingFlow } from '@service/Auth/authReducer'
-import { User } from '@service/Auth/types'
+import { selectUser, followingFlow, savedFlow } from '@service/Auth/authReducer'
+import { User, SavedAudio } from '@service/Auth/types'
 
 interface Props {
   audio: Audio
   followingFlow: (user: string, following: string[]) => Promise<void>
+  savedFlow: (user: string, saved: SavedAudio[]) => Promise<void>
   user?: User
 }
 
-const PlayerToolkit: React.FC<Props> = ({ audio, followingIds, followingFlow, user }) => {
-  const onFollowButtonPress = async () => {
-    if (user && user.following.includes(audio.author.uid)) {
+const PlayerToolkit: React.FC<Props> = ({ audio, followingFlow, user, savedFlow }) => {
+  const isFollowed = (user && user.following.includes(audio.author.uid)) || false
+  const isSaved = user && user.saved.find(saved => saved.id === audio.id)
+  const onFollowPress = async () => {
+    if (isFollowed && user) {
       await followingFlow(
         user.uid,
         user.following.filter(uid => uid !== audio.author.uid),
       )
-    } else {
-      user && (await followingFlow(user.uid, user.following.push(audio.author.uid)))
+    } else if (user) {
+      user.following.push(audio.author.uid)
+      await followingFlow(user.uid, user.following)
     }
   }
+
+  const onSavePress = async () => {
+    if (isSaved && user) {
+      await savedFlow(
+        user.uid,
+        user.saved.filter(saved => saved.id !== audio.id),
+      )
+    } else if (user) {
+      user.saved.push({ uid: audio.author.uid, id: audio.id, time: moment().format() })
+      await savedFlow(user.uid, user.saved)
+    }
+  }
+
   return (
     <View style={styles.playerToolkit}>
       <Content padder>
@@ -45,12 +62,12 @@ const PlayerToolkit: React.FC<Props> = ({ audio, followingIds, followingFlow, us
             </Button>
           </View>
           <View>
-            <Button style={[styles.button, { alignSelf: 'flex-start' }]} transparent>
-              <Icon style={styles.buttonIcon} type="FontAwesome" name="bookmark" />
+            <Button style={[styles.button, { alignSelf: 'flex-start' }]} onPress={onSavePress} transparent>
+              <Icon style={styles.buttonIcon} type={isSaved ? 'FontAwesome' : 'FontAwesome5'} name="bookmark" />
             </Button>
           </View>
         </View>
-        <AvatarListItem author={audio.author} followingIds={user.following} followingFlow={onFollowButtonPress} />
+        <AvatarListItem author={audio.author} isFollowed={isFollowed} followingFlow={onFollowPress} />
         <Text style={styles.description}>{audio.details.description}</Text>
       </Content>
       <ShareFab />
@@ -62,5 +79,5 @@ export default connect(
   (state: RootState) => ({
     user: selectUser(state),
   }),
-  { followingFlow },
+  { followingFlow, savedFlow },
 )(PlayerToolkit)

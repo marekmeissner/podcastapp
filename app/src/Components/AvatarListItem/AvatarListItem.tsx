@@ -7,11 +7,10 @@ import { COLORS } from '@util/styles/colors'
 interface Props {
   author: { name: string; uid: string }
   followingFlow: () => Promise<void>
-  followingIds: string[]
+  isFollowed: boolean
 }
 
-const AvatarListItem: React.FC<Props> = ({ author, followingIds, followingFlow }) => {
-  const isFollowed = followingIds.includes(author.uid)
+const AvatarListItem: React.FC<Props> = ({ author, isFollowed, followingFlow }) => {
   return (
     <ListItem avatar style={styles.listItem}>
       <Left>

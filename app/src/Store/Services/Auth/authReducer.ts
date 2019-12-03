@@ -1,13 +1,12 @@
 import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore'
-import { AuthState, AuthActions, AUTH_ACTIONS, UserCredentials, UserSignUpCredentials } from './types'
+import { AuthState, AuthActions, AUTH_ACTIONS, UserCredentials, UserSignUpCredentials, SavedAudio } from './types'
 import { Dispatch } from 'redux'
 import { RootState } from '../rootReducer'
 import AuthService from './authService'
 
 export const AuthInitialState: AuthState = {
-  user: undefined,
-  isLoggedIn: false,
+  user: undefined
 }
 
 export const authReducer = (state: AuthState = AuthInitialState, action: AuthActions) => {
@@ -24,6 +23,11 @@ export const authReducer = (state: AuthState = AuthInitialState, action: AuthAct
         ...state,
         user: { ...state.user, following: action.followArray },
       }
+      case AUTH_ACTIONS.SAVED_FLOW:
+        return {
+          ...state,
+          user: { ...state.user, saved: action.savedArray },
+        }
     default:
       return state
   }
@@ -75,6 +79,7 @@ export const registerUser = (registerData: UserSignUpCredentials) => {
           email: registerData.email,
           accountName: registerData.accountName,
           following: [],
+          saved: []
         })
       const user = await AuthService.getUser(response.user.uid)
       const userToken = await response.user.getIdToken().then(idToken => idToken)
@@ -122,6 +127,21 @@ export const followingFlow = (userId: string, followArray: string[]) => {
   }
 }
 
+export const savedFlow = (userId: string, savedArray: SavedAudio[]) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      await firestore()
+        .doc(`users/${userId}`)
+        .update({
+          saved: savedArray,
+        })
+      dispatch({ type: AUTH_ACTIONS.SAVED_FLOW, savedArray })
+    } catch (e) {
+      throw new Error(e)
+    }
+  }
+}
+
 export const selectUser = (state: RootState) => state.auth.user
 
-export const selectUserFollowing = (state: RootState) => state.auth.user.following
+export const selectUserFollowing = (state: RootState) => state.auth.user && state.auth.user.following

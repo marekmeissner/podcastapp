@@ -14,7 +14,7 @@ import { setCurrentAudio } from '@service/Player/playerReducer'
 
 interface Props extends NavigationInjectedProps {
   followingAudios: AudioSmall[]
-  user: User
+  user?: User
   getFollowingAudios: (uids: string[]) => Promise<void>
   setCurrentAudio: (currentAudio: number) => void
 }
@@ -27,7 +27,7 @@ class Home extends React.Component<Props> {
   }
 
   async componentDidUpdate(prevProps: Props) {
-    if (prevProps.user.following !== this.props.user.following) {
+    if (prevProps.user && this.props.user && prevProps.user.following !== this.props.user.following) {
       try {
         await this.loadFollowingAudios()
       } catch (e) {}
@@ -35,7 +35,7 @@ class Home extends React.Component<Props> {
   }
 
   loadFollowingAudios = () => {
-    this.props.getFollowingAudios(this.props.user.following)
+    this.props.user && this.props.getFollowingAudios(this.props.user.following)
   }
 
   runPlayer = (currentAudio: number) => {

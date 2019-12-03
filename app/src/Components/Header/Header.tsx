@@ -14,11 +14,15 @@ interface Props extends NavigationInjectedProps {
 }
 
 const HeaderBar: React.FC<Props> = ({ logout, navigation }) => {
+  const logoutPress = () => {
+    logout()
+    navigation.navigate(SCREEN_NAMES.AUTH_LOGIN)
+  }
   const activeRoute = navigation.router!.getPathAndParamsForState(navigation.state).path
   return (
     <Header style={styles.header}>
       <Left>
-        <Button transparent onPress={logout}>
+        <Button transparent onPress={logoutPress}>
           <Image style={styles.image} source={require('@asset/logo.png')} />
         </Button>
       </Left>
