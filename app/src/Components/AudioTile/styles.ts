@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: 'bold',
     fontSize: 15,
-    flexWrap: "wrap"  },
+    flexWrap: 'wrap',
+  },
   author: {
     fontSize: 14,
   },
