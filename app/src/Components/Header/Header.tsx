@@ -39,8 +39,8 @@ const HeaderBar: React.FC<Props> = ({ logout, navigation }) => {
         </Button>
         <Button
           transparent
-          onPress={() => navigation.navigate(SCREEN_NAMES.APP_ACCOUNT)}
-          active={activeRoute.includes(SCREEN_NAMES.APP_ACCOUNT)}
+          onPress={() => navigation.navigate(SCREEN_NAMES.APP_PROFILE_VIEW)}
+          active={activeRoute.includes(SCREEN_NAMES.APP_PROFILE_VIEW)}
         >
           <Icon name="settings" />
         </Button>

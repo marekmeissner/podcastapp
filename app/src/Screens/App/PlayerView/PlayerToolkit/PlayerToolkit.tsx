@@ -8,8 +8,9 @@ import { connect } from 'react-redux'
 import { RootState } from '@service/rootReducer'
 import { selectUser, followingFlow, savedFlow } from '@service/Auth/authReducer'
 import { User, SavedAudio } from '@service/Auth/types'
+import { NavigationInjectedProps } from 'react-navigation'
 
-interface Props {
+interface Props extends NavigationInjectedProps {
   audio: Audio
   followingFlow: (user: string, following: string[]) => Promise<void>
   savedFlow: (user: string, saved: SavedAudio[]) => Promise<void>

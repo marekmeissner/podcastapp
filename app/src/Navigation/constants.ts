@@ -2,6 +2,7 @@ export enum SCREEN_NAMES {
   AUTH_LOGIN = 'Login',
   AUTH_REGISTER = 'Register',
   AUTH_FORGOT_PASSWORD = 'ForgotPassword',
+  AUTH_SETTINGS = 'Settings',
 
   APP_HOME = 'Home',
   APP_TRENDING = 'Trending',
@@ -9,7 +10,7 @@ export enum SCREEN_NAMES {
   APP_TABS = 'Tabs',
 
   APP = 'App',
-  APP_ACCOUNT = 'Account',
+  APP_PROFILE_VIEW = 'ProfileView',
   APP_STUDIO = 'Studio',
   APP_PLAYER = 'Player',
 

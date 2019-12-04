@@ -3,16 +3,18 @@ import styles from './styles'
 import { ListItem, Left, Body, Right, Thumbnail, Text, Button } from 'native-base'
 import { DEFAULT_AUDIO_IMAGE } from '@util/constants/constants'
 import { COLORS } from '@util/styles/colors'
+import { NavigationInjectedProps } from 'react-navigation'
+import { SCREEN_NAMES } from '@navigation/constants'
 
-interface Props {
+interface Props extends NavigationInjectedProps {
   author: { name: string; uid: string }
   followingFlow: () => Promise<void>
   isFollowed: boolean
 }
 
-const AvatarListItem: React.FC<Props> = ({ author, isFollowed, followingFlow }) => {
+const AvatarListItem: React.FC<Props> = ({ author, isFollowed, followingFlow, navigation }) => {
   return (
-    <ListItem avatar onPress={() => console.warn('yolo')} underlayColor={COLORS.DARK_BLUE}>
+    <ListItem avatar onPress={() => navigation.navigate(SCREEN_NAMES.APP_PROFILE_VIEW)}>
       <Left>
         <Thumbnail style={styles.thumbnail} source={{ uri: DEFAULT_AUDIO_IMAGE.uri }} />
       </Left>
