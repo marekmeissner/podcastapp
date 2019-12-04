@@ -12,7 +12,7 @@ interface Props {
 
 const AvatarListItem: React.FC<Props> = ({ author, isFollowed, followingFlow }) => {
   return (
-    <ListItem avatar style={styles.listItem}>
+    <ListItem avatar onPress={() => console.warn('yolo')} underlayColor={COLORS.DARK_BLUE}>
       <Left>
         <Thumbnail style={styles.thumbnail} source={{ uri: DEFAULT_AUDIO_IMAGE.uri }} />
       </Left>
