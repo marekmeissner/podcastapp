@@ -6,7 +6,7 @@ export enum AUTH_ACTIONS {
   SET_USER = 'SET_USER',
   SET_LOGGED_OUT = 'SET_LOGGED_OUT',
   FOLLOWING_FLOW = 'SET_FOLLOWING_ARRAY',
-  SAVED_FLOW = 'SET_SAVED_FLOW'
+  SAVED_FLOW = 'SET_SAVED_FLOW',
 }
 
 export interface UserCredentials {
@@ -43,7 +43,11 @@ export interface FollowingFlow {
   followArray: string[]
 }
 
-export interface SavedAudio {uid: string, id: string, time: string}
+export interface SavedAudio {
+  uid: string
+  id: string
+  time: string
+}
 
 export interface SavedFlow {
   type: AUTH_ACTIONS.SAVED_FLOW

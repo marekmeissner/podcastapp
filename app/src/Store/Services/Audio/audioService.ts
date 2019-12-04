@@ -1,7 +1,7 @@
 import storage from '@react-native-firebase/storage'
 import { DocumentPickerResponse } from 'react-native-document-picker'
 import uuid from 'uuid'
-import {AudioSmall} from './types'
+import { Audio } from './types'
 
 class AudioService {
   static saveFile = (uid: string, file: DocumentPickerResponse, callback?: Function) => {
@@ -31,10 +31,12 @@ class AudioService {
     }
   }
 
-  static sortAudiosByTimeOfCreation = (audios: AudioSmall[]) => {
-    return audios.sort ? audios.sort(function(a: AudioSmall, b: AudioSmall) {
-      return new Date(b.created) - new Date(a.created)
-    }) : []
+  static sortAudiosByTimeOfCreation = (audios: Audio[]) => {
+    return audios.sort
+      ? audios.sort(function(a: Audio, b: Audio) {
+          return new Date(b.created) - new Date(a.created)
+        })
+      : []
   }
 }
 

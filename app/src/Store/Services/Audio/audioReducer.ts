@@ -1,11 +1,11 @@
 import firestore from '@react-native-firebase/firestore'
 import { Dispatch } from 'redux'
 import { createSelector } from 'reselect'
-import { AudioState, AUDIO_ACTIONS, AudioActions, Audio, AudioSmall } from './types'
-import { omit, merge, uniqBy } from 'lodash'
+import { AudioState, AUDIO_ACTIONS, AudioActions, Audio } from './types'
+import { merge, isEmpty } from 'lodash'
 import AudioService from './audioService'
 import { RootState } from '@service/rootReducer'
-import {SavedAudio} from '@service/Auth/types'
+import { SavedAudio } from '@service/Auth/types'
 
 export const AudioInitialState: AudioState = {
   collection: [],
@@ -18,17 +18,6 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
       return {
         ...state,
         collection: [action.audio, ...state.collection],
-      }
-    case AUDIO_ACTIONS.LOAD_AUDIO:
-      return {
-        ...state,
-        audios: merge(
-          {},
-          state.audios,
-          state.audios.hasOwnProperty(action.uid)
-            ? { [action.uid]: uniqBy([action.audio, ...state.audios[action.uid]], 'id') }
-            : { [action.uid]: [action.audio] },
-        ),
       }
     case AUDIO_ACTIONS.GET_SELECTED_AUDIOS:
       return {
@@ -55,49 +44,16 @@ export const addAudio = (uid: string, data: Audio) => {
     try {
       await firestore()
         .doc(`audios/${uid}/audio/${data.id}`)
-        .set(omit(data, 'details'))
-      await firestore()
-        .doc(`audios/${uid}/audio/${data.id}/details/details`)
-        .set(data.details)
+        .set(data)
     } catch (err) {
       throw new Error(err)
     }
   }
 }
 
-export const getAudioDetails = (audioSmall: AudioSmall) => {
-  return async (dispatch: Dispatch) => {
-    try {
-      const details = await firestore()
-        .doc(`audios/${audioSmall.author.uid}/audio/${audioSmall.id}/details/details`)
-        .get()
-        .then(res => res.data())
-      if (details) {
-        const audioUrl = await AudioService.getDownloadUrl(details.audio)
-        const thumbnailUrl = await AudioService.getDownloadUrl(audioSmall.thumbnail)
-
-        const audio = {
-          ...audioSmall,
-          thumbnail: thumbnailUrl,
-          details: {
-            ...details,
-            audio: audioUrl,
-          },
-        }
-
-        dispatch({ type: AUDIO_ACTIONS.LOAD_AUDIO, uid: audioSmall.author.uid, audio })
-        return audio
-      }
-      return undefined
-    } catch (e) {
-      throw new Error(e)
-    }
-  }
-}
-
 export const getFollowingAudios = (uids: string[]) => {
   return async (dispatch: Dispatch) => {
-    const audios: { [uid: string]: AudioSmall[] } = {}
+    const audios: { [uid: string]: Audio[] } = {}
 
     try {
       const audiosRef = firestore().collection('audios')
@@ -107,7 +63,7 @@ export const getFollowingAudios = (uids: string[]) => {
           .collection('audio')
           .get()
           .then(querySnapshot => {
-            audios[uid] = querySnapshot.docs.map(doc => doc.data() as AudioSmall) as []
+            audios[uid] = querySnapshot.docs.map(doc => doc.data() as Audio) as []
           })
       })
 
@@ -122,7 +78,7 @@ export const getFollowingAudios = (uids: string[]) => {
 
 export const getSavedAudios = (saved: SavedAudio[]) => {
   return async (dispatch: Dispatch) => {
-    const audios: { [uid: string]: AudioSmall[] } = {}
+    const audios: { [uid: string]: Audio[] } = {}
 
     try {
       const audiosRef = firestore().collection('audios')
@@ -132,7 +88,11 @@ export const getSavedAudios = (saved: SavedAudio[]) => {
           .collection('audio')
           .get()
           .then(querySnapshot => {
-            audios[savedAudio.uid] = audios[savedAudio.uid] ? [...audios[savedAudio.uid], querySnapshot.docs.find(doc => (doc.data() as AudioSmall).id === savedAudio.id )] : [querySnapshot.docs.find(doc => (doc.data() as AudioSmall).id === savedAudio.id )]
+            audios[savedAudio.uid] = merge(
+              [],
+              audios[savedAudio.uid],
+              querySnapshot.docs.find(doc => (doc.data() as Audio).id === savedAudio.id),
+            )
           })
       })
 
@@ -169,26 +129,37 @@ export const selectFollowingAudiosCollection = createSelector(
   selectFollowingIds,
   (audios, ids) => {
     const subscribedAudios: Audio[] = []
-    ids && ids.map(function(key) {
-      audios[key] && (audios[key] as Audio[]).map(audio => subscribedAudios.push(audio))
-    })
+    ids &&
+      ids.map(function(key) {
+        audios[key] && (audios[key] as Audio[]).map(audio => subscribedAudios.push(audio))
+      })
     return subscribedAudios
   },
 )
 
-export const sortAudiosByTimeOfCreation = createSelector(selectFollowingAudiosCollection, audios => AudioService.sortAudiosByTimeOfCreation(audios))
+export const sortAudiosByTimeOfCreation = createSelector(selectFollowingAudiosCollection, audios =>
+  AudioService.sortAudiosByTimeOfCreation(audios),
+)
 
 const selectSavedAudios = (state: RootState) => state.auth.user && state.auth.user.saved
 
-export const selectSavedAudiosCollection = createSelector(selectAudiosCollection, selectSavedAudios, (audios, saved) => {
-  const savedAudios: Audio[] = []
-  saved && saved.map(function(savedAudio) {
-    audios[savedAudio.uid] && (audios[savedAudio.uid] as Audio[]).map(audio => audio.id === savedAudio.id && savedAudios.push({...audio, created: savedAudio.time}))
-  })
+export const selectSavedAudiosCollection = createSelector(
+  selectAudiosCollection,
+  selectSavedAudios,
+  (audios, saved) => {
+    const savedAudios: Audio[] = []
+    saved &&
+      saved.map(function(savedAudio) {
+        audios[savedAudio.uid] &&
+          (audios[savedAudio.uid] as Audio[]).map(audio => audio.id === savedAudio.id && savedAudios.push(audio))
+      })
 
-  return savedAudios
-})
+    return savedAudios
+  },
+)
 
-export const sortSavedAudiosByTimeOfAdd = createSelector(selectSavedAudiosCollection, audios => AudioService.sortAudiosByTimeOfCreation(audios))
+export const sortSavedAudiosByTimeOfAdd = createSelector(selectSavedAudiosCollection, audios =>
+  AudioService.sortAudiosByTimeOfCreation(audios),
+)
 
 export const selectUsersAudios = (state: RootState) => state.audio.audios

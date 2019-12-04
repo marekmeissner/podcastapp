@@ -6,14 +6,14 @@ import { AudioTile } from '@component/index'
 import { NavigationInjectedProps } from 'react-navigation'
 import { getSavedAudios, sortSavedAudiosByTimeOfAdd } from '@service/Audio/audioReducer'
 import { RootState } from '@service/rootReducer'
-import { AudioSmall } from '@service/Audio/types'
 import { SCREEN_NAMES } from '@navigation/constants'
 import { selectUser } from '@service/Auth/authReducer'
 import { User, SavedAudio } from '@service/Auth/types'
 import { setCurrentAudio } from '@service/Player/playerReducer'
+import { Audio } from '@service/Audio/types'
 
 interface Props extends NavigationInjectedProps {
-  savedAudios: AudioSmall[]
+  savedAudios: Audio[]
   user?: User
   getSavedAudios: (saved: SavedAudio[]) => Promise<void>
   setCurrentAudio: (currentAudio: number) => void
@@ -35,7 +35,8 @@ class Bookmarks extends React.Component<Props> {
   }
 
   loadSavedAudios = () => {
-    this.props.user && this.props.getSavedAudios(this.props.user.saved)
+    const { user } = this.props
+    user && user.saved && this.props.getSavedAudios(user.saved)
   }
 
   runPlayer = (currentAudio: number) => {
@@ -52,7 +53,7 @@ class Bookmarks extends React.Component<Props> {
           {savedAudios.map(audio => {
             return (
               <AudioTile
-                key={audio.id}
+                key={'bookmarks' + audio.id}
                 onPress={() => this.runPlayer(savedAudios.indexOf(audio))}
                 thumbnail={audio.thumbnail}
                 title={audio.title}

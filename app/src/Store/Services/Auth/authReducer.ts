@@ -6,7 +6,7 @@ import { RootState } from '../rootReducer'
 import AuthService from './authService'
 
 export const AuthInitialState: AuthState = {
-  user: undefined
+  user: undefined,
 }
 
 export const authReducer = (state: AuthState = AuthInitialState, action: AuthActions) => {
@@ -23,11 +23,11 @@ export const authReducer = (state: AuthState = AuthInitialState, action: AuthAct
         ...state,
         user: { ...state.user, following: action.followArray },
       }
-      case AUTH_ACTIONS.SAVED_FLOW:
-        return {
-          ...state,
-          user: { ...state.user, saved: action.savedArray },
-        }
+    case AUTH_ACTIONS.SAVED_FLOW:
+      return {
+        ...state,
+        user: { ...state.user, saved: action.savedArray },
+      }
     default:
       return state
   }
@@ -79,7 +79,7 @@ export const registerUser = (registerData: UserSignUpCredentials) => {
           email: registerData.email,
           accountName: registerData.accountName,
           following: [],
-          saved: []
+          saved: [],
         })
       const user = await AuthService.getUser(response.user.uid)
       const userToken = await response.user.getIdToken().then(idToken => idToken)

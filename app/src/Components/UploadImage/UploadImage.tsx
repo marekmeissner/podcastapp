@@ -8,6 +8,9 @@ interface Props {
   avatar: string
   style?: { [key: string]: number | string }
   onUpload: () => Promise<void>
+  onChange: (e: React.ChangeEvent<any>) => void
+  square: boolean
+  large: boolean
 }
 
 const styles = StyleSheet.create({

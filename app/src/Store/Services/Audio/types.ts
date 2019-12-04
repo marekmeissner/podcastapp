@@ -8,7 +8,7 @@ export enum AUDIO_ACTIONS {
 export interface AudioState {
   readonly collection: Audio[]
   readonly audios: {
-    [uid: string]: Audio[] | AudioSmall[]
+    [uid: string]: Audio[]
   }
 }
 
@@ -30,13 +30,12 @@ export interface Audio {
   }
 }
 
-export type AudioSmall = Omit<Audio, 'details'>
-
 export interface AddNewAudio {
   title: string
   description: string
   ratings: boolean
   donations: boolean
+  thumbnail: { uri: string; size: number }
 }
 
 export interface AudioSave {
@@ -58,7 +57,7 @@ export interface LoadUserAudio {
 export interface GetSelectedAudios {
   type: AUDIO_ACTIONS.GET_SELECTED_AUDIOS
   audios: {
-    [uid: string]: AudioSmall[]
+    [uid: string]: Audio[]
   }
 }
 
