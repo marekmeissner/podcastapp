@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
   },
   tileBody: {
     display: 'flex',
+    flex: 1,
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     fontSize: 15,
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: 'bold',
     fontSize: 15,
-  },
+    flexWrap: "wrap"  },
   author: {
     fontSize: 14,
   },

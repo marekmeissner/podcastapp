@@ -24,6 +24,8 @@ const styles = StyleSheet.create({
   },
   trumbnail: {
     marginLeft: -20,
+    height: 77.25,
+    width: 125,
   },
   button: {
     height: '100%',

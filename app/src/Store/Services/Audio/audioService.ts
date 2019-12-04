@@ -2,7 +2,7 @@ import storage from '@react-native-firebase/storage'
 import { DocumentPickerResponse } from 'react-native-document-picker'
 import uuid from 'uuid'
 import { Audio } from './types'
-import {SavedAudio} from '@service/Auth/types'
+import { SavedAudio } from '@service/Auth/types'
 
 class AudioService {
   static saveFile = (uid: string, file: DocumentPickerResponse, callback?: Function) => {

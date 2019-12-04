@@ -141,7 +141,8 @@ export const sortAudiosByTimeOfCreation = createSelector(selectFollowingAudiosCo
   AudioService.sortAudiosByTimeOfCreation(audios),
 )
 
-const selectSortedSavedAudios = (state: RootState) => state.auth.user && AudioService.sortAudiosByTimeOfSave(state.auth.user.saved)
+const selectSortedSavedAudios = (state: RootState) =>
+  state.auth.user && AudioService.sortAudiosByTimeOfSave(state.auth.user.saved)
 
 export const selectSavedAudiosCollection = createSelector(
   selectAudiosCollection,
