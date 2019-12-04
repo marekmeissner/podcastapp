@@ -2437,11 +2437,28 @@ appcenter-link-scripts@2.5.0:
     which "1.2.11"
     xcode "2.0.0"
 
-appcenter@2.5.0, appcenter@^2.4.0:
+appcenter-link-scripts@2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/appcenter-link-scripts/-/appcenter-link-scripts-2.6.0.tgz#becf08ac55b69b4d09f134e6b2d85b95100cabc2"
+  dependencies:
+    debug "4.1.1"
+    glob "5.0.15"
+    mkdirp "0.5.1"
+    plist "3.0.1"
+    which "1.2.11"
+    xcode "2.0.0"
+
+appcenter@2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/appcenter/-/appcenter-2.5.0.tgz#b0cb424eee698324d159b62d468172163d026cb9"
   dependencies:
     appcenter-link-scripts "2.5.0"
+
+appcenter@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/appcenter/-/appcenter-2.6.0.tgz#999137c85d84f9584f2fe2660ca57b52541f1dc0"
+  dependencies:
+    appcenter-link-scripts "2.6.0"
 
 aproba@^1.0.3, aproba@^1.1.1:
   version "1.2.0"
