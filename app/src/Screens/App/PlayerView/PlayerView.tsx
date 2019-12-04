@@ -4,16 +4,17 @@ import { Container } from 'native-base'
 import Player from './Player/Player'
 import PlayerToolkit from './PlayerToolkit/PlayerToolkit'
 import { NavigationInjectedProps } from 'react-navigation'
-import { Audio, AudioSmall } from '@service/Audio/types'
+import { Audio } from '@service/Audio/types'
 import { SpinnerLoader } from '@component/index'
-import { selectUsersAudios, getAudioDetails, incrementAudioViews } from '@service/Audio/audioReducer'
+import { selectUsersAudios, incrementAudioViews } from '@service/Audio/audioReducer'
+import AudioService from '@service/Audio/audioService'
 import { RootState } from '@service/rootReducer'
 import { selectCurrentAudio, setCurrentAudio } from '@service/Player/playerReducer'
 
 interface Props extends NavigationInjectedProps {
-  getAudioDetails: (audioSmall: AudioSmall) => Promise<any>
+  getAudioDetails: (audioSmall: Audio) => Promise<any>
   incrementAudioViews: (userId: string, audioId: string) => Promise<void>
-  audios: { [uid: string]: Audio[] | AudioSmall[] }
+  audios: { [uid: string]: Audio[] }
   currentAudio?: number
   setCurrentAudio: (currentAudio: number) => void
 }
@@ -33,7 +34,7 @@ class PlayerView extends React.Component<Props> {
   async componentDidMount() {
     const { currentAudio } = this.props
     try {
-      currentAudio !== undefined && (await this.getAudioDetails(currentAudio))
+      currentAudio !== undefined && (await this.getCurrentAudio(currentAudio))
     } catch (e) {}
   }
 
@@ -42,29 +43,29 @@ class PlayerView extends React.Component<Props> {
     const prevPropsAudio = prevProps.currentAudio
     try {
       if (propsAudio !== undefined && prevPropsAudio !== undefined && prevPropsAudio !== propsAudio) {
-        await this.getAudioDetails(propsAudio)
+        await this.getCurrentAudio(propsAudio)
       }
     } catch (e) {}
   }
 
-  getAudioDetails = async (selectedAudio: number) => {
+  getCurrentAudio = async (selectedAudio: number) => {
     try {
       !this.state.playerReload && this.setState({ playerReload: true })
-      const audiosTrack = this.props.navigation.getParam('audios') as AudioSmall[]
-
+      const audiosTrack = this.props.navigation.getParam('audios') as Audio[]
       const selectedAudioSmall = audiosTrack[selectedAudio]
+
       const audio = this.props.audios[selectedAudioSmall.author.uid].find(audio => audio.id === selectedAudioSmall.id)
+      if (audio) {
+        this.props.incrementAudioViews(audio.author.uid, audio.id)
 
-      const fullAudio =
-        audio && !audio.hasOwnProperty('details') ? await this.props.getAudioDetails(selectedAudioSmall) : audio
+        const audioFullPath = await AudioService.getDownloadUrl(audio.details.audio)
+        const thumbnailFullPath = await AudioService.getDownloadUrl(audio.thumbnail)
 
-      audio && this.props.incrementAudioViews(audio.author.uid, audio.id)
-
-      this.setState({
-        audio: { ...fullAudio, views: fullAudio.views + 1 },
-        trackLength: audiosTrack.length,
-      })
-
+        this.setState({
+          audio: { ...audio, details: { ...audio.details, audio: audioFullPath }, thumbnail: thumbnailFullPath },
+          trackLength: audiosTrack.length,
+        })
+      }
       return audio
     } catch (e) {
     } finally {
@@ -74,9 +75,8 @@ class PlayerView extends React.Component<Props> {
     }
   }
 
-  onChangeAudio = async (selectedAudio: number) => {
+  onChangeAudio = (selectedAudio: number) => {
     this.props.setCurrentAudio(selectedAudio)
-    await this.getAudioDetails(selectedAudio)
   }
 
   render() {
@@ -108,5 +108,5 @@ export default connect(
     audios: selectUsersAudios(state),
     currentAudio: selectCurrentAudio(state),
   }),
-  { getAudioDetails, incrementAudioViews, setCurrentAudio },
+  { incrementAudioViews, setCurrentAudio },
 )(PlayerView)

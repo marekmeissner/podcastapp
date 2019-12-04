@@ -2,7 +2,6 @@ import React from 'react'
 import styles from './styles'
 import { connect } from 'react-redux'
 import { View, ActivityIndicator } from 'react-native'
-import { UploadTaskSnapshot } from 'react-native-firebase/storage'
 import { Container, Content, Item, Input, Button, Text, Form, Label } from 'native-base'
 import { Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
@@ -28,7 +27,7 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
 
   const user = useSelector(selectUser)
 
-  const uploadProgress = (snapshot: UploadTaskSnapshot) => {
+  const uploadProgress = (snapshot: any) => {
     const percentage = (snapshot.bytesTransferred * 100) / snapshot.totalBytes
     setPercentage(percentage > 0 ? Math.ceil(percentage) - 1 : 0)
   }
@@ -40,33 +39,37 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
       } else if (thumbnail.size > MAX_THUMBNAIL_SIZE) {
         return setStatus('Thumbnail size must be up to 2MB!')
       }
-      setLoader(true)
-      const audio = await AudioService.saveFile(user.uid, navigation.getParam('audio', undefined), uploadProgress)
-      const audioImage = await AudioService.saveFile(user.uid, thumbnail)
-      const data: Audio = {
-        id: audio.metadata.generation,
-        title: values.title,
-        thumbnail: audioImage.metadata.fullPath,
-        author: {
-          name: user.accountName,
-          uid: user.uid,
-        },
-        views: 0,
-        created: audio.metadata.timeCreated,
-        details: {
-          audio: audio.metadata.fullPath,
-          ratings: values.ratings,
-          donations: values.donations,
-          description: values.description,
-        },
-      }
+      if (user) {
+        setLoader(true)
+        const audio = await AudioService.saveFile(user.uid, navigation.getParam('audio', undefined), uploadProgress)
+        const audioImage = await AudioService.saveFile(user.uid, thumbnail)
+        const data: Audio = {
+          id: audio.metadata.generation,
+          title: values.title,
+          thumbnail: audioImage.metadata.fullPath,
+          author: {
+            name: user.accountName,
+            uid: user.uid,
+          },
+          views: 0,
+          created: audio.metadata.timeCreated,
+          details: {
+            audio: audio.metadata.fullPath,
+            ratings: values.ratings,
+            donations: values.donations,
+            description: values.description,
+          },
+        }
 
-      await addAudio(user.uid, data)
-      setPercentage(100)
-      setTimeout(() => {
-        setLoader(false)
-        navigation.navigate(SCREEN_NAMES.APP_TABS)
-      }, 1000)
+        await addAudio(user.uid, data)
+        setPercentage(100)
+        setTimeout(() => {
+          setLoader(false)
+          navigation.navigate(SCREEN_NAMES.APP_TABS)
+        }, 1000)
+      } else {
+        setStatus('Something went wrong, try again!')
+      }
     } catch (e) {
       setStatus(e.message)
       setLoader(false)
@@ -102,6 +105,7 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
             initialValues={{
               thumbnail: {
                 size: 0,
+                uri: '',
               },
               title: '',
               description: '',
