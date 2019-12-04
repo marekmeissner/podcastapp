@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Container, Content } from 'native-base'
 import { AudioTile } from '@component/index'
 import { NavigationInjectedProps } from 'react-navigation'
-import { getSavedAudios, sortSavedAudiosByTimeOfAdd } from '@service/Audio/audioReducer'
+import { getSavedAudios, selectSavedAudiosCollection } from '@service/Audio/audioReducer'
 import { RootState } from '@service/rootReducer'
 import { SCREEN_NAMES } from '@navigation/constants'
 import { selectUser } from '@service/Auth/authReducer'
@@ -27,7 +27,7 @@ class Bookmarks extends React.Component<Props> {
   }
 
   async componentDidUpdate(prevProps: Props) {
-    if (prevProps.user && this.props.user && prevProps.user.saved !== this.props.user.saved) {
+    if (prevProps.user && this.props.user && prevProps.user.saved.lenght !== this.props.user.saved.length) {
       try {
         await this.loadSavedAudios()
       } catch (e) {}
@@ -72,7 +72,7 @@ class Bookmarks extends React.Component<Props> {
 export default connect(
   (state: RootState) => ({
     user: selectUser(state),
-    savedAudios: sortSavedAudiosByTimeOfAdd(state),
+    savedAudios: selectSavedAudiosCollection(state),
   }),
   { setCurrentAudio, getSavedAudios },
 )(Bookmarks)

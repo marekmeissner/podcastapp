@@ -141,11 +141,11 @@ export const sortAudiosByTimeOfCreation = createSelector(selectFollowingAudiosCo
   AudioService.sortAudiosByTimeOfCreation(audios),
 )
 
-const selectSavedAudios = (state: RootState) => state.auth.user && state.auth.user.saved
+const selectSortedSavedAudios = (state: RootState) => state.auth.user && AudioService.sortAudiosByTimeOfSave(state.auth.user.saved)
 
 export const selectSavedAudiosCollection = createSelector(
   selectAudiosCollection,
-  selectSavedAudios,
+  selectSortedSavedAudios,
   (audios, saved) => {
     const savedAudios: Audio[] = []
     saved &&
@@ -156,10 +156,6 @@ export const selectSavedAudiosCollection = createSelector(
 
     return savedAudios
   },
-)
-
-export const sortSavedAudiosByTimeOfAdd = createSelector(selectSavedAudiosCollection, audios =>
-  AudioService.sortAudiosByTimeOfCreation(audios),
 )
 
 export const selectUsersAudios = (state: RootState) => state.audio.audios
