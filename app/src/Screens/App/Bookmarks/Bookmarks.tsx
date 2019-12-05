@@ -9,7 +9,7 @@ import { RootState } from '@service/rootReducer'
 import { SCREEN_NAMES } from '@navigation/constants'
 import { selectUser } from '@service/Auth/authReducer'
 import { User, SavedAudio } from '@service/Auth/types'
-import { setCurrentAudio } from '@service/Player/playerReducer'
+import { setCurrentAudio, setPlayerTrack } from '@service/Player/playerReducer'
 import { Audio } from '@service/Audio/types'
 
 interface Props extends NavigationInjectedProps {
@@ -17,6 +17,7 @@ interface Props extends NavigationInjectedProps {
   user?: User
   getSavedAudios: (saved: SavedAudio[]) => Promise<void>
   setCurrentAudio: (currentAudio: number) => void
+  setPlayerTrack: (playerTrack: Audio[]) => void
 }
 
 class Bookmarks extends React.Component<Props> {
@@ -27,7 +28,7 @@ class Bookmarks extends React.Component<Props> {
   }
 
   async componentDidUpdate(prevProps: Props) {
-    if (prevProps.user && this.props.user && prevProps.user.saved.lenght !== this.props.user.saved.length) {
+    if (prevProps.user && this.props.user && prevProps.user.saved.length !== this.props.user.saved.length) {
       try {
         await this.loadSavedAudios()
       } catch (e) {}
@@ -40,9 +41,10 @@ class Bookmarks extends React.Component<Props> {
   }
 
   runPlayer = (currentAudio: number) => {
-    const { navigation, setCurrentAudio, savedAudios } = this.props
+    const { navigation, setCurrentAudio, setPlayerTrack, savedAudios } = this.props
     setCurrentAudio(currentAudio)
-    navigation.navigate(SCREEN_NAMES.APP_PLAYER, { audios: savedAudios })
+    setPlayerTrack(savedAudios)
+    navigation.navigate(SCREEN_NAMES.APP_PLAYER)
   }
 
   render() {
@@ -74,5 +76,5 @@ export default connect(
     user: selectUser(state),
     savedAudios: selectSavedAudiosCollection(state),
   }),
-  { setCurrentAudio, getSavedAudios },
+  { setCurrentAudio, setPlayerTrack, getSavedAudios },
 )(Bookmarks)
