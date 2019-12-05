@@ -3,7 +3,7 @@ export enum AUDIO_ACTIONS {
   LOAD_AUDIO = 'LOAD_USER_AUDIO',
   GET_SELECTED_AUDIOS = 'GET_SELECTED_AUDIOS_COLLECTION',
   INCREMENT_VIEWS = 'INCREMENT_AUDIO_VIEWS',
-  LOAD_USER_AUDIOS = 'LOAD_USER_AUDIOS_COLLECTION'
+  LOAD_USER_AUDIOS = 'LOAD_USER_AUDIOS_COLLECTION',
 }
 
 export interface AudioState {
@@ -72,4 +72,9 @@ export interface IncrementAudioViews {
   audioId: string
 }
 
-export type AudioActions = LoadUserAudio | AudioSave | GetSelectedAudios | IncrementAudioViews | LoadUserAudiosCollection
+export type AudioActions =
+  | LoadUserAudio
+  | AudioSave
+  | GetSelectedAudios
+  | IncrementAudioViews
+  | LoadUserAudiosCollection

@@ -5,7 +5,7 @@ import { Audio } from '@service/Audio/types'
 
 export const PlayerInitialState: PlayerState = {
   currentAudio: undefined,
-  playerTrack: []
+  playerTrack: [],
 }
 
 export const playerReducer = (state: PlayerState = PlayerInitialState, action: PlayerActions) => {
@@ -18,7 +18,7 @@ export const playerReducer = (state: PlayerState = PlayerInitialState, action: P
     case PLAYER_ACTIONS.SET_PLAYER_TRACK:
       return {
         ...state,
-        playerTrack: action.playerTrack
+        playerTrack: action.playerTrack,
       }
     default:
       return state
@@ -30,7 +30,7 @@ export const setCurrentAudio = (currentAudio: number) => {
 }
 
 export const setPlayerTrack = (playerTrack: Audio[]) => {
-  return (dispatch: Dispatch) => dispatch({type: PLAYER_ACTIONS.SET_PLAYER_TRACK, playerTrack})
+  return (dispatch: Dispatch) => dispatch({ type: PLAYER_ACTIONS.SET_PLAYER_TRACK, playerTrack })
 }
 
 export const selectCurrentAudio = (state: RootState) => state.player.currentAudio

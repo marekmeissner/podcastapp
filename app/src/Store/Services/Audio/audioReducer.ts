@@ -20,11 +20,11 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
         ...state,
         collection: uniqBy([...state.collection, action.audio], 'id'),
       }
-      case AUDIO_ACTIONS.LOAD_USER_AUDIOS:
-        return {
-          ...state,
-          collection: uniqBy([...state.collection, ...action.audios], 'id'),
-        }
+    case AUDIO_ACTIONS.LOAD_USER_AUDIOS:
+      return {
+        ...state,
+        collection: uniqBy([...state.collection, ...action.audios], 'id'),
+      }
     case AUDIO_ACTIONS.GET_SELECTED_AUDIOS:
       return {
         ...state,
@@ -48,16 +48,20 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
 export const getCurrentUserAudios = () => {
   return async (dispatch: Dispatch) => {
     try {
-    const user = auth().currentUser
-    if(user){
-    const call = await firestore().collection('audios').doc(`${user.uid}`).collection('audio').get()
-    const audios = call.docs.map(doc => doc.data())
-    dispatch({type: AUDIO_ACTIONS.LOAD_USER_AUDIOS, audios})
+      const user = auth().currentUser
+      if (user) {
+        const call = await firestore()
+          .collection('audios')
+          .doc(`${user.uid}`)
+          .collection('audio')
+          .get()
+        const audios = call.docs.map(doc => doc.data())
+        dispatch({ type: AUDIO_ACTIONS.LOAD_USER_AUDIOS, audios })
+      }
+    } catch (e) {
+      throw new Error(e)
     }
-  }catch(e){
-    throw new Error(e)
   }
-}
 }
 
 export const addAudio = (uid: string, data: Audio) => {
@@ -173,13 +177,14 @@ export const selectSavedAudiosCollection = createSelector(
     saved &&
       saved.map(function(savedAudio) {
         audios[savedAudio.uid] &&
-          (audios[savedAudio.uid] as Audio[]).map(audio => audio.id ===  savedAudio.id && savedAudios.push(audio))
+          (audios[savedAudio.uid] as Audio[]).map(audio => audio.id === savedAudio.id && savedAudios.push(audio))
       })
 
     return savedAudios
   },
 )
 
-export const selectUserAudiosCollection = (state: RootState) => AudioService.sortAudiosByTimeOfCreation(state.audio.collection)
+export const selectUserAudiosCollection = (state: RootState) =>
+  AudioService.sortAudiosByTimeOfCreation(state.audio.collection)
 
 export const selectUsersAudios = (state: RootState) => state.audio.audios

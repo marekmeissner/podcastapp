@@ -1,4 +1,4 @@
-import { Audio } from "@service/Audio/types";
+import { Audio } from '@service/Audio/types'
 
 export interface PlayerState {
   readonly currentAudio?: number
@@ -7,7 +7,7 @@ export interface PlayerState {
 
 export enum PLAYER_ACTIONS {
   SET_CURRENT_AUDIO = 'SET_CURRENT_AUDIO_PLAYER',
-  SET_PLAYER_TRACK = 'SET_PLAYER_TRACK'
+  SET_PLAYER_TRACK = 'SET_PLAYER_TRACK',
 }
 
 export interface SetCurrentAudio {
