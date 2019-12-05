@@ -9,7 +9,7 @@ import { NavigationInjectedProps } from 'react-navigation'
 import { User } from '@service/Auth/types'
 import { RootState } from '@service/rootReducer'
 import { selectAudiosCollection, getCurrentUserAudios, selectUserAudiosCollection } from '@service/Audio/audioReducer'
-import { setCurrentAudio } from '@service/Player/playerReducer'
+import { setCurrentAudio, setPlayerTrack } from '@service/Player/playerReducer'
 import { Audio } from '@service/Audio/types'
 import { SCREEN_NAMES } from '@navigation/constants'
 
@@ -18,9 +18,17 @@ interface Props extends NavigationInjectedProps {
   collection: Audio[]
   getCurrentUserAudios: () => Promise<void>
   setCurrentAudio: (selectedAudio: number) => void
+  setPlayerTrack: (playerTrack: Audio[]) => void
 }
 
-const ProfileView: React.FC<Props> = ({ navigation, getCurrentUserAudios, collection, audios, setCurrentAudio }) => {
+const ProfileView: React.FC<Props> = ({
+  navigation,
+  getCurrentUserAudios,
+  collection,
+  audios,
+  setCurrentAudio,
+  setPlayerTrack,
+}) => {
   const currentUser = navigation.getParam('currentUser') as User
   const user = navigation.getParam('user') as User
 
@@ -28,7 +36,8 @@ const ProfileView: React.FC<Props> = ({ navigation, getCurrentUserAudios, collec
 
   const runPlayer = (currentAudio: number) => {
     setCurrentAudio(currentAudio)
-    navigation.navigate(SCREEN_NAMES.APP_PLAYER, { audios: currentUser ? collection : audios[user.uid] })
+    setPlayerTrack(currentUser ? collection : audios[user.uid])
+    navigation.navigate(SCREEN_NAMES.APP_PLAYER)
   }
 
   return (
@@ -92,5 +101,5 @@ export default connect(
     audios: selectAudiosCollection(state),
     collection: selectUserAudiosCollection(state),
   }),
-  { getCurrentUserAudios, setCurrentAudio },
+  { getCurrentUserAudios, setCurrentAudio, setPlayerTrack },
 )(ProfileView)
