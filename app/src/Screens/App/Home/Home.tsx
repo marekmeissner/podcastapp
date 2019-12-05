@@ -55,7 +55,7 @@ class Home extends React.Component<Props> {
               audio &&
               audio.author && (
                 <AudioTile
-                  key={'home' + audio.id}
+                  key={audio.id}
                   onPress={() => this.runPlayer(followingAudios.indexOf(audio))}
                   thumbnail={audio.thumbnail}
                   title={audio.title}

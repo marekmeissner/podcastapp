@@ -93,7 +93,7 @@ class PlayerView extends React.Component<Props> {
               onChangeAudio={this.onChangeAudio}
               playInBackground
             />
-            <PlayerToolkit audio={audio} />
+            <PlayerToolkit navigation={this.props.navigation} audio={audio} />
           </React.Fragment>
         ) : (
           <SpinnerLoader />

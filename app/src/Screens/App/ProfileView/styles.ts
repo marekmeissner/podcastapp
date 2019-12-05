@@ -2,7 +2,8 @@ import { StyleSheet } from 'react-native'
 import { COLORS } from '@util/styles/colors'
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
+  container: { flex: 1 },
+  content: { padding: 20 },
   intro: { flexDirection: 'row', justifyContent: 'space-around' },
   introCounter: { alignItems: 'center', justifyContent: 'center' },
   introCounterTitle: { fontWeight: 'bold', color: COLORS.PRIMARY },

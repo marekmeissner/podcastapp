@@ -8,16 +8,18 @@ import { connect } from 'react-redux'
 import { RootState } from '@service/rootReducer'
 import { selectUser, followingFlow, savedFlow } from '@service/Auth/authReducer'
 import { User, SavedAudio } from '@service/Auth/types'
-import { NavigationInjectedProps } from 'react-navigation'
+import { SCREEN_NAMES } from '@navigation/constants'
+import { NavigationScreenProp, NavigationRoute, NavigationParams } from 'react-navigation'
 
-interface Props extends NavigationInjectedProps {
+interface Props {
   audio: Audio
   followingFlow: (user: string, following: string[]) => Promise<void>
   savedFlow: (user: string, saved: SavedAudio[]) => Promise<void>
   user?: User
+  navigation: NavigationScreenProp<NavigationRoute<NavigationParams>, NavigationParams>
 }
 
-const PlayerToolkit: React.FC<Props> = ({ audio, followingFlow, user, savedFlow }) => {
+const PlayerToolkit: React.FC<Props> = ({ audio, followingFlow, user, savedFlow, navigation }) => {
   const isFollowed = (user && user.following.includes(audio.author.uid)) || false
   const isSaved = user && user.saved.find(saved => saved.id === audio.id)
   const onFollowPress = async () => {
@@ -44,6 +46,10 @@ const PlayerToolkit: React.FC<Props> = ({ audio, followingFlow, user, savedFlow 
     }
   }
 
+  const onAvatarListItemPress = () => {
+    navigation.navigate(SCREEN_NAMES.APP_PROFILE_VIEW, { user: {} })
+  }
+
   return (
     <View style={styles.playerToolkit}>
       <Content padder>
@@ -68,7 +74,12 @@ const PlayerToolkit: React.FC<Props> = ({ audio, followingFlow, user, savedFlow 
             </Button>
           </View>
         </View>
-        <AvatarListItem author={audio.author} isFollowed={isFollowed} followingFlow={onFollowPress} />
+        <AvatarListItem
+          onPress={onAvatarListItemPress}
+          author={audio.author}
+          isFollowed={isFollowed}
+          followingFlow={onFollowPress}
+        />
         <Text style={styles.description}>{audio.details.description}</Text>
       </Content>
       <ShareFab />

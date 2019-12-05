@@ -25,6 +25,7 @@ export interface User {
   uid: string
   email: string
   accountName: string
+  accountDescription?: string
   avatar?: string
   following: string[]
   saved: SavedAudio[]
