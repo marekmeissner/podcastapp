@@ -2856,28 +2856,17 @@ app-root-dir@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/app-root-dir/-/app-root-dir-1.0.2.tgz#38187ec2dea7577fff033ffcb12172692ff6e118"
 
-appcenter-analytics@^2.4.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/appcenter-analytics/-/appcenter-analytics-2.5.0.tgz#4d6ffe53ec6c933db014f35141248fb231c3d12c"
+appcenter-analytics@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/appcenter-analytics/-/appcenter-analytics-2.6.0.tgz#3e497cfcd92efec9afed66560dc447014e556ac9"
   dependencies:
-    appcenter "2.5.0"
+    appcenter "2.6.0"
 
 appcenter-crashes@^2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/appcenter-crashes/-/appcenter-crashes-2.6.0.tgz#a129067572e05ac044ea990573b13017345320fa"
   dependencies:
     appcenter "2.6.0"
-
-appcenter-link-scripts@2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/appcenter-link-scripts/-/appcenter-link-scripts-2.5.0.tgz#b1d53c56c7ba5d0c6fccdca35c4f5e603400d237"
-  dependencies:
-    debug "4.1.1"
-    glob "5.0.15"
-    mkdirp "0.5.1"
-    plist "3.0.1"
-    which "1.2.11"
-    xcode "2.0.0"
 
 appcenter-link-scripts@2.6.0:
   version "2.6.0"
@@ -2889,12 +2878,6 @@ appcenter-link-scripts@2.6.0:
     plist "3.0.1"
     which "1.2.11"
     xcode "2.0.0"
-
-appcenter@2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/appcenter/-/appcenter-2.5.0.tgz#b0cb424eee698324d159b62d468172163d026cb9"
-  dependencies:
-    appcenter-link-scripts "2.5.0"
 
 appcenter@2.6.0, appcenter@^2.4.0:
   version "2.6.0"
