@@ -186,7 +186,7 @@ export const selectUserAudios = createSelector(
   selectAudiosCollection,
   (_: any, id: string) => id,
   (audios, id) => {
-    return audios[id]
+    return AudioService.sortAudiosByTimeOfCreation(audios[id])
   },
 )
 

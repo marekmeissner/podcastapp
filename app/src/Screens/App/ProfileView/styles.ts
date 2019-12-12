@@ -5,11 +5,13 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   content: { padding: 20 },
   intro: { flexDirection: 'row', justifyContent: 'space-around' },
-  introCounter: { alignItems: 'center', justifyContent: 'center' },
-  introCounterTitle: { fontWeight: 'bold', color: COLORS.PRIMARY },
+  introCounter: { alignItems: 'center', justifyContent: 'center'},
+  introCounterTitle: { fontWeight: 'bold', color: COLORS.PRIMARY,  },
   descriptionSection: { flexDirection: 'column', paddingTop: 30 },
   descriptionUser: { fontWeight: 'bold', paddingBottom: 15 },
   description: { paddingBottom: 15, fontSize: 14 },
+  button: {height: 25, width: 75},
+  buttonText: {fontSize: 14, fontWeight: 'bold'}
 })
 
 export default styles

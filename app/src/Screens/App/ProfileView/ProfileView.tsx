@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './styles'
 import { connect, useSelector } from 'react-redux'
-import { Container, Content, View, Text, Thumbnail, Tabs, Tab } from 'native-base'
+import { Container, Content, View, Text, Thumbnail, Tabs, Tab, Button } from 'native-base'
 import { DEFAULT_AUDIO_IMAGE } from '@util/constants/constants'
 import { COLORS } from '@util/styles/colors'
 import { AudioTile } from '@component/index'
@@ -46,13 +46,25 @@ const ProfileView: React.FC<Props> = ({ navigation, setCurrentAudio, setPlayerTr
             large
             circular
           />
-          <View style={styles.introCounter}>
-            <Text style={styles.introCounterTitle}>Followers</Text>
-            <Text>2</Text>
-          </View>
-          <View style={styles.introCounter}>
-            <Text style={styles.introCounterTitle}>Following</Text>
-            <Text>{currentUser ? currentUser.following.length : user.following.length || 0}</Text>
+          <View style={{ flexDirection: 'column', justifyContent: 'space-around' }}>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={styles.introCounter}>
+                <Text style={styles.introCounterTitle}>Followers</Text>
+                <Text>2</Text>
+              </View>
+              <View style={[styles.introCounter, { paddingLeft: 20 }]}>
+                <Text style={styles.introCounterTitle}>Following</Text>
+                <Text>{currentUser ? currentUser.following.length : user.following.length || 0}</Text>
+              </View>
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Button style={styles.button}>
+                <Text style={styles.buttonText}>Follow</Text>
+              </Button>
+              <Button style={styles.button}>
+                <Text style={styles.buttonText}>Edit</Text>
+              </Button>
+            </View>
           </View>
         </View>
         <View style={styles.descriptionSection}>
