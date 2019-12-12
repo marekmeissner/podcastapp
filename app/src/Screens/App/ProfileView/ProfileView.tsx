@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './styles'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import { Container, Content, View, Text, Thumbnail, Tabs, Tab } from 'native-base'
 import { DEFAULT_AUDIO_IMAGE } from '@util/constants/constants'
 import { COLORS } from '@util/styles/colors'
@@ -8,35 +8,32 @@ import { AudioTile } from '@component/index'
 import { NavigationInjectedProps } from 'react-navigation'
 import { User } from '@service/Auth/types'
 import { RootState } from '@service/rootReducer'
-import { selectAudiosCollection, getCurrentUserAudios, selectUserAudiosCollection } from '@service/Audio/audioReducer'
+import { selectUserAudios, getUserAudios } from '@service/Audio/audioReducer'
 import { setCurrentAudio, setPlayerTrack } from '@service/Player/playerReducer'
 import { Audio } from '@service/Audio/types'
 import { SCREEN_NAMES } from '@navigation/constants'
+import { useAsyncEffect } from '@hook/useAsyncEffect'
 
 interface Props extends NavigationInjectedProps {
-  audios: { [uid: string]: Audio[] }
-  collection: Audio[]
-  getCurrentUserAudios: () => Promise<void>
   setCurrentAudio: (selectedAudio: number) => void
   setPlayerTrack: (playerTrack: Audio[]) => void
+  getUserAudios: (uid: string) => Promise<void>
 }
 
-const ProfileView: React.FC<Props> = ({
-  navigation,
-  getCurrentUserAudios,
-  collection,
-  audios,
-  setCurrentAudio,
-  setPlayerTrack,
-}) => {
+const ProfileView: React.FC<Props> = ({ navigation, setCurrentAudio, setPlayerTrack, getUserAudios }) => {
   const currentUser = navigation.getParam('currentUser') as User
   const user = navigation.getParam('user') as User
+  const uid = currentUser ? currentUser.uid : user.uid
 
-  currentUser && getCurrentUserAudios()
+  useAsyncEffect(async () => {
+    await getUserAudios(uid)
+  }, [uid])
+
+  const userAudios = useSelector((state: RootState) => selectUserAudios(state, uid))
 
   const runPlayer = (currentAudio: number) => {
     setCurrentAudio(currentAudio)
-    setPlayerTrack(currentUser ? collection : audios[user.uid])
+    setPlayerTrack(userAudios)
     navigation.navigate(SCREEN_NAMES.APP_PLAYER)
   }
 
@@ -75,11 +72,11 @@ const ProfileView: React.FC<Props> = ({
             activeTabStyle={{ backgroundColor: COLORS.DARK_BLUE }}
           >
             <View style={{ backgroundColor: COLORS.DARK_BLUE }}>
-              {currentUser &&
-                collection.map(audio => (
+              {userAudios &&
+                userAudios.map(audio => (
                   <AudioTile
                     key={audio.id}
-                    onPress={() => runPlayer(collection.indexOf(audio))}
+                    onPress={() => runPlayer(userAudios.indexOf(audio))}
                     thumbnail={audio.thumbnail || DEFAULT_AUDIO_IMAGE.uri}
                     title={audio.title}
                     views={audio.views}
@@ -96,10 +93,4 @@ const ProfileView: React.FC<Props> = ({
   )
 }
 
-export default connect(
-  (state: RootState) => ({
-    audios: selectAudiosCollection(state),
-    collection: selectUserAudiosCollection(state),
-  }),
-  { getCurrentUserAudios, setCurrentAudio, setPlayerTrack },
-)(ProfileView)
+export default connect(null, { setCurrentAudio, setPlayerTrack, getUserAudios })(ProfileView)

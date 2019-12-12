@@ -1,12 +1,22 @@
 import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore'
-import { AuthState, AuthActions, AUTH_ACTIONS, UserCredentials, UserSignUpCredentials, SavedAudio } from './types'
+import {
+  AuthState,
+  AuthActions,
+  AUTH_ACTIONS,
+  UserCredentials,
+  UserSignUpCredentials,
+  SavedAudio,
+  LoadUser,
+} from './types'
 import { Dispatch } from 'redux'
 import { RootState } from '../rootReducer'
 import AuthService from './authService'
+import { merge, uniqBy } from 'lodash'
 
 export const AuthInitialState: AuthState = {
   user: undefined,
+  users: [],
 }
 
 export const authReducer = (state: AuthState = AuthInitialState, action: AuthActions) => {
@@ -27,6 +37,11 @@ export const authReducer = (state: AuthState = AuthInitialState, action: AuthAct
       return {
         ...state,
         user: { ...state.user, saved: action.savedArray },
+      }
+    case AUTH_ACTIONS.LOAD_USER:
+      return {
+        ...state,
+        users: merge([], state.users, [action.user]),
       }
     default:
       return state
@@ -136,6 +151,19 @@ export const savedFlow = (userId: string, savedArray: SavedAudio[]) => {
           saved: savedArray,
         })
       dispatch({ type: AUTH_ACTIONS.SAVED_FLOW, savedArray })
+    } catch (e) {
+      throw new Error(e)
+    }
+  }
+}
+
+export const loadUser = (uid: string) => {
+  return async (dispatch: Dispatch<LoadUser>) => {
+    try {
+      const user = await AuthService.getUser(uid)
+
+      dispatch({ type: AUTH_ACTIONS.LOAD_USER, user })
+      return user
     } catch (e) {
       throw new Error(e)
     }

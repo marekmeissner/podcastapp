@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import { ACCESS_TOKEN_KEY } from '@util/constants/constants'
 import firestore from '@react-native-firebase/firestore'
+import { User } from './types'
 
 class AuthService {
   static getUser = (uid: string) => {
@@ -8,7 +9,7 @@ class AuthService {
       .collection('users')
       .doc(uid)
       .get()
-      .then(doc => doc.data())
+      .then(doc => doc.data() as User)
 
     return user
   }

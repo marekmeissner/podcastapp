@@ -29,7 +29,7 @@ const HeaderBar: React.FC<Props> = ({ logout, navigation, user }) => {
     if (isProfileView) {
       navigation.navigate(SCREEN_NAMES.AUTH_SETTINGS)
     } else {
-      navigation.navigate(SCREEN_NAMES.APP_PROFILE_VIEW, { currentUser: user })
+      navigation.navigate(SCREEN_NAMES.APP_PROFILE_VIEW, { currentUser: user, user: undefined })
     }
   }
   return (
