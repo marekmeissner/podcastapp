@@ -58,12 +58,16 @@ const ProfileView: React.FC<Props> = ({ navigation, setCurrentAudio, setPlayerTr
               </View>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Button style={styles.button}>
-                <Text style={styles.buttonText}>Follow</Text>
-              </Button>
-              <Button style={styles.button}>
-                <Text style={styles.buttonText}>Edit</Text>
-              </Button>
+              {!currentUser && (
+                <Button style={styles.button}>
+                  <Text style={styles.buttonText}>Follow</Text>
+                </Button>
+              )}
+              {currentUser && (
+                <Button style={styles.button}>
+                  <Text style={styles.buttonText}>Edit</Text>
+                </Button>
+              )}
             </View>
           </View>
         </View>
