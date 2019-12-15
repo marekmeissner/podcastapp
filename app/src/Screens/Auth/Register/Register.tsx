@@ -32,7 +32,7 @@ export const Register: React.FC<Props> = ({ registerUser, navigation }) => {
   }
 
   const validationSchema = Yup.object().shape({
-    accountName: Yup.string()
+    name: Yup.string()
       .required('Required')
       .max(30, 'Must be at most 30 characters'),
     email: Yup.string()

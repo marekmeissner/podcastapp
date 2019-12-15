@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './styles'
 import { connect, useSelector } from 'react-redux'
-import { Container, Content, View, Text, Tabs, Tab, Button, Input } from 'native-base'
+import { Container, Content, View, Text, Button, Input } from 'native-base'
 import { DEFAULT_AUDIO_IMAGE, MAX_THUMBNAIL_SIZE } from '@util/constants/constants'
 import { COLORS } from '@util/styles/colors'
 import { AudioTile, InputError, Avatar, SpinnerLoader } from '@component/index'
@@ -124,7 +124,7 @@ const ProfileView: React.FC<Props> = ({
                     uri={
                       (avatar && avatar.uri) ||
                       (authUser && !user ? authUser.avatar : user.avatar) ||
-                      DEFAULT_AUDIO_IMAGE
+                      DEFAULT_AUDIO_IMAGE.uri
                     }
                     editMode={editMode}
                     large
