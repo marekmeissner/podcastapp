@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './styles'
 import { Image } from 'react-native'
-import { Header, Left, Right, Button, Icon, Thumbnail } from 'native-base'
+import { Header, Left, Right, Button, Icon, Thumbnail, Content, Input, Item, Body, Container } from 'native-base'
 import { NavigationInjectedProps } from 'react-navigation'
 
 import { connect } from 'react-redux'
@@ -18,6 +18,7 @@ interface Props extends NavigationInjectedProps {
 }
 
 const HeaderBar: React.FC<Props> = ({ logout, navigation, user }) => {
+  const [search, setSearch] = React.useState(false)
   const logoutPress = () => {
     logout()
     navigation.navigate(SCREEN_NAMES.AUTH_LOGIN)
@@ -38,34 +39,44 @@ const HeaderBar: React.FC<Props> = ({ logout, navigation, user }) => {
 
   return (
     <Header style={styles.header}>
-      <Left>
+      <Left style={{ flex: 0.2 }}>
         <Button transparent onPress={logoutPress}>
           <Image style={styles.image} source={require('@asset/logo.png')} />
         </Button>
       </Left>
-      <Right>
-        <Button
-          transparent
-          onPress={() => navigation.navigate(SCREEN_NAMES.APP_STUDIO)}
-          active={navigatorControl.path.includes(SCREEN_NAMES.APP_STUDIO)}
-        >
-          <Icon name="microphone" />
-        </Button>
-        <Button transparent>
-          <Icon name="search" />
-        </Button>
-        <Button
-          transparent
-          onPress={onAvatarPress}
-          active={isProfileView || navigatorControl.path.includes(SCREEN_NAMES.AUTH_SETTINGS)}
-        >
-          {isProfileView ? (
-            <Icon name="settings" />
-          ) : (
-            <Thumbnail style={{ height: 30, width: 30 }} source={{ uri: user?.avatar || DEFAULT_AUDIO_IMAGE.uri }} />
-          )}
-        </Button>
-      </Right>
+      {!search ? (
+        <Right>
+          <Button
+            transparent
+            onPress={() => navigation.navigate(SCREEN_NAMES.APP_STUDIO)}
+            active={navigatorControl.path.includes(SCREEN_NAMES.APP_STUDIO)}
+          >
+            <Icon name="microphone" />
+          </Button>
+          <Button transparent onPress={() => setSearch(true)}>
+            <Icon name="search" />
+          </Button>
+          <Button
+            transparent
+            onPress={onAvatarPress}
+            active={isProfileView || navigatorControl.path.includes(SCREEN_NAMES.AUTH_SETTINGS)}
+          >
+            {isProfileView ? (
+              <Icon name="settings" />
+            ) : (
+              <Thumbnail style={{ height: 30, width: 30 }} source={{ uri: user?.avatar || DEFAULT_AUDIO_IMAGE.uri }} />
+            )}
+          </Button>
+        </Right>
+      ) : (
+        <Content>
+          <Item>
+            <Input style={styles.searchInput} placeholder="Search" />
+            <Icon style={styles.searchIcon} name="search" />
+            <Icon style={styles.closeIcon} name="close" onPress={() => setSearch(false)} />
+          </Item>
+        </Content>
+      )}
     </Header>
   )
 }
