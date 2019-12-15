@@ -22,8 +22,11 @@ const HeaderBar: React.FC<Props> = ({ logout, navigation, user }) => {
     logout()
     navigation.navigate(SCREEN_NAMES.AUTH_LOGIN)
   }
-  const activeRoute = navigation.router!.getPathAndParamsForState(navigation.state).path
-  const isProfileView = activeRoute.includes(SCREEN_NAMES.APP_PROFILE_VIEW)
+  const navigatorControl = navigation.router!.getPathAndParamsForState(navigation.state)
+  const isProfileView =
+    navigatorControl.params &&
+    navigatorControl.path.includes(SCREEN_NAMES.APP_PROFILE_VIEW) &&
+    !navigatorControl.params.user
 
   const onAvatarPress = () => {
     if (isProfileView) {
@@ -43,7 +46,7 @@ const HeaderBar: React.FC<Props> = ({ logout, navigation, user }) => {
         <Button
           transparent
           onPress={() => navigation.navigate(SCREEN_NAMES.APP_STUDIO)}
-          active={activeRoute.includes(SCREEN_NAMES.APP_STUDIO)}
+          active={navigatorControl.path.includes(SCREEN_NAMES.APP_STUDIO)}
         >
           <Icon name="microphone" />
         </Button>
@@ -53,7 +56,7 @@ const HeaderBar: React.FC<Props> = ({ logout, navigation, user }) => {
         <Button
           transparent
           onPress={onAvatarPress}
-          active={isProfileView || activeRoute.includes(SCREEN_NAMES.AUTH_SETTINGS)}
+          active={isProfileView || navigatorControl.path.includes(SCREEN_NAMES.AUTH_SETTINGS)}
         >
           {isProfileView ? (
             <Icon name="settings" />
