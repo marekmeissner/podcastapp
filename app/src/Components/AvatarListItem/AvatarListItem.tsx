@@ -8,11 +8,12 @@ interface Props {
   author: { name: string; uid: string }
   followingFlow: () => Promise<void>
   isFollowed: boolean
+  onPress: () => void
 }
 
-const AvatarListItem: React.FC<Props> = ({ author, isFollowed, followingFlow }) => {
+const AvatarListItem: React.FC<Props> = ({ author, isFollowed, followingFlow, onPress }) => {
   return (
-    <ListItem avatar style={styles.listItem}>
+    <ListItem avatar onPress={onPress}>
       <Left>
         <Thumbnail style={styles.thumbnail} source={{ uri: DEFAULT_AUDIO_IMAGE.uri }} />
       </Left>

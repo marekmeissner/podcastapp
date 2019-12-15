@@ -9,7 +9,7 @@ import { SpinnerLoader } from '@component/index'
 import { selectUsersAudios, incrementAudioViews } from '@service/Audio/audioReducer'
 import AudioService from '@service/Audio/audioService'
 import { RootState } from '@service/rootReducer'
-import { selectCurrentAudio, setCurrentAudio } from '@service/Player/playerReducer'
+import { selectCurrentAudio, setCurrentAudio, selectPlayerTrack } from '@service/Player/playerReducer'
 
 interface Props extends NavigationInjectedProps {
   getAudioDetails: (audioSmall: Audio) => Promise<any>
@@ -17,6 +17,7 @@ interface Props extends NavigationInjectedProps {
   audios: { [uid: string]: Audio[] }
   currentAudio?: number
   setCurrentAudio: (currentAudio: number) => void
+  playerTrack: Audio[]
 }
 
 interface State {
@@ -44,6 +45,8 @@ class PlayerView extends React.Component<Props> {
     try {
       if (propsAudio !== undefined && prevPropsAudio !== undefined && prevPropsAudio !== propsAudio) {
         await this.getCurrentAudio(propsAudio)
+      } else if (propsAudio && this.props.playerTrack.length !== prevProps.playerTrack.length) {
+        await this.getCurrentAudio(propsAudio)
       }
     } catch (e) {}
   }
@@ -51,7 +54,7 @@ class PlayerView extends React.Component<Props> {
   getCurrentAudio = async (selectedAudio: number) => {
     try {
       !this.state.playerReload && this.setState({ playerReload: true })
-      const audiosTrack = this.props.navigation.getParam('audios') as Audio[]
+      const audiosTrack = this.props.playerTrack
       const selectedAudioSmall = audiosTrack[selectedAudio]
 
       const audio = this.props.audios[selectedAudioSmall.author.uid].find(audio => audio.id === selectedAudioSmall.id)
@@ -93,7 +96,7 @@ class PlayerView extends React.Component<Props> {
               onChangeAudio={this.onChangeAudio}
               playInBackground
             />
-            <PlayerToolkit audio={audio} />
+            <PlayerToolkit navigation={this.props.navigation} audio={audio} />
           </React.Fragment>
         ) : (
           <SpinnerLoader />
@@ -107,6 +110,7 @@ export default connect(
   (state: RootState) => ({
     audios: selectUsersAudios(state),
     currentAudio: selectCurrentAudio(state),
+    playerTrack: selectPlayerTrack(state),
   }),
   { incrementAudioViews, setCurrentAudio },
 )(PlayerView)

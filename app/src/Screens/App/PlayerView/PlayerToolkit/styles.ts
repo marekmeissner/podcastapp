@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
   description: {
     fontStyle: 'italic',
     fontSize: 15,
+    marginTop: 20,
   },
   icon: { fontSize: 18 },
   audioTitle: {

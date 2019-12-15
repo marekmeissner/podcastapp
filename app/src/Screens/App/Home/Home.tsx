@@ -9,7 +9,7 @@ import { RootState } from '@service/rootReducer'
 import { SCREEN_NAMES } from '@navigation/constants'
 import { selectUser } from '@service/Auth/authReducer'
 import { User } from '@service/Auth/types'
-import { setCurrentAudio } from '@service/Player/playerReducer'
+import { setCurrentAudio, setPlayerTrack } from '@service/Player/playerReducer'
 import { Audio } from '@service/Audio/types'
 
 interface Props extends NavigationInjectedProps {
@@ -17,6 +17,7 @@ interface Props extends NavigationInjectedProps {
   user?: User
   getFollowingAudios: (uids: string[]) => Promise<void>
   setCurrentAudio: (currentAudio: number) => void
+  setPlayerTrack: (playerTrack: Audio[]) => void
   audios: { [key: string]: Audio[] }
 }
 
@@ -40,9 +41,10 @@ class Home extends React.Component<Props> {
   }
 
   runPlayer = (currentAudio: number) => {
-    const { navigation, setCurrentAudio, followingAudios } = this.props
+    const { navigation, setCurrentAudio, followingAudios, setPlayerTrack } = this.props
     setCurrentAudio(currentAudio)
-    navigation.navigate(SCREEN_NAMES.APP_PLAYER, { audios: followingAudios })
+    setPlayerTrack(followingAudios)
+    navigation.navigate(SCREEN_NAMES.APP_PLAYER)
   }
 
   render() {
@@ -55,7 +57,7 @@ class Home extends React.Component<Props> {
               audio &&
               audio.author && (
                 <AudioTile
-                  key={'home' + audio.id}
+                  key={audio.id}
                   onPress={() => this.runPlayer(followingAudios.indexOf(audio))}
                   thumbnail={audio.thumbnail}
                   title={audio.title}
@@ -77,5 +79,5 @@ export default connect(
     user: selectUser(state),
     followingAudios: sortAudiosByTimeOfCreation(state),
   }),
-  { getFollowingAudios, setCurrentAudio },
+  { getFollowingAudios, setCurrentAudio, setPlayerTrack },
 )(Home)

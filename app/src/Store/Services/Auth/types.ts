@@ -1,5 +1,6 @@
 export interface AuthState {
   readonly user?: User
+  readonly users: User[]
 }
 
 export enum AUTH_ACTIONS {
@@ -7,6 +8,8 @@ export enum AUTH_ACTIONS {
   SET_LOGGED_OUT = 'SET_LOGGED_OUT',
   FOLLOWING_FLOW = 'SET_FOLLOWING_ARRAY',
   SAVED_FLOW = 'SET_SAVED_FLOW',
+  LOAD_USER = 'LOAD_USER',
+  EDIT_USER = 'EDIT_USER',
 }
 
 export interface UserCredentials {
@@ -18,13 +21,14 @@ export interface UserSignUpCredentials {
   email: string
   password: string
   passwordRepeat: string
-  accountName: string
+  name: string
 }
 
 export interface User {
   uid: string
   email: string
-  accountName: string
+  name: string
+  description?: string
   avatar?: string
   following: string[]
   saved: SavedAudio[]
@@ -54,4 +58,14 @@ export interface SavedFlow {
   savedArray: SavedAudio[]
 }
 
-export type AuthActions = SetUser | SetLoggedOut | FollowingFlow | SavedFlow
+export interface LoadUser {
+  type: AUTH_ACTIONS.LOAD_USER
+  user: User
+}
+
+export interface EditUser {
+  type: AUTH_ACTIONS.EDIT_USER
+  user: Partial<User>
+}
+
+export type AuthActions = SetUser | SetLoggedOut | FollowingFlow | SavedFlow | LoadUser | EditUser

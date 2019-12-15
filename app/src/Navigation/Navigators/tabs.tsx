@@ -3,9 +3,9 @@ import { createBottomTabNavigator } from 'react-navigation-tabs'
 import Home from '@screen/App/Home/Home'
 import Trending from '@screen/App/Trending/Trending'
 import Bookmarks from '@screen/App/Bookmarks/Bookmarks'
-import Account from '@screen/App/Account/Account'
 import Studio from '@screen/App/Studio/Studio'
 import PlayerView from '@screen/App/PlayerView/PlayerView'
+import ProfileView from '@screen/App/ProfileView/ProfileView'
 
 import FooterTabs from '@component/FooterTabs/FooterTabs'
 
@@ -29,11 +29,11 @@ export const Tabs = createBottomTabNavigator(
         tabBarLabel: 'Bookmarks',
       },
     },
-    Account: {
-      screen: Account,
-    },
     Studio: {
       screen: Studio,
+    },
+    ProfileView: {
+      screen: ProfileView,
     },
     Player: {
       screen: PlayerView,

@@ -4,7 +4,7 @@ import { fireEvent, wait } from '@testing-library/react-native'
 import Register from './Register'
 import { SCREEN_NAMES } from '@navigation/constants'
 
-describe('<Login />', () => {
+describe('<Register />', () => {
   const getProps = (navigate?: Function) => ({
     navigation: {
       navigate,
@@ -24,7 +24,7 @@ describe('<Login />', () => {
       expect(getAllByText(/Required/i)).toHaveLength(4)
     })
 
-    fireEvent.changeText(getByTestId('accountName'), { target: { value: 'I am longer than thirty characters' } })
+    fireEvent.changeText(getByTestId('name'), { target: { value: 'I am longer than thirty characters' } })
     fireEvent.changeText(getByTestId('email'), { target: { value: 'marek@' } })
     fireEvent.changeText(getByTestId('password'), { target: { value: 'pass' } })
 
