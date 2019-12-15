@@ -1714,15 +1714,15 @@
   version "2.0.7"
   resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-2.0.7.tgz#5c2d474d6f5210193dd64d802254f45a8528a9a7"
 
-"@react-native-firebase/app-types@6.1.0":
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app-types/-/app-types-6.1.0.tgz#b7a2cd678e7c54f0b17d1e2faa7b8131333facdb"
+"@react-native-firebase/app-types@6.2.0":
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app-types/-/app-types-6.2.0.tgz#4d3c0e7fa4e4f00061c52b1a32d76e85e5db9f2c"
 
-"@react-native-firebase/app@^6.1.0":
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-6.1.0.tgz#c7b9b70f9aea65ba3fa68d9a25005ee5a746424a"
+"@react-native-firebase/app@^6.2.0":
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-6.2.0.tgz#2d4327399f5e8021d7bad264624f1a29f0741f6c"
   dependencies:
-    "@react-native-firebase/app-types" "6.1.0"
+    "@react-native-firebase/app-types" "6.2.0"
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
