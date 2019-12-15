@@ -1734,9 +1734,9 @@
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-6.1.0.tgz#71a671cf719ab2a66df6e8eb1d2f1feefa43e966"
 
-"@react-native-firebase/storage@^6.1.0":
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-6.1.0.tgz#16a8a52ffb56da87fe2b468bba8831f039ebb22a"
+"@react-native-firebase/storage@^6.2.0":
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-6.2.0.tgz#011e2f597794eadc55f3f3793e5cf11a72f62efb"
 
 "@react-navigation/core@^3.5.1":
   version "3.5.1"
