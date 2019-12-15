@@ -193,33 +193,21 @@ const ProfileView: React.FC<Props> = ({
             )
           }}
         </Formik>
-        <Tabs
-          tabBarUnderlineStyle={{ backgroundColor: COLORS.PRIMARY, height: 1 }}
-          tabBarActiveTextColor={COLORS.PRIMARY}
-          tabContainerStyle={{ backgroundColor: COLORS.DARK_BLUE }}
-        >
-          <Tab
-            heading="Audios"
-            tabStyle={{ backgroundColor: COLORS.DARK_BLUE }}
-            activeTabStyle={{ backgroundColor: COLORS.DARK_BLUE }}
-          >
-            <View style={{ backgroundColor: COLORS.DARK_BLUE }}>
-              {userAudios &&
-                userAudios.map(audio => (
-                  <AudioTile
-                    key={audio.id}
-                    onPress={() => runPlayer(userAudios.indexOf(audio))}
-                    thumbnail={audio.thumbnail || DEFAULT_AUDIO_IMAGE.uri}
-                    title={audio.title}
-                    views={audio.views}
-                    author={audio.author}
-                    created={audio.created}
-                    style={{ width: '100%' }}
-                  />
-                ))}
-            </View>
-          </Tab>
-        </Tabs>
+        <View style={{ backgroundColor: COLORS.DARK_BLUE }}>
+          {userAudios &&
+            userAudios.map(audio => (
+              <AudioTile
+                key={audio.id}
+                onPress={() => runPlayer(userAudios.indexOf(audio))}
+                thumbnail={audio.thumbnail || DEFAULT_AUDIO_IMAGE.uri}
+                title={audio.title}
+                views={audio.views}
+                author={audio.author}
+                created={audio.created}
+                style={{ width: '100%' }}
+              />
+            ))}
+        </View>
       </Content>
     </Container>
   )
