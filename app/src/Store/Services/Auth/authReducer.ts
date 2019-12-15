@@ -8,11 +8,13 @@ import {
   UserSignUpCredentials,
   SavedAudio,
   LoadUser,
+  User,
+  EditUser,
 } from './types'
 import { Dispatch } from 'redux'
 import { RootState } from '../rootReducer'
 import AuthService from './authService'
-import { merge, uniqBy } from 'lodash'
+import { merge } from 'lodash'
 
 export const AuthInitialState: AuthState = {
   user: undefined,
@@ -42,6 +44,11 @@ export const authReducer = (state: AuthState = AuthInitialState, action: AuthAct
       return {
         ...state,
         users: merge([], state.users, [action.user]),
+      }
+    case AUTH_ACTIONS.EDIT_USER:
+      return {
+        ...state,
+        user: merge({}, state.user, action.user),
       }
     default:
       return state
@@ -92,7 +99,7 @@ export const registerUser = (registerData: UserSignUpCredentials) => {
         .set({
           uid: response.user.uid,
           email: registerData.email,
-          accountName: registerData.accountName,
+          accountName: registerData.name,
           following: [],
           saved: [],
         })
@@ -164,6 +171,17 @@ export const loadUser = (uid: string) => {
 
       dispatch({ type: AUTH_ACTIONS.LOAD_USER, user })
       return user
+    } catch (e) {
+      throw new Error(e)
+    }
+  }
+}
+
+export const editUser = (uid: string, user: Partial<User>) => {
+  return async (dispatch: Dispatch<EditUser>) => {
+    try {
+      await AuthService.editUser(uid, user)
+      dispatch({ type: AUTH_ACTIONS.EDIT_USER, user })
     } catch (e) {
       throw new Error(e)
     }

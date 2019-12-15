@@ -35,6 +35,7 @@ const HeaderBar: React.FC<Props> = ({ logout, navigation, user }) => {
       navigation.navigate(SCREEN_NAMES.APP_PROFILE_VIEW, { user: undefined })
     }
   }
+
   return (
     <Header style={styles.header}>
       <Left>
@@ -61,10 +62,7 @@ const HeaderBar: React.FC<Props> = ({ logout, navigation, user }) => {
           {isProfileView ? (
             <Icon name="settings" />
           ) : (
-            <Thumbnail
-              style={{ height: 30, width: 30 }}
-              source={{ uri: user && user.avatar ? user.avatar : DEFAULT_AUDIO_IMAGE.uri }}
-            />
+            <Thumbnail style={{ height: 30, width: 30 }} source={{ uri: user?.avatar || DEFAULT_AUDIO_IMAGE.uri }} />
           )}
         </Button>
       </Right>

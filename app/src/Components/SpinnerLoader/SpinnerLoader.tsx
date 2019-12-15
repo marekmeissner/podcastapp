@@ -4,6 +4,7 @@ import { Container, Spinner } from 'native-base'
 import { COLORS } from '@util/styles/colors'
 interface Props {
   style?: { [key: string]: number | string }
+  spinerColor?: string
 }
 
 const styles = StyleSheet.create({
@@ -15,10 +16,10 @@ const styles = StyleSheet.create({
   },
 })
 
-const SpinnerLoader: React.FC<Props> = ({ style }) => {
+const SpinnerLoader: React.FC<Props> = ({ style, spinerColor = COLORS.PRIMARY }) => {
   return (
     <Container style={[styles.spinnerContainer, style]}>
-      <Spinner color={COLORS.PRIMARY} />
+      <Spinner color={spinerColor} />
     </Container>
   )
 }

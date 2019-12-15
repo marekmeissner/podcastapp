@@ -9,6 +9,7 @@ export enum AUTH_ACTIONS {
   FOLLOWING_FLOW = 'SET_FOLLOWING_ARRAY',
   SAVED_FLOW = 'SET_SAVED_FLOW',
   LOAD_USER = 'LOAD_USER',
+  EDIT_USER = 'EDIT_USER',
 }
 
 export interface UserCredentials {
@@ -20,14 +21,14 @@ export interface UserSignUpCredentials {
   email: string
   password: string
   passwordRepeat: string
-  accountName: string
+  name: string
 }
 
 export interface User {
   uid: string
   email: string
-  accountName: string
-  accountDescription?: string
+  name: string
+  description?: string
   avatar?: string
   following: string[]
   saved: SavedAudio[]
@@ -62,4 +63,9 @@ export interface LoadUser {
   user: User
 }
 
-export type AuthActions = SetUser | SetLoggedOut | FollowingFlow | SavedFlow | LoadUser
+export interface EditUser {
+  type: AUTH_ACTIONS.EDIT_USER
+  user: Partial<User>
+}
+
+export type AuthActions = SetUser | SetLoggedOut | FollowingFlow | SavedFlow | LoadUser | EditUser

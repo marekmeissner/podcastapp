@@ -40,6 +40,16 @@ class AuthService {
       throw new Error(e)
     }
   }
+
+  static editUser = async (uid: string, user: Partial<User>) => {
+    try {
+      await firestore()
+        .doc(`users/${uid}`)
+        .update(user)
+    } catch (e) {
+      throw new Error(e)
+    }
+  }
 }
 
 export default AuthService

@@ -10,8 +10,10 @@ const styles = StyleSheet.create({
   descriptionSection: { flexDirection: 'column', paddingTop: 30 },
   descriptionUser: { fontWeight: 'bold', paddingBottom: 15 },
   description: { paddingBottom: 15, fontSize: 14 },
+  descriptionEdit: { height: 70, fontSize: 14, borderBottomWidth: 1, borderBottomColor: COLORS.SUCCESS },
   button: { height: 25, flex: 1 },
-  buttonText: { fontSize: 14, fontWeight: 'bold' },
+  buttonText: { fontSize: 14, fontWeight: 'bold', position: 'absolute' },
+  editButton: { backgroundColor: 'transparent', height: 25, flex: 1, borderWidth: 1, borderColor: COLORS.SUCCESS },
 })
 
 export default styles

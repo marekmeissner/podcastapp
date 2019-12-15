@@ -9,7 +9,7 @@ import { Container, Item, Input, Button, Text, Form, Label } from 'native-base'
 import { Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { EMAIL_REGEX, PASSWORD_REGEX } from '@util/constants/constants'
-import { InputError } from '@component'
+import { InputError } from '@component/index'
 import { SCREEN_NAMES } from '@navigation/constants'
 
 interface Props extends NavigationInjectedProps {
@@ -56,7 +56,7 @@ export const Register: React.FC<Props> = ({ registerUser, navigation }) => {
       <View style={styles.formView}>
         <Formik
           initialValues={{
-            accountName: '',
+            name: '',
             email: '',
             password: '',
             passwordRepeat: '',
@@ -68,19 +68,19 @@ export const Register: React.FC<Props> = ({ registerUser, navigation }) => {
             return (
               <Form style={styles.form}>
                 <View style={styles.inputView}>
-                  <Item floatingLabel error={touched.accountName && !!errors.accountName}>
+                  <Item floatingLabel error={touched.name && !!errors.name}>
                     <Label>Account name</Label>
                     <Input
-                      testID={'accountName'}
-                      onChangeText={handleChange('accountName')}
-                      value={values.accountName}
-                      onBlur={() => setFieldTouched('accountName')}
+                      testID={'name'}
+                      onChangeText={handleChange('name')}
+                      value={values.name}
+                      onBlur={() => setFieldTouched('name')}
                       autoCapitalize="none"
                     />
                   </Item>
-                  {errors.accountName && touched.accountName && (
-                    <InputError style={styles.inputError} testID={'accountNameError'}>
-                      {errors.accountName}
+                  {errors.name && touched.name && (
+                    <InputError style={styles.inputError} testID={'nameError'}>
+                      {errors.name}
                     </InputError>
                   )}
                 </View>

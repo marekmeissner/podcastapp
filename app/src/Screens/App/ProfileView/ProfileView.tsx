@@ -1,25 +1,29 @@
 import React from 'react'
 import styles from './styles'
 import { connect, useSelector } from 'react-redux'
-import { Container, Content, View, Text, Thumbnail, Tabs, Tab, Button } from 'native-base'
-import { DEFAULT_AUDIO_IMAGE } from '@util/constants/constants'
+import { Container, Content, View, Text, Tabs, Tab, Button, Input } from 'native-base'
+import { DEFAULT_AUDIO_IMAGE, MAX_THUMBNAIL_SIZE } from '@util/constants/constants'
 import { COLORS } from '@util/styles/colors'
-import { AudioTile } from '@component/index'
+import { AudioTile, InputError, Avatar, SpinnerLoader } from '@component/index'
 import { NavigationInjectedProps } from 'react-navigation'
 import { User } from '@service/Auth/types'
 import { RootState } from '@service/rootReducer'
-import { selectUserFollowing, followingFlow, selectUser } from '@service/Auth/authReducer'
+import { followingFlow, selectUser, editUser } from '@service/Auth/authReducer'
 import { selectUserAudios, getUserAudios } from '@service/Audio/audioReducer'
 import { setCurrentAudio, setPlayerTrack } from '@service/Player/playerReducer'
 import { Audio } from '@service/Audio/types'
 import { SCREEN_NAMES } from '@navigation/constants'
 import { useAsyncEffect } from '@hook/useAsyncEffect'
+import { Formik, FormikHelpers } from 'formik'
+import DocumentPicker from 'react-native-document-picker'
+import AudioService from '@service/Audio/audioService'
 
 interface Props extends NavigationInjectedProps {
   setCurrentAudio: (selectedAudio: number) => void
   setPlayerTrack: (playerTrack: Audio[]) => void
   getUserAudios: (uid: string) => Promise<void>
   followingFlow: (user: string, following: string[]) => Promise<void>
+  editUser: (uid: string, user: Partial<User>) => Promise<void>
   authUser?: User
 }
 
@@ -30,8 +34,11 @@ const ProfileView: React.FC<Props> = ({
   getUserAudios,
   authUser,
   followingFlow,
+  editUser,
 }) => {
+  const [editMode, setEditMode] = React.useState(false)
   const user = navigation.getParam('user') as User
+  const [avatar, setAvatar] = React.useState()
   const uid = authUser && !user ? authUser.uid : user.uid
   const isFollowed = authUser && authUser.following.find(id => id === uid)
   const isCurrentUser = authUser && authUser.uid === uid
@@ -60,51 +67,132 @@ const ProfileView: React.FC<Props> = ({
     }
   }
 
+  const handleEdit = async (
+    values: { avatar: string; description: string },
+    { setSubmitting, setStatus }: FormikHelpers<{ avatar: string; description: string }>,
+  ) => {
+    try {
+      if (avatar && avatar.size > MAX_THUMBNAIL_SIZE) {
+        setAvatar(undefined)
+        return setStatus('Avatar size must be up to 2MB!')
+      }
+      if (avatar) {
+        const audio = await AudioService.saveFile(uid, avatar)
+        values.avatar = await AudioService.getDownloadUrl(audio.metadata.fullPath)
+      }
+      setSubmitting(true)
+      await editUser(uid, values)
+      setEditMode(false)
+    } catch ({ message }) {
+      setStatus(message)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  const onUpload = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.images],
+      })
+      setAvatar(res)
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+      } else {
+        throw err
+      }
+    }
+  }
+
+  const onEditClick = () => setEditMode(true)
+
   return (
     <Container style={styles.container}>
       <Content style={styles.content}>
-        <View style={styles.intro}>
-          <Thumbnail
-            source={{ uri: (authUser && !user ? authUser.avatar : user.avatar) || DEFAULT_AUDIO_IMAGE.uri }}
-            large
-            circular
-          />
-          <View style={{ flexDirection: 'column', justifyContent: 'space-around' }}>
-            <View style={{ flexDirection: 'row' }}>
-              <View style={styles.introCounter}>
-                <Text style={styles.introCounterTitle}>Followers</Text>
-                <Text>2</Text>
-              </View>
-              <View style={[styles.introCounter, { paddingLeft: 20 }]}>
-                <Text style={styles.introCounterTitle}>Following</Text>
-                <Text>{authUser && !user ? authUser.following.length : user.following.length || 0}</Text>
-              </View>
-            </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              {!isCurrentUser && (
-                <Button
-                  onPress={onFollowPress}
-                  style={[styles.button, , { backgroundColor: isFollowed ? COLORS.SPACE : COLORS.PRIMARY }]}
-                >
-                  <Text style={styles.buttonText}>{isFollowed ? 'Unfollow' : 'Follow'}</Text>
-                </Button>
-              )}
-              {isCurrentUser && (
-                <Button style={styles.button}>
-                  <Text style={styles.buttonText}>Edit</Text>
-                </Button>
-              )}
-            </View>
-          </View>
-        </View>
-        <View style={styles.descriptionSection}>
-          <Text style={styles.descriptionUser}>
-            {authUser && isCurrentUser ? authUser.accountName : user.accountName}
-          </Text>
-          <Text style={styles.description}>
-            {authUser && isCurrentUser ? authUser.accountDescription : user.accountDescription}
-          </Text>
-        </View>
+        <Formik
+          initialValues={{
+            avatar: (authUser && !user ? authUser.avatar : user.avatar) || DEFAULT_AUDIO_IMAGE.uri,
+            description: (authUser && isCurrentUser ? authUser.description : user.description) || '',
+          }}
+          onSubmit={handleEdit}
+        >
+          {({ handleChange, handleSubmit, values, setFieldTouched, errors, touched, isSubmitting, status }) => {
+            return (
+              <>
+                <View style={styles.intro}>
+                  <Avatar
+                    uri={
+                      (avatar && avatar.uri) ||
+                      (authUser && !user ? authUser.avatar : user.avatar) ||
+                      DEFAULT_AUDIO_IMAGE
+                    }
+                    editMode={editMode}
+                    large
+                    circular
+                    onUpload={onUpload}
+                  />
+                  <View style={{ flexDirection: 'column', justifyContent: 'space-around' }}>
+                    <View style={{ flexDirection: 'row' }}>
+                      <View style={styles.introCounter}>
+                        <Text style={styles.introCounterTitle}>Followers</Text>
+                        <Text>2</Text>
+                      </View>
+                      <View style={[styles.introCounter, { paddingLeft: 20 }]}>
+                        <Text style={styles.introCounterTitle}>Following</Text>
+                        <Text>{authUser && !user ? authUser.following.length : user.following.length || 0}</Text>
+                      </View>
+                    </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                      {!isCurrentUser && (
+                        <Button
+                          onPress={onFollowPress}
+                          style={[styles.button, , { backgroundColor: isFollowed ? COLORS.SPACE : COLORS.PRIMARY }]}
+                        >
+                          <Text style={styles.buttonText}>{isFollowed ? 'Unfollow' : 'Follow'}</Text>
+                        </Button>
+                      )}
+                      {isCurrentUser && !editMode && (
+                        <Button style={styles.button} onPress={onEditClick}>
+                          <Text style={styles.buttonText}>Edit</Text>
+                        </Button>
+                      )}
+                      {isCurrentUser && editMode && (
+                        <Button style={[styles.editButton, isSubmitting && { borderWidth: 0 }]} onPress={handleSubmit}>
+                          {!isSubmitting ? (
+                            <Text style={styles.buttonText}>Save changes</Text>
+                          ) : (
+                            <SpinnerLoader spinerColor={COLORS.SUCCESS} />
+                          )}
+                        </Button>
+                      )}
+                    </View>
+                    {isCurrentUser && editMode && <InputError style={{ marginBottom: -27 }}>{status}</InputError>}
+                  </View>
+                </View>
+                <View style={styles.descriptionSection}>
+                  <Text style={styles.descriptionUser}>{authUser && isCurrentUser ? authUser.name : user.name}</Text>
+                  {!editMode ? (
+                    <Text style={styles.description}>
+                      {authUser && isCurrentUser ? authUser.description : user.description}
+                    </Text>
+                  ) : (
+                    <Input
+                      testID={'description'}
+                      placeholder={'Edit description'}
+                      onChangeText={handleChange('description')}
+                      value={values.description}
+                      onBlur={() => setFieldTouched('description')}
+                      autoCapitalize="none"
+                      multiline
+                      numberOfLines={4}
+                      style={styles.descriptionEdit}
+                    />
+                  )}
+                </View>
+              </>
+            )
+          }}
+        </Formik>
         <Tabs
           tabBarUnderlineStyle={{ backgroundColor: COLORS.PRIMARY, height: 1 }}
           tabBarActiveTextColor={COLORS.PRIMARY}
@@ -142,4 +230,5 @@ export default connect((state: RootState) => ({ authUser: selectUser(state) }), 
   setPlayerTrack,
   getUserAudios,
   followingFlow,
+  editUser,
 })(ProfileView)
