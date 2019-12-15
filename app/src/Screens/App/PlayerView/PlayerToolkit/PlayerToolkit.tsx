@@ -49,7 +49,7 @@ const PlayerToolkit: React.FC<Props> = ({ audio, followingFlow, user, savedFlow,
 
   const onAvatarListItemPress = async () => {
     const userData = await loadUser(audio.author.uid)
-    navigation.navigate(SCREEN_NAMES.APP_PROFILE_VIEW, { user: userData, currentUser: undefined })
+    navigation.navigate(SCREEN_NAMES.APP_PROFILE_VIEW, { user: userData })
   }
 
   return (

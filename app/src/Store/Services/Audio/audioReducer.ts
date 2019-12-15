@@ -111,11 +111,7 @@ export const getSavedAudios = (saved: SavedAudio[]) => {
           .collection('audio')
           .get()
           .then(querySnapshot => {
-            audios[savedAudio.uid] = merge(
-              [],
-              audios[savedAudio.uid],
-              querySnapshot.docs.find(doc => (doc.data() as Audio).id === savedAudio.id),
-            )
+            audios[savedAudio.uid] = querySnapshot.docs.map(doc => doc.data() as Audio) as []
           })
       })
 

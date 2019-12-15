@@ -8,6 +8,7 @@ import { AudioTile } from '@component/index'
 import { NavigationInjectedProps } from 'react-navigation'
 import { User } from '@service/Auth/types'
 import { RootState } from '@service/rootReducer'
+import { selectUserFollowing, followingFlow, selectUser } from '@service/Auth/authReducer'
 import { selectUserAudios, getUserAudios } from '@service/Audio/audioReducer'
 import { setCurrentAudio, setPlayerTrack } from '@service/Player/playerReducer'
 import { Audio } from '@service/Audio/types'
@@ -18,12 +19,22 @@ interface Props extends NavigationInjectedProps {
   setCurrentAudio: (selectedAudio: number) => void
   setPlayerTrack: (playerTrack: Audio[]) => void
   getUserAudios: (uid: string) => Promise<void>
+  followingFlow: (user: string, following: string[]) => Promise<void>
+  authUser?: User
 }
 
-const ProfileView: React.FC<Props> = ({ navigation, setCurrentAudio, setPlayerTrack, getUserAudios }) => {
-  const currentUser = navigation.getParam('currentUser') as User
+const ProfileView: React.FC<Props> = ({
+  navigation,
+  setCurrentAudio,
+  setPlayerTrack,
+  getUserAudios,
+  authUser,
+  followingFlow,
+}) => {
   const user = navigation.getParam('user') as User
-  const uid = currentUser ? currentUser.uid : user.uid
+  const uid = authUser && !user ? authUser.uid : user.uid
+  const isFollowed = authUser && authUser.following.find(id => id === uid)
+  const isCurrentUser = authUser && authUser.uid === uid
 
   useAsyncEffect(async () => {
     await getUserAudios(uid)
@@ -37,12 +48,24 @@ const ProfileView: React.FC<Props> = ({ navigation, setCurrentAudio, setPlayerTr
     navigation.navigate(SCREEN_NAMES.APP_PLAYER)
   }
 
+  const onFollowPress = async () => {
+    if (isFollowed && authUser) {
+      await followingFlow(
+        authUser.uid,
+        authUser.following.filter(uid => uid !== user.uid),
+      )
+    } else if (authUser) {
+      authUser.following.push(user.uid)
+      await followingFlow(user.uid, authUser.following)
+    }
+  }
+
   return (
     <Container style={styles.container}>
       <Content style={styles.content}>
         <View style={styles.intro}>
           <Thumbnail
-            source={{ uri: (currentUser ? currentUser.avatar : user.avatar) || DEFAULT_AUDIO_IMAGE.uri }}
+            source={{ uri: (authUser && !user ? authUser.avatar : user.avatar) || DEFAULT_AUDIO_IMAGE.uri }}
             large
             circular
           />
@@ -54,16 +77,19 @@ const ProfileView: React.FC<Props> = ({ navigation, setCurrentAudio, setPlayerTr
               </View>
               <View style={[styles.introCounter, { paddingLeft: 20 }]}>
                 <Text style={styles.introCounterTitle}>Following</Text>
-                <Text>{currentUser ? currentUser.following.length : user.following.length || 0}</Text>
+                <Text>{authUser && !user ? authUser.following.length : user.following.length || 0}</Text>
               </View>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              {!currentUser && (
-                <Button style={styles.button}>
-                  <Text style={styles.buttonText}>Follow</Text>
+              {!isCurrentUser && (
+                <Button
+                  onPress={onFollowPress}
+                  style={[styles.button, , { backgroundColor: isFollowed ? COLORS.SPACE : COLORS.PRIMARY }]}
+                >
+                  <Text style={styles.buttonText}>{isFollowed ? 'Unfollow' : 'Follow'}</Text>
                 </Button>
               )}
-              {currentUser && (
+              {isCurrentUser && (
                 <Button style={styles.button}>
                   <Text style={styles.buttonText}>Edit</Text>
                 </Button>
@@ -72,9 +98,11 @@ const ProfileView: React.FC<Props> = ({ navigation, setCurrentAudio, setPlayerTr
           </View>
         </View>
         <View style={styles.descriptionSection}>
-          <Text style={styles.descriptionUser}>{currentUser ? currentUser.accountName : user.accountName}</Text>
+          <Text style={styles.descriptionUser}>
+            {authUser && isCurrentUser ? authUser.accountName : user.accountName}
+          </Text>
           <Text style={styles.description}>
-            {currentUser ? currentUser.accountDescription : user.accountDescription}
+            {authUser && isCurrentUser ? authUser.accountDescription : user.accountDescription}
           </Text>
         </View>
         <Tabs
@@ -109,4 +137,9 @@ const ProfileView: React.FC<Props> = ({ navigation, setCurrentAudio, setPlayerTr
   )
 }
 
-export default connect(null, { setCurrentAudio, setPlayerTrack, getUserAudios })(ProfileView)
+export default connect((state: RootState) => ({ authUser: selectUser(state) }), {
+  setCurrentAudio,
+  setPlayerTrack,
+  getUserAudios,
+  followingFlow,
+})(ProfileView)
