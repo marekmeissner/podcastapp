@@ -6,17 +6,21 @@ import { ShareFab, AvatarListItem } from '@component/index'
 import { Audio } from '@service/Audio/types'
 import { connect } from 'react-redux'
 import { RootState } from '@service/rootReducer'
-import { selectUser, followingFlow, savedFlow } from '@service/Auth/authReducer'
+import { selectUser, followingFlow, savedFlow, loadUser } from '@service/Auth/authReducer'
 import { User, SavedAudio } from '@service/Auth/types'
+import { SCREEN_NAMES } from '@navigation/constants'
+import { NavigationScreenProp, NavigationRoute, NavigationParams } from 'react-navigation'
 
 interface Props {
   audio: Audio
   followingFlow: (user: string, following: string[]) => Promise<void>
   savedFlow: (user: string, saved: SavedAudio[]) => Promise<void>
   user?: User
+  navigation: NavigationScreenProp<NavigationRoute<NavigationParams>, NavigationParams>
+  loadUser: (uid: string) => Promise<User>
 }
 
-const PlayerToolkit: React.FC<Props> = ({ audio, followingFlow, user, savedFlow }) => {
+const PlayerToolkit: React.FC<Props> = ({ audio, followingFlow, user, savedFlow, navigation, loadUser }) => {
   const isFollowed = (user && user.following.includes(audio.author.uid)) || false
   const isSaved = user && user.saved.find(saved => saved.id === audio.id)
   const onFollowPress = async () => {
@@ -43,6 +47,11 @@ const PlayerToolkit: React.FC<Props> = ({ audio, followingFlow, user, savedFlow 
     }
   }
 
+  const onAvatarListItemPress = async () => {
+    const userData = await loadUser(audio.author.uid)
+    navigation.navigate(SCREEN_NAMES.APP_PROFILE_VIEW, { user: userData })
+  }
+
   return (
     <View style={styles.playerToolkit}>
       <Content padder>
@@ -67,7 +76,12 @@ const PlayerToolkit: React.FC<Props> = ({ audio, followingFlow, user, savedFlow 
             </Button>
           </View>
         </View>
-        <AvatarListItem author={audio.author} isFollowed={isFollowed} followingFlow={onFollowPress} />
+        <AvatarListItem
+          onPress={onAvatarListItemPress}
+          author={audio.author}
+          isFollowed={isFollowed}
+          followingFlow={onFollowPress}
+        />
         <Text style={styles.description}>{audio.details.description}</Text>
       </Content>
       <ShareFab />
@@ -79,5 +93,5 @@ export default connect(
   (state: RootState) => ({
     user: selectUser(state),
   }),
-  { followingFlow, savedFlow },
+  { followingFlow, savedFlow, loadUser },
 )(PlayerToolkit)

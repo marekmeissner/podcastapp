@@ -2,7 +2,7 @@ import firestore from '@react-native-firebase/firestore'
 import { Dispatch } from 'redux'
 import { createSelector } from 'reselect'
 import { AudioState, AUDIO_ACTIONS, AudioActions, Audio } from './types'
-import { merge, isEmpty } from 'lodash'
+import { merge, uniqBy } from 'lodash'
 import AudioService from './audioService'
 import { RootState } from '@service/rootReducer'
 import { SavedAudio } from '@service/Auth/types'
@@ -17,7 +17,7 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
     case AUDIO_ACTIONS.SAVE:
       return {
         ...state,
-        collection: [action.audio, ...state.collection],
+        audios: merge({}, state.audios, action.audio),
       }
     case AUDIO_ACTIONS.GET_SELECTED_AUDIOS:
       return {
@@ -39,12 +39,35 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
   }
 }
 
+export const getUserAudios = (uid: string) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const audios: { [uid: string]: Audio[] } = {}
+
+      await firestore()
+        .collection('audios')
+        .doc(uid)
+        .collection('audio')
+        .get()
+        .then(querySnapshot => {
+          audios[uid] = querySnapshot.docs.map(doc => doc.data() as Audio) as []
+        })
+
+      dispatch({ type: AUDIO_ACTIONS.GET_SELECTED_AUDIOS, audios })
+    } catch (e) {
+      throw new Error(e)
+    }
+  }
+}
+
 export const addAudio = (uid: string, data: Audio) => {
-  return async () => {
+  return async (dispatch: Dispatch) => {
     try {
       await firestore()
         .doc(`audios/${uid}/audio/${data.id}`)
         .set(data)
+
+      dispatch({ type: AUDIO_ACTIONS.SAVE, audio: { [uid]: [data] } })
     } catch (err) {
       throw new Error(err)
     }
@@ -88,11 +111,7 @@ export const getSavedAudios = (saved: SavedAudio[]) => {
           .collection('audio')
           .get()
           .then(querySnapshot => {
-            audios[savedAudio.uid] = merge(
-              [],
-              audios[savedAudio.uid],
-              querySnapshot.docs.find(doc => (doc.data() as Audio).id === savedAudio.id),
-            )
+            audios[savedAudio.uid] = querySnapshot.docs.map(doc => doc.data() as Audio) as []
           })
       })
 
@@ -156,6 +175,14 @@ export const selectSavedAudiosCollection = createSelector(
       })
 
     return savedAudios
+  },
+)
+
+export const selectUserAudios = createSelector(
+  selectAudiosCollection,
+  (_: any, id: string) => id,
+  (audios, id) => {
+    return AudioService.sortAudiosByTimeOfCreation(audios[id])
   },
 )
 

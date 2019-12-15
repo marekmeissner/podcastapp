@@ -7,6 +7,7 @@ import AudioTile from './AudioTile/AudioTile'
 import SpinnerLoader from './SpinnerLoader/SpinnerLoader'
 import ShareFab from './ShareFab/ShareFab'
 import AvatarListItem from './AvatarListItem/AvatarListItem'
+import Avatar from './Avatar/Avatar'
 
 export {
   InputError,
@@ -18,4 +19,5 @@ export {
   SpinnerLoader,
   ShareFab,
   AvatarListItem,
+  Avatar,
 }

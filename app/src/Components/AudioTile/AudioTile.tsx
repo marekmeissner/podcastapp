@@ -9,9 +9,10 @@ import AudioService from '@service/Audio/audioService'
 
 interface Props extends Omit<AudioSmall, 'id'> {
   onPress: () => void
+  style?: { [key: string]: string | number }
 }
 
-const AudioTile: React.FC<Props> = ({ thumbnail, title, views, author, created, onPress }) => {
+const AudioTile: React.FC<Props> = ({ thumbnail, title, views, author, created, onPress, style }) => {
   const [audioThumbnail, setAudioThumbnail] = React.useState(DEFAULT_AUDIO_IMAGE.uri)
 
   useAsyncEffect(async () => {
@@ -22,7 +23,7 @@ const AudioTile: React.FC<Props> = ({ thumbnail, title, views, author, created, 
   }, [thumbnail])
 
   return (
-    <Button style={styles.audioTile} onPress={onPress}>
+    <Button style={[styles.audioTile, style]} onPress={onPress}>
       <View>
         <Thumbnail style={styles.thumbnail} source={{ uri: audioThumbnail }} />
       </View>

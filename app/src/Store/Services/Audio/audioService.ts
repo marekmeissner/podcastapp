@@ -33,7 +33,7 @@ class AudioService {
   }
 
   static sortAudiosByTimeOfCreation = (audios: Audio[]) => {
-    return audios.sort
+    return audios && audios.sort
       ? audios.sort(function(a: Audio, b: Audio) {
           return new Date(b.created) - new Date(a.created)
         })
