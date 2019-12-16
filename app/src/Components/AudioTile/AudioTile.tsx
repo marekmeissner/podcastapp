@@ -1,18 +1,18 @@
 import React from 'react'
 import styles from './styles'
 import { Button, Thumbnail, Text, View } from 'native-base'
-import { AudioSmall } from '@service/Audio/types'
 import { useAsyncEffect } from '@hook/useAsyncEffect'
 import { DEFAULT_AUDIO_IMAGE } from '@util/constants/constants'
 import moment from 'moment'
 import AudioService from '@service/Audio/audioService'
+import { Audio } from '@service/Audio/types'
 
-interface Props extends Omit<AudioSmall, 'id'> {
+interface Props extends Omit<Audio, 'id' | 'uid' | 'details'> {
   onPress: () => void
   style?: { [key: string]: string | number }
 }
 
-const AudioTile: React.FC<Props> = ({ thumbnail, title, views, author, created, onPress, style }) => {
+const AudioTile: React.FC<Props> = ({ thumbnail, title, views, name, created, onPress, style }) => {
   const [audioThumbnail, setAudioThumbnail] = React.useState(DEFAULT_AUDIO_IMAGE.uri)
 
   useAsyncEffect(async () => {
@@ -32,7 +32,7 @@ const AudioTile: React.FC<Props> = ({ thumbnail, title, views, author, created, 
           <Text style={styles.title}>{title}</Text>
         </View>
         <View>
-          <Text style={styles.author}>{author.name}</Text>
+          <Text style={styles.author}>{name}</Text>
           <Text style={styles.metadata}>{`${views} • ${moment(created)
             .startOf('minute')
             .fromNow()}`}</Text>

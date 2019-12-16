@@ -60,7 +60,7 @@ class Bookmarks extends React.Component<Props> {
                 thumbnail={audio.thumbnail}
                 title={audio.title}
                 views={audio.views}
-                author={audio.author}
+                name={audio.name}
                 created={audio.created}
               />
             )

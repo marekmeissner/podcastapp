@@ -7,9 +7,9 @@ import AudioService from './audioService'
 import { RootState } from '@service/rootReducer'
 import { SavedAudio } from '@service/Auth/types'
 
+
 export const AudioInitialState: AudioState = {
-  collection: [],
-  audios: {},
+  audios: [],
 }
 
 export const audioReducer = (state: AudioState = AudioInitialState, action: AudioActions) => {
@@ -17,22 +17,19 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
     case AUDIO_ACTIONS.SAVE:
       return {
         ...state,
-        audios: merge({}, state.audios, action.audio),
+        audios: uniqBy([...state.audios, action.audio], 'id'),
       }
     case AUDIO_ACTIONS.GET_SELECTED_AUDIOS:
       return {
         ...state,
-        audios: merge({}, state.audios, action.audios),
+        audios: uniqBy([...state.audios, ...action.audios], 'id'),
       }
     case AUDIO_ACTIONS.INCREMENT_VIEWS:
       return {
         ...state,
-        audios: {
-          ...state.audios,
-          [action.userId]: (state.audios[action.userId] as Audio[]).map(audio =>
+        audios: state.audios.map(audio =>
             audio.id === action.audioId ? { ...audio, views: ++audio.views } : audio,
           ),
-        },
       }
     default:
       return state
@@ -42,15 +39,14 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
 export const getUserAudios = (uid: string) => {
   return async (dispatch: Dispatch) => {
     try {
-      const audios: { [uid: string]: Audio[] } = {}
+      let audios: Audio[] = [];
 
       await firestore()
         .collection('audios')
-        .doc(uid)
-        .collection('audio')
+        .where('uid', '==', uid)
         .get()
         .then(querySnapshot => {
-          audios[uid] = querySnapshot.docs.map(doc => doc.data() as Audio) as []
+          audios = merge([], audios, (querySnapshot.docs.map(doc => doc.data())))
         })
 
       dispatch({ type: AUDIO_ACTIONS.GET_SELECTED_AUDIOS, audios })
@@ -60,14 +56,14 @@ export const getUserAudios = (uid: string) => {
   }
 }
 
-export const addAudio = (uid: string, data: Audio) => {
+export const addAudio = (audio: Audio) => {
   return async (dispatch: Dispatch) => {
     try {
       await firestore()
-        .doc(`audios/${uid}/audio/${data.id}`)
-        .set(data)
-
-      dispatch({ type: AUDIO_ACTIONS.SAVE, audio: { [uid]: [data] } })
+        .doc(`audios/${audio.id}`)
+        .set(audio)
+      
+      dispatch({ type: AUDIO_ACTIONS.SAVE, audio })
     } catch (err) {
       throw new Error(err)
     }
@@ -76,17 +72,16 @@ export const addAudio = (uid: string, data: Audio) => {
 
 export const getFollowingAudios = (uids: string[]) => {
   return async (dispatch: Dispatch) => {
-    const audios: { [uid: string]: Audio[] } = {}
+    let audios: Audio[];
 
     try {
       const audiosRef = firestore().collection('audios')
       const requests = await uids.map(uid => {
         return audiosRef
-          .doc(uid)
-          .collection('audio')
+          .where('uid', '==', uid)
           .get()
           .then(querySnapshot => {
-            audios[uid] = querySnapshot.docs.map(doc => doc.data() as Audio) as []
+            audios = merge([], audios, (querySnapshot.docs.map(doc => doc.data())))
           })
       })
 
@@ -101,17 +96,16 @@ export const getFollowingAudios = (uids: string[]) => {
 
 export const getSavedAudios = (saved: SavedAudio[]) => {
   return async (dispatch: Dispatch) => {
-    const audios: { [uid: string]: Audio[] } = {}
+    let audios: Audio[] = []
 
     try {
       const audiosRef = firestore().collection('audios')
       const requests = await saved.map(savedAudio => {
         return audiosRef
-          .doc(savedAudio.uid)
-          .collection('audio')
+          .where('id', '==', savedAudio.id)
           .get()
           .then(querySnapshot => {
-            audios[savedAudio.uid] = querySnapshot.docs.map(doc => doc.data() as Audio) as []
+            audios = merge([], audios, (querySnapshot.docs.map(doc => doc.data())))
           })
       })
 
@@ -128,7 +122,7 @@ export const incrementAudioViews = (userId: string, audioId: string) => {
   return async (dispatch: Dispatch) => {
     try {
       await firestore()
-        .doc(`audios/${userId}/audio/${audioId}`)
+        .doc(`audios/${audioId}`)
         .update({
           views: firestore.FieldValue.increment(1),
         })
@@ -150,7 +144,7 @@ export const selectFollowingAudiosCollection = createSelector(
     const subscribedAudios: Audio[] = []
     ids &&
       ids.map(function(key) {
-        audios[key] && (audios[key] as Audio[]).map(audio => subscribedAudios.push(audio))
+        audios.map(audio => audio.uid === key &&  subscribedAudios.push(audio))
       })
     return subscribedAudios
   },
@@ -170,8 +164,7 @@ export const selectSavedAudiosCollection = createSelector(
     const savedAudios: Audio[] = []
     saved &&
       saved.map(function(savedAudio) {
-        audios[savedAudio.uid] &&
-          (audios[savedAudio.uid] as Audio[]).map(audio => audio.id === savedAudio.id && savedAudios.push(audio))
+          audios.map(audio => audio.id === savedAudio.id && savedAudios.push(audio))
       })
 
     return savedAudios
@@ -180,9 +173,10 @@ export const selectSavedAudiosCollection = createSelector(
 
 export const selectUserAudios = createSelector(
   selectAudiosCollection,
-  (_: any, id: string) => id,
-  (audios, id) => {
-    return AudioService.sortAudiosByTimeOfCreation(audios[id])
+  (_: any, uid: string) => uid,
+  (audios, uid) => {
+    const audiosCollection = audios.filter(audio => audio.uid === uid)
+    return AudioService.sortAudiosByTimeOfCreation(audiosCollection)
   },
 )
 

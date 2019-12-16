@@ -33,7 +33,7 @@ export const authReducer = (state: AuthState = AuthInitialState, action: AuthAct
     case AUTH_ACTIONS.FOLLOWING_FLOW:
       return {
         ...state,
-        user: { ...state.user, following: action.followArray },
+        user: { ...state.user, following: action.followArray, followers: state.user && state.user.followers + 1 },
       }
     case AUTH_ACTIONS.SAVED_FLOW:
       return {
@@ -140,7 +140,7 @@ export const followingFlow = (userId: string, followArray: string[]) => {
       await firestore()
         .doc(`users/${userId}`)
         .update({
-          following: followArray,
+          following: followArray
         })
       dispatch({ type: AUTH_ACTIONS.FOLLOWING_FLOW, followArray })
     } catch (e) {

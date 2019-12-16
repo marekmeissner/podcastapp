@@ -194,7 +194,7 @@ const ProfileView: React.FC<Props> = ({
           }}
         </Formik>
         <View style={{ backgroundColor: COLORS.DARK_BLUE }}>
-          {userAudios &&
+          {userAudios.length > 0 ? (
             userAudios.map(audio => (
               <AudioTile
                 key={audio.id}
@@ -202,11 +202,16 @@ const ProfileView: React.FC<Props> = ({
                 thumbnail={audio.thumbnail || DEFAULT_AUDIO_IMAGE.uri}
                 title={audio.title}
                 views={audio.views}
-                author={audio.author}
+                name={audio.name}
                 created={audio.created}
                 style={{ width: '100%' }}
               />
-            ))}
+            ))
+          ) : (
+            <Button style={styles.addAudioButton} onPress={() => navigation.navigate(SCREEN_NAMES.APP_STUDIO)}>
+              <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Add your first audio!</Text>
+            </Button>
+          )}
         </View>
       </Content>
     </Container>

@@ -14,7 +14,7 @@ import { selectCurrentAudio, setCurrentAudio, selectPlayerTrack } from '@service
 interface Props extends NavigationInjectedProps {
   getAudioDetails: (audioSmall: Audio) => Promise<any>
   incrementAudioViews: (userId: string, audioId: string) => Promise<void>
-  audios: { [uid: string]: Audio[] }
+  audios: Audio[]
   currentAudio?: number
   setCurrentAudio: (currentAudio: number) => void
   playerTrack: Audio[]
@@ -57,9 +57,9 @@ class PlayerView extends React.Component<Props> {
       const audiosTrack = this.props.playerTrack
       const selectedAudioSmall = audiosTrack[selectedAudio]
 
-      const audio = this.props.audios[selectedAudioSmall.author.uid].find(audio => audio.id === selectedAudioSmall.id)
+      const audio = this.props.audios.find(audio => audio.id === selectedAudioSmall.id)
       if (audio) {
-        this.props.incrementAudioViews(audio.author.uid, audio.id)
+        this.props.incrementAudioViews(audio.uid, audio.id)
 
         const audioFullPath = await AudioService.getDownloadUrl(audio.details.audio)
         const thumbnailFullPath = await AudioService.getDownloadUrl(audio.thumbnail)
