@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 5,
-    flex: 1
+    flex: 1,
   },
   image: {
     width: 35,
@@ -21,12 +21,12 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   searchIcon: {
-    fontSize: 20
+    fontSize: 20,
   },
   closeIcon: {
     fontSize: 30,
-    paddingLeft: 2
-  }
+    paddingLeft: 2,
+  },
 })
 
 export default styles
