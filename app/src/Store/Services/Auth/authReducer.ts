@@ -140,7 +140,7 @@ export const followingFlow = (userId: string, followArray: string[]) => {
       await firestore()
         .doc(`users/${userId}`)
         .update({
-          following: followArray
+          following: followArray,
         })
       dispatch({ type: AUTH_ACTIONS.FOLLOWING_FLOW, followArray })
     } catch (e) {

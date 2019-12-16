@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   button: { height: 25, flex: 1 },
   buttonText: { fontSize: 14, fontWeight: 'bold', position: 'absolute' },
   editButton: { backgroundColor: 'transparent', height: 25, flex: 1, borderWidth: 1, borderColor: COLORS.SUCCESS },
-  addAudioButton: {height: 30, marginTop: 20}
+  addAudioButton: { height: 30, marginTop: 20 },
 })
 
 export default styles
