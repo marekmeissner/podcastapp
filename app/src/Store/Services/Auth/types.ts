@@ -31,6 +31,7 @@ export interface User {
   description?: string
   avatar?: string
   following: string[]
+  followers: number
   saved: SavedAudio[]
 }
 

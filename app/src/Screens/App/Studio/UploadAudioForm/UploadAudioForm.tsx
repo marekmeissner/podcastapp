@@ -17,7 +17,7 @@ import { Audio, AddNewAudio } from '@service/Audio/types'
 import { SCREEN_NAMES } from '@navigation/constants'
 
 interface Props extends NavigationInjectedProps {
-  addAudio: (uid: string, data: Audio) => Promise<void>
+  addAudio: (data: Audio) => Promise<void>
 }
 
 const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
@@ -47,10 +47,8 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
           id: audio.metadata.generation,
           title: values.title,
           thumbnail: audioImage.metadata.fullPath,
-          author: {
-            name: user.name,
-            uid: user.uid,
-          },
+          name: user.name,
+          uid: user.uid,
           views: 0,
           created: audio.metadata.timeCreated,
           details: {
@@ -61,7 +59,7 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
           },
         }
 
-        await addAudio(user.uid, data)
+        await addAudio(data)
         setPercentage(100)
         setTimeout(() => {
           setLoader(false)
