@@ -10,6 +10,11 @@ export interface AudioState {
   readonly audios: Audio[]
 }
 
+export interface GetAudiosSearchParams {
+  limit?: number,
+  searchPhrase?: string,
+  orderBy?: string
+}
 export interface Audio {
   id: string
   thumbnail: string
