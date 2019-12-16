@@ -27,6 +27,15 @@ const styles = StyleSheet.create({
     fontSize: 30,
     paddingLeft: 2,
   },
+  audiosList: {
+    minHeight: 150,
+    height: 'auto',
+    width: '100%',
+    backgroundColor: 'rgba(22,27,34, 0.9)',    
+    position: 'absolute',
+    top: 88,
+    zIndex: 500
+  }
 })
 
 export default styles

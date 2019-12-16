@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './styles'
 import { Image } from 'react-native'
-import { Header, Left, Right, Button, Icon, Thumbnail, Content, Input, Item, Body, Container } from 'native-base'
+import { Header, Left, Right, Button, Icon, Thumbnail, Content, Input, Item, View } from 'native-base'
 import { NavigationInjectedProps } from 'react-navigation'
 
 import { connect } from 'react-redux'
@@ -77,6 +77,7 @@ const HeaderBar: React.FC<Props> = ({ logout, navigation, user }) => {
           </Item>
         </Content>
       )}
+      <View style={styles.audiosList}></View>
     </Header>
   )
 }
