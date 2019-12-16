@@ -73,7 +73,7 @@ export const addAudio = (audio: Audio) => {
 
 export const getFollowingAudios = (uids: string[]) => {
   return async (dispatch: Dispatch) => {
-    let audios: Audio[]
+    let audios: Audio[] = []
 
     try {
       const audiosRef = firestore().collection('audios')
@@ -82,11 +82,7 @@ export const getFollowingAudios = (uids: string[]) => {
           .where('uid', '==', uid)
           .get()
           .then(querySnapshot => {
-            audios = merge(
-              [],
-              audios,
-              querySnapshot.docs.map(doc => doc.data()),
-            )
+            audios = uniqBy([...audios, ...querySnapshot.docs.map(doc => doc.data() as Audio)], 'id')
           })
       })
 
@@ -110,11 +106,7 @@ export const getSavedAudios = (saved: SavedAudio[]) => {
           .where('id', '==', savedAudio.id)
           .get()
           .then(querySnapshot => {
-            audios = merge(
-              [],
-              audios,
-              querySnapshot.docs.map(doc => doc.data()),
-            )
+            audios = uniqBy([...audios, ...querySnapshot.docs.map(doc => doc.data() as Audio)], 'id')
           })
       })
 
