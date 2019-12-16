@@ -7,20 +7,15 @@ export enum AUDIO_ACTIONS {
 }
 
 export interface AudioState {
-  readonly collection: Audio[]
-  readonly audios: {
-    [uid: string]: Audio[]
-  }
+  readonly audios: Audio[]
 }
 
 export interface Audio {
   id: string
   thumbnail: string
   title: string
-  author: {
-    name: string
-    uid: string
-  }
+  name: string
+  uid: string
   views: number
   created: string
   details: {
@@ -61,9 +56,7 @@ export interface LoadUserAudio {
 
 export interface GetSelectedAudios {
   type: AUDIO_ACTIONS.GET_SELECTED_AUDIOS
-  audios: {
-    [uid: string]: Audio[]
-  }
+  audios: Audio[]
 }
 
 export interface IncrementAudioViews {

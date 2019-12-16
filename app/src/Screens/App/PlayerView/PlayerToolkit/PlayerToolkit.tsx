@@ -21,16 +21,16 @@ interface Props {
 }
 
 const PlayerToolkit: React.FC<Props> = ({ audio, followingFlow, user, savedFlow, navigation, loadUser }) => {
-  const isFollowed = (user && user.following.includes(audio.author.uid)) || false
+  const isFollowed = (user && user.following.includes(audio.uid)) || false
   const isSaved = user && user.saved.find(saved => saved.id === audio.id)
   const onFollowPress = async () => {
     if (isFollowed && user) {
       await followingFlow(
         user.uid,
-        user.following.filter(uid => uid !== audio.author.uid),
+        user.following.filter(uid => uid !== audio.uid),
       )
     } else if (user) {
-      user.following.push(audio.author.uid)
+      user.following.push(audio.uid)
       await followingFlow(user.uid, user.following)
     }
   }
@@ -42,13 +42,13 @@ const PlayerToolkit: React.FC<Props> = ({ audio, followingFlow, user, savedFlow,
         user.saved.filter(saved => saved.id !== audio.id),
       )
     } else if (user) {
-      user.saved.push({ uid: audio.author.uid, id: audio.id, time: moment().format() })
+      user.saved.push({ uid: audio.uid, id: audio.id, time: moment().format() })
       await savedFlow(user.uid, user.saved)
     }
   }
 
   const onAvatarListItemPress = async () => {
-    const userData = await loadUser(audio.author.uid)
+    const userData = await loadUser(audio.uid)
     navigation.navigate(SCREEN_NAMES.APP_PROFILE_VIEW, { user: userData })
   }
 
@@ -78,7 +78,7 @@ const PlayerToolkit: React.FC<Props> = ({ audio, followingFlow, user, savedFlow,
         </View>
         <AvatarListItem
           onPress={onAvatarListItemPress}
-          author={audio.author}
+          author={audio.name}
           isFollowed={isFollowed}
           followingFlow={onFollowPress}
         />
