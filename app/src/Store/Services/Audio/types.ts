@@ -11,8 +11,8 @@ export interface AudioState {
 }
 
 export interface GetAudiosSearchParams {
-  limit?: number,
-  searchPhrase?: string,
+  limit?: number
+  searchPhrase?: string
   orderBy?: string
 }
 export interface Audio {

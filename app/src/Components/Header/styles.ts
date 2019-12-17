@@ -31,11 +31,11 @@ const styles = StyleSheet.create({
     minHeight: 150,
     height: 'auto',
     width: '100%',
-    backgroundColor: 'rgba(22,27,34, 0.9)',    
+    backgroundColor: 'rgba(22,27,34, 0.9)',
     position: 'absolute',
     top: 88,
-    zIndex: 500
-  }
+    zIndex: 500,
+  },
 })
 
 export default styles

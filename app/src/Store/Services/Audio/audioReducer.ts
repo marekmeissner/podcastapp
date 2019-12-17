@@ -33,13 +33,21 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
   }
 }
 
-export const getAudiosSearch = ({limit, searchPhrase, orderBy}: GetAudiosSearchParams = {}) => {
+export const getAudiosSearch = ({ limit, searchPhrase, orderBy }: GetAudiosSearchParams = {}) => {
   return async (dispatch: Dispatch) => {
     let audios: Audio[] = []
 
-    limit && searchPhrase && await firestore().collection('audios').orderBy(orderBy || 'title').startAt(searchPhrase).limit(limit || 5).get().then(querySnapshot => {
-      audios = uniqBy([...audios, ...querySnapshot.docs.map(doc => doc.data() as Audio)], 'id')
-    })
+    limit &&
+      searchPhrase &&
+      (await firestore()
+        .collection('audios')
+        .orderBy(orderBy || 'title')
+        .startAt(searchPhrase)
+        .limit(limit || 5)
+        .get()
+        .then(querySnapshot => {
+          audios = uniqBy([...audios, ...querySnapshot.docs.map(doc => doc.data() as Audio)], 'id')
+        }))
 
     dispatch({ type: AUDIO_ACTIONS.GET_SELECTED_AUDIOS, audios })
   }
@@ -193,6 +201,5 @@ export const selectUsersAudios = (state: RootState) => state.audio.audios
 
 export const filterAudiosByQuery = (audios: Audio[], query: string) => {
   query = query.toLowerCase()
-  return audios.filter(
-    ({ title }) => title.toLowerCase().includes(query))
+  return audios.filter(({ title }) => title.toLowerCase().includes(query))
 }

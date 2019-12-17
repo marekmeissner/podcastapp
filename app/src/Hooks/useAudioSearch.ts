@@ -17,7 +17,7 @@ export const useAudiosSearch = (doFetch?: boolean, deps: any[] = []) => {
 
   useAsyncEffect(async () => {
     if (doFetch) {
-        setAudiosLoading(true)
+      setAudiosLoading(true)
       try {
         await dispatch(getAudiosSearch({ limit: 10, searchPhrase: query }))
       } catch (e) {
@@ -36,6 +36,6 @@ export const useAudiosSearch = (doFetch?: boolean, deps: any[] = []) => {
       setDebouncedQuery(query)
     },
     audiosLoading,
-    audios: filterAudiosByQuery(audios, query)
+    audios: filterAudiosByQuery(audios, query),
   }
 }
