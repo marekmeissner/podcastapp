@@ -37,12 +37,11 @@ export const getAudiosSearch = ({ limit, searchPhrase, orderBy }: GetAudiosSearc
   return async (dispatch: Dispatch) => {
     let audios: Audio[] = []
 
-    limit &&
-      searchPhrase &&
+    searchPhrase &&
       (await firestore()
         .collection('audios')
         .orderBy(orderBy || 'title')
-        .startAt(searchPhrase)
+        .startAt(searchPhrase.toLowerCase())
         .limit(limit || 5)
         .get()
         .then(querySnapshot => {
@@ -201,5 +200,10 @@ export const selectUsersAudios = (state: RootState) => state.audio.audios
 
 export const filterAudiosByQuery = (audios: Audio[], query: string) => {
   query = query.toLowerCase()
-  return audios.filter(({ title }) => title.toLowerCase().includes(query))
+  return audios.filter(({ title }) => title.toLowerCase().startsWith(query))
+}
+
+export const filterAudiosByPhrasePresence = (audios: Audio[], phrase: string) => {
+  phrase = phrase.toLowerCase()
+  return audios.filter(({ title }) => title.toLowerCase().includes(phrase))
 }

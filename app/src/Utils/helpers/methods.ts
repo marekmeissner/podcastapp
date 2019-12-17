@@ -4,3 +4,5 @@ export const pad = (n: any, width: number, z = 0) => {
 }
 
 export const getMinutesAndSeconds = (position: number) => [pad(Math.floor(position / 60), 2), pad(position % 60, 2)]
+
+export const capitalizeFirstWord = (phrase: string) => phrase.charAt(0).toUpperCase() + phrase.slice(1)

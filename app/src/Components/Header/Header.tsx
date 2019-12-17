@@ -1,7 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './styles'
 import { Image } from 'react-native'
-import { Header, Left, Right, Button, Icon, Thumbnail, Content, Input, Item, View } from 'native-base'
+import {
+  Header,
+  Left,
+  Right,
+  Button,
+  Icon,
+  Thumbnail,
+  Content,
+  Input,
+  Item,
+  View,
+  List,
+  ListItem,
+  Text,
+} from 'native-base'
 import { NavigationInjectedProps } from 'react-navigation'
 
 import { connect } from 'react-redux'
@@ -11,6 +25,7 @@ import { SCREEN_NAMES } from '@navigation/constants'
 import { DEFAULT_AUDIO_IMAGE } from '@util/constants/constants'
 import { RootState } from '@service/rootReducer'
 import { User } from '@service/Auth/types'
+import { useAudiosSearch } from '@hook/useAudioSearch'
 
 interface Props extends NavigationInjectedProps {
   logout: () => Promise<void>
@@ -19,10 +34,13 @@ interface Props extends NavigationInjectedProps {
 
 const HeaderBar: React.FC<Props> = ({ logout, navigation, user }) => {
   const [search, setSearch] = React.useState(false)
+  const { query, changeQuery, audiosLoading, audios } = useAudiosSearch()
+
   const logoutPress = () => {
     logout()
     navigation.navigate(SCREEN_NAMES.AUTH_LOGIN)
   }
+
   const navigatorControl = navigation.router!.getPathAndParamsForState(navigation.state)
   const isProfileView =
     navigatorControl.params &&
@@ -35,6 +53,11 @@ const HeaderBar: React.FC<Props> = ({ logout, navigation, user }) => {
     } else {
       navigation.navigate(SCREEN_NAMES.APP_PROFILE_VIEW, { user: undefined })
     }
+  }
+
+  const onSearchResultClick = () => {
+    setSearch(false)
+    navigation.navigate(SCREEN_NAMES.APP_SEARCH_VIEW, { searchPhrase: query })
   }
 
   return (
@@ -71,13 +94,32 @@ const HeaderBar: React.FC<Props> = ({ logout, navigation, user }) => {
       ) : (
         <Content>
           <Item>
-            <Input style={styles.searchInput} placeholder="Search" />
+            <Input
+              style={styles.searchInput}
+              autoCapitalize={'none'}
+              // eslint-disable-next-line jsx-a11y/no-autofocus
+              autoFocus
+              placeholder="Search"
+              onChangeText={query => changeQuery(query)}
+            />
             <Icon style={styles.searchIcon} name="search" />
             <Icon style={styles.closeIcon} name="close" onPress={() => setSearch(false)} />
           </Item>
         </Content>
       )}
-      <View style={styles.audiosList}></View>
+      {search && !audiosLoading && audios.length > 0 && (
+        <View style={styles.audiosList}>
+          <List>
+            {query !== '' &&
+              audios &&
+              audios.slice(0, 8).map(({ title, id }) => (
+                <ListItem key={id} onPress={onSearchResultClick}>
+                  <Text>{title}</Text>
+                </ListItem>
+              ))}
+          </List>
+        </View>
+      )}
     </Header>
   )
 }

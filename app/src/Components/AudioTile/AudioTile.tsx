@@ -6,6 +6,7 @@ import { DEFAULT_AUDIO_IMAGE } from '@util/constants/constants'
 import moment from 'moment'
 import AudioService from '@service/Audio/audioService'
 import { Audio } from '@service/Audio/types'
+import { capitalizeFirstWord } from '@util/helpers/methods'
 
 interface Props extends Omit<Audio, 'id' | 'uid' | 'details'> {
   onPress: () => void
@@ -29,7 +30,7 @@ const AudioTile: React.FC<Props> = ({ thumbnail, title, views, name, created, on
       </View>
       <View style={styles.tileBody}>
         <View>
-          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.title}>{capitalizeFirstWord(title)}</Text>
         </View>
         <View>
           <Text style={styles.author}>{name}</Text>

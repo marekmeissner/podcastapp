@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     paddingLeft: 2,
   },
   audiosList: {
-    minHeight: 150,
+    minHeight: 0,
     height: 'auto',
     width: '100%',
     backgroundColor: 'rgba(22,27,34, 0.9)',

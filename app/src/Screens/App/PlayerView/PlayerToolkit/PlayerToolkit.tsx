@@ -10,6 +10,7 @@ import { selectUser, followingFlow, savedFlow, loadUser } from '@service/Auth/au
 import { User, SavedAudio } from '@service/Auth/types'
 import { SCREEN_NAMES } from '@navigation/constants'
 import { NavigationScreenProp, NavigationRoute, NavigationParams } from 'react-navigation'
+import { capitalizeFirstWord } from '@util/helpers/methods'
 
 interface Props {
   audio: Audio
@@ -56,7 +57,7 @@ const PlayerToolkit: React.FC<Props> = ({ audio, followingFlow, user, savedFlow,
     <View style={styles.playerToolkit}>
       <Content padder>
         <View style={styles.header}>
-          <Text style={styles.audioTitle}>{audio.title}</Text>
+          <Text style={styles.audioTitle}>{capitalizeFirstWord(audio.title)}</Text>
           <Text style={styles.titleMetatext}>{`${audio.views + ' views'} • ${moment(audio.created).format(
             'DD.MM.YYYY',
           )}`}</Text>

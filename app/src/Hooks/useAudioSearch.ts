@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { debounce } from 'lodash'
 import { selectAudiosCollection, getAudiosSearch, filterAudiosByQuery } from '@service/Audio/audioReducer'
 
-export const useAudiosSearch = (doFetch?: boolean, deps: any[] = []) => {
+export const useAudiosSearch = (deps: any[] = []) => {
   const [query, changeQuery] = useState('')
   const [debouncedQuery, changeDebouncedQuery] = useState('')
   const [audiosLoading, setAudiosLoading] = useState(false)
@@ -16,14 +16,12 @@ export const useAudiosSearch = (doFetch?: boolean, deps: any[] = []) => {
   }, 300)
 
   useAsyncEffect(async () => {
-    if (doFetch) {
-      setAudiosLoading(true)
-      try {
-        await dispatch(getAudiosSearch({ limit: 10, searchPhrase: query }))
-      } catch (e) {
-      } finally {
-        setAudiosLoading(false)
-      }
+    setAudiosLoading(true)
+    try {
+      await dispatch(getAudiosSearch({ limit: 5, searchPhrase: query }))
+    } catch (e) {
+    } finally {
+      setAudiosLoading(false)
     }
   }, [debouncedQuery, ...deps])
 

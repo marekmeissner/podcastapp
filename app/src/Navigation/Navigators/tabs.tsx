@@ -6,6 +6,7 @@ import Bookmarks from '@screen/App/Bookmarks/Bookmarks'
 import Studio from '@screen/App/Studio/Studio'
 import PlayerView from '@screen/App/PlayerView/PlayerView'
 import ProfileView from '@screen/App/ProfileView/ProfileView'
+import SearchView from '@screen/App/SearchView/SearchView'
 
 import FooterTabs from '@component/FooterTabs/FooterTabs'
 
@@ -37,6 +38,9 @@ export const Tabs = createBottomTabNavigator(
     },
     Player: {
       screen: PlayerView,
+    },
+    SearchView: {
+      screen: SearchView,
     },
   },
   {

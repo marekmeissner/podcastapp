@@ -45,7 +45,7 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
         const audioImage = await AudioService.saveFile(user.uid, thumbnail)
         const data: Audio = {
           id: audio.metadata.generation,
-          title: values.title,
+          title: values.title.toLowerCase(),
           thumbnail: audioImage.metadata.fullPath,
           name: user.name,
           uid: user.uid,
