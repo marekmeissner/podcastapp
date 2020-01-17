@@ -13,6 +13,7 @@ export enum SCREEN_NAMES {
   APP_PROFILE_VIEW = 'ProfileView',
   APP_STUDIO = 'Studio',
   APP_PLAYER = 'Player',
+  APP_SEARCH_VIEW = 'SearchView',
 
   AUDIO_UPLOAD = 'AudioUpload',
 }

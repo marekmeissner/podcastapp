@@ -10,6 +10,11 @@ export interface AudioState {
   readonly audios: Audio[]
 }
 
+export interface GetAudiosSearchParams {
+  limit?: number
+  searchPhrase?: string
+  orderBy?: string
+}
 export interface Audio {
   id: string
   thumbnail: string
@@ -21,7 +26,6 @@ export interface Audio {
   details: {
     description: string
     ratings: boolean
-    donations: boolean
     audio: string
   }
 }
@@ -30,7 +34,6 @@ export interface AddNewAudio {
   title: string
   description: string
   ratings: boolean
-  donations: boolean
   thumbnail: { uri: string; size: number }
 }
 

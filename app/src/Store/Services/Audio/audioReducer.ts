@@ -1,7 +1,7 @@
 import firestore from '@react-native-firebase/firestore'
 import { Dispatch } from 'redux'
 import { createSelector } from 'reselect'
-import { AudioState, AUDIO_ACTIONS, AudioActions, Audio } from './types'
+import { AudioState, AUDIO_ACTIONS, AudioActions, Audio, GetAudiosSearchParams } from './types'
 import { merge, uniqBy } from 'lodash'
 import AudioService from './audioService'
 import { RootState } from '@service/rootReducer'
@@ -33,6 +33,25 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
   }
 }
 
+export const getAudiosSearch = ({ limit, searchPhrase, orderBy }: GetAudiosSearchParams = {}) => {
+  return async (dispatch: Dispatch) => {
+    let audios: Audio[] = []
+
+    searchPhrase &&
+      (await firestore()
+        .collection('audios')
+        .orderBy(orderBy || 'title')
+        .startAt(searchPhrase.toLowerCase())
+        .limit(limit || 5)
+        .get()
+        .then(querySnapshot => {
+          audios = uniqBy([...audios, ...querySnapshot.docs.map(doc => doc.data() as Audio)], 'id')
+        }))
+
+    dispatch({ type: AUDIO_ACTIONS.GET_SELECTED_AUDIOS, audios })
+  }
+}
+
 export const getUserAudios = (uid: string) => {
   return async (dispatch: Dispatch) => {
     try {
@@ -43,11 +62,7 @@ export const getUserAudios = (uid: string) => {
         .where('uid', '==', uid)
         .get()
         .then(querySnapshot => {
-          audios = merge(
-            [],
-            audios,
-            querySnapshot.docs.map(doc => doc.data()),
-          )
+          audios = uniqBy([...audios, ...querySnapshot.docs.map(doc => doc.data() as Audio)], 'id')
         })
 
       dispatch({ type: AUDIO_ACTIONS.GET_SELECTED_AUDIOS, audios })
@@ -182,3 +197,13 @@ export const selectUserAudios = createSelector(
 )
 
 export const selectUsersAudios = (state: RootState) => state.audio.audios
+
+export const filterAudiosByQuery = (audios: Audio[], query: string) => {
+  query = query.toLowerCase()
+  return audios.filter(({ title }) => title.toLowerCase().startsWith(query))
+}
+
+export const filterAudiosByPhrasePresence = (audios: Audio[], phrase: string) => {
+  phrase = phrase.toLowerCase()
+  return audios.filter(({ title }) => title.toLowerCase().includes(phrase))
+}

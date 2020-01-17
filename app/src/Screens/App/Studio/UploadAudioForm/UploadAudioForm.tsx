@@ -5,7 +5,7 @@ import { View, ActivityIndicator } from 'react-native'
 import { Container, Content, Item, Input, Button, Text, Form, Label } from 'native-base'
 import { Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import { InputError, UploadImage, ProgressScreen, SwitchItem } from '@component/index'
+import { InputError, UploadImage, ProgressScreen } from '@component/index'
 import { useSelector } from 'react-redux'
 import { selectUser } from '@service/Auth/authReducer'
 import { addAudio } from '@service/Audio/audioReducer'
@@ -45,7 +45,7 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
         const audioImage = await AudioService.saveFile(user.uid, thumbnail)
         const data: Audio = {
           id: audio.metadata.generation,
-          title: values.title,
+          title: values.title.toLowerCase(),
           thumbnail: audioImage.metadata.fullPath,
           name: user.name,
           uid: user.uid,
@@ -54,7 +54,6 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
           details: {
             audio: audio.metadata.fullPath,
             ratings: values.ratings,
-            donations: values.donations,
             description: values.description,
           },
         }
@@ -108,7 +107,6 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
               title: '',
               description: '',
               ratings: true,
-              donations: true,
             }}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
@@ -173,22 +171,6 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
                       </InputError>
                     )}
                   </View>
-                  <SwitchItem
-                    style={{ marginTop: 35 }}
-                    icon={'heart'}
-                    value={values.ratings}
-                    onPress={() => setFieldValue('ratings', !values.ratings)}
-                  >
-                    Ratings
-                  </SwitchItem>
-                  <SwitchItem
-                    style={{ marginTop: 10 }}
-                    icon={'donate'}
-                    value={values.donations}
-                    onPress={() => setFieldValue('donations', !values.donations)}
-                  >
-                    Donations
-                  </SwitchItem>
                   <Button testID={'submit'} rounded large onPress={handleSubmit} style={styles.submitButton}>
                     {isSubmitting ? (
                       <ActivityIndicator testID={'loader'} size="small" color="#ffffff" />

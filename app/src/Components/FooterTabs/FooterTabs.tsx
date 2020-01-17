@@ -3,7 +3,7 @@ import styles from './styles'
 import { NavigationInjectedProps } from 'react-navigation'
 import { Footer, FooterTab, Button, Icon, Text } from 'native-base'
 
-const ICON_TAB = { Home: 'home', Trending: 'analytics', Bookmarks: 'bookmarks' }
+const ICON_TAB = { Home: 'home', Bookmarks: 'bookmarks' }
 
 const FooterTabs: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   const activeRoute = navigation.router.getPathAndParamsForState(navigation.state).path

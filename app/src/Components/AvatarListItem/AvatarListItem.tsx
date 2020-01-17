@@ -25,7 +25,7 @@ const AvatarListItem: React.FC<Props> = ({ author, isFollowed, followingFlow, on
         <Button
           rounded
           onPress={followingFlow}
-          style={{ height: 30, backgroundColor: isFollowed ? COLORS.SPACE : COLORS.PRIMARY }}
+          style={{ height: 30, marginTop: 5, backgroundColor: isFollowed ? COLORS.SPACE : COLORS.PRIMARY }}
         >
           <Text style={styles.buttonText}>{isFollowed ? 'Unfollow' : 'Follow'}</Text>
         </Button>
