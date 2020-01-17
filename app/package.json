@@ -25,7 +25,7 @@
     "appcenter-analytics": "^2.6.0",
     "appcenter-crashes": "^2.6.0",
     "babel-plugin-module-resolver": "^4.0.0",
-    "firebase": "^7.6.0",
+    "firebase": "^7.7.0",
     "formik": "^2.0.8",
     "moment": "^2.24.0",
     "native-base": "^2.13.8",
