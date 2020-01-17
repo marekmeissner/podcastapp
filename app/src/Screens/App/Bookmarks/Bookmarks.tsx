@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './styles'
 import { connect } from 'react-redux'
-import { Container, Content } from 'native-base'
+import { Container, Content, Text } from 'native-base'
 import { AudioTile } from '@component/index'
 import { NavigationInjectedProps } from 'react-navigation'
 import { getSavedAudios, selectSavedAudiosCollection } from '@service/Audio/audioReducer'
@@ -52,19 +52,23 @@ class Bookmarks extends React.Component<Props> {
     return (
       <Container>
         <Content style={styles.content}>
-          {savedAudios.map(audio => {
-            return (
-              <AudioTile
-                key={'bookmarks' + audio.id}
-                onPress={() => this.runPlayer(savedAudios.indexOf(audio))}
-                thumbnail={audio.thumbnail}
-                title={audio.title}
-                views={audio.views}
-                name={audio.name}
-                created={audio.created}
-              />
-            )
-          })}
+          {savedAudios.length > 0 ? (
+            savedAudios.map(audio => {
+              return (
+                <AudioTile
+                  key={'bookmarks' + audio.id}
+                  onPress={() => this.runPlayer(savedAudios.indexOf(audio))}
+                  thumbnail={audio.thumbnail}
+                  title={audio.title}
+                  views={audio.views}
+                  name={audio.name}
+                  created={audio.created}
+                />
+              )
+            })
+          ) : (
+            <Text style={{ textAlign: 'center', marginTop: 20 }}>Lack of audios!</Text>
+          )}
         </Content>
       </Container>
     )
