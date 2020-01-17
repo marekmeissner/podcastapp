@@ -26,27 +26,25 @@ const SearchView: React.FC<Props> = ({ navigation, setPlayerTrack, setCurrentAud
     setPlayerTrack(audios)
     navigation.navigate(SCREEN_NAMES.APP_PLAYER)
   }
-  console.warn(audios)
+
   return (
     <Container style={styles.container}>
+      <View>
+        <Text style={styles.searchQuery}>Results for: {navigation.getParam('searchQuery')}</Text>
+      </View>
       <Content>
-        <View style={styles.queryContainer}>
-          <Text style={styles.searchQuery}>Results for: {navigation.getParam('searchQuery')}</Text>
-        </View>
-        <View>
-          {audios.length > 0 &&
-            audios.map(audio => {
-              ;<AudioTile
-                key={audio.id}
-                onPress={() => runPlayer(audios.indexOf(audio))}
-                thumbnail={audio.thumbnail}
-                title={audio.title}
-                views={audio.views}
-                name={audio.name}
-                created={audio.created}
-              />
-            })}
-        </View>
+        {audios.length > 0 &&
+          audios.map(audio => (
+            <AudioTile
+              key={audio.id}
+              onPress={() => runPlayer(audios.indexOf(audio))}
+              thumbnail={audio.thumbnail}
+              title={audio.title}
+              views={audio.views}
+              name={audio.name}
+              created={audio.created}
+            />
+          ))}
       </Content>
     </Container>
   )
