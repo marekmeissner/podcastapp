@@ -2739,11 +2739,11 @@ app-root-dir@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/app-root-dir/-/app-root-dir-1.0.2.tgz#38187ec2dea7577fff033ffcb12172692ff6e118"
 
-appcenter-analytics@^2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/appcenter-analytics/-/appcenter-analytics-2.6.0.tgz#3e497cfcd92efec9afed66560dc447014e556ac9"
+appcenter-analytics@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/appcenter-analytics/-/appcenter-analytics-2.6.1.tgz#5b38caf8ece6f4356988154eeb03a90d81eece24"
   dependencies:
-    appcenter "2.6.0"
+    appcenter "2.6.1"
 
 appcenter-crashes@^2.6.0:
   version "2.6.0"
@@ -2779,7 +2779,7 @@ appcenter@2.6.0:
   dependencies:
     appcenter-link-scripts "2.6.0"
 
-appcenter@^2.6.1:
+appcenter@2.6.1, appcenter@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/appcenter/-/appcenter-2.6.1.tgz#1d96e603ecfc5f0e7e34d580a19dd784f085802f"
   dependencies:
