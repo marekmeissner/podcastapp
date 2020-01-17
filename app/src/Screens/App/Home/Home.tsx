@@ -54,17 +54,15 @@ class Home extends React.Component<Props> {
         <Content style={styles.content}>
           {followingAudios.map(audio => {
             return (
-              audio && (
-                <AudioTile
-                  key={audio.id}
-                  onPress={() => this.runPlayer(followingAudios.indexOf(audio))}
-                  thumbnail={audio.thumbnail}
-                  title={audio.title}
-                  views={audio.views}
-                  name={audio.name}
-                  created={audio.created}
-                />
-              )
+              <AudioTile
+                key={audio.id}
+                onPress={() => this.runPlayer(followingAudios.indexOf(audio))}
+                thumbnail={audio.thumbnail}
+                title={audio.title}
+                views={audio.views}
+                name={audio.name}
+                created={audio.created}
+              />
             )
           })}
         </Content>

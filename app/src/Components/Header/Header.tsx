@@ -55,9 +55,10 @@ const HeaderBar: React.FC<Props> = ({ logout, navigation, user }) => {
     }
   }
 
-  const onSearchResultClick = () => {
+  const onSearchResultClick = (query: string) => {
     setSearch(false)
-    navigation.navigate(SCREEN_NAMES.APP_SEARCH_VIEW, { searchPhrase: query })
+    changeQuery(query)
+    navigation.navigate(SCREEN_NAMES.APP_SEARCH_VIEW, { searchQuery: query })
   }
 
   return (
@@ -102,7 +103,7 @@ const HeaderBar: React.FC<Props> = ({ logout, navigation, user }) => {
               placeholder="Search"
               onChangeText={query => changeQuery(query)}
             />
-            <Icon style={styles.searchIcon} name="search" />
+            <Icon style={styles.searchIcon} name="search" onPress={() => onSearchResultClick(query)} />
             <Icon style={styles.closeIcon} name="close" onPress={() => setSearch(false)} />
           </Item>
         </Content>
@@ -113,7 +114,7 @@ const HeaderBar: React.FC<Props> = ({ logout, navigation, user }) => {
             {query !== '' &&
               audios &&
               audios.slice(0, 8).map(({ title, id }) => (
-                <ListItem key={id} onPress={onSearchResultClick}>
+                <ListItem key={id} onPress={() => onSearchResultClick(title)}>
                   <Text>{title}</Text>
                 </ListItem>
               ))}

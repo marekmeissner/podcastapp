@@ -57,21 +57,13 @@ const PlayerToolkit: React.FC<Props> = ({ audio, followingFlow, user, savedFlow,
     <View style={styles.playerToolkit}>
       <Content padder>
         <View style={styles.header}>
-          <Text style={styles.audioTitle}>{capitalizeFirstWord(audio.title)}</Text>
-          <Text style={styles.titleMetatext}>{`${audio.views + ' views'} • ${moment(audio.created).format(
-            'DD.MM.YYYY',
-          )}`}</Text>
-        </View>
-        <View style={styles.actionButtons}>
-          <View style={styles.ratings}>
-            <Button style={styles.button} transparent>
-              <Icon style={styles.buttonIcon} type="FontAwesome" name="thumbs-up" />
-            </Button>
-            <Button style={styles.button} transparent>
-              <Icon style={styles.buttonIcon} type="FontAwesome5" name="thumbs-down" />
-            </Button>
+          <View style={styles.headerDesc}>
+            <Text style={styles.audioTitle}>{capitalizeFirstWord(audio.title)}</Text>
+            <Text style={styles.titleMetatext}>{`${audio.views + ' views'} • ${moment(audio.created).format(
+              'DD.MM.YYYY',
+            )}`}</Text>
           </View>
-          <View>
+          <View style={{ alignSelf: 'flex-end' }}>
             <Button style={[styles.button, { alignSelf: 'flex-start' }]} onPress={onSavePress} transparent>
               <Icon style={styles.buttonIcon} type={isSaved ? 'FontAwesome' : 'FontAwesome5'} name="bookmark" />
             </Button>

@@ -6,9 +6,14 @@ const styles = StyleSheet.create({
     flex: 1.4,
   },
   header: {
-    flexDirection: 'column',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
+    borderBottomWidth: 1,
+    borderColor: COLORS.PRIMARY,
+  },
+  headerDesc: {
+    flexDirection: 'column',
   },
   description: {
     fontStyle: 'italic',
@@ -22,24 +27,6 @@ const styles = StyleSheet.create({
   },
   titleMetatext: {
     fontSize: 14,
-  },
-  actionButtons: {
-    height: 50,
-    width: '100%',
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: COLORS.PRIMARY,
-    marginTop: 10,
-    marginBottom: 10,
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-  },
-  ratings: {
-    display: 'flex',
-    flexDirection: 'row',
-    height: '100%',
-    width: 'auto',
   },
   button: {
     width: 50,

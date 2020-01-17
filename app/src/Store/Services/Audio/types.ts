@@ -26,7 +26,6 @@ export interface Audio {
   details: {
     description: string
     ratings: boolean
-    donations: boolean
     audio: string
   }
 }
@@ -35,7 +34,6 @@ export interface AddNewAudio {
   title: string
   description: string
   ratings: boolean
-  donations: boolean
   thumbnail: { uri: string; size: number }
 }
 

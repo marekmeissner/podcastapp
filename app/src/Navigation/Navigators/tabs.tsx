@@ -1,7 +1,6 @@
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 
 import Home from '@screen/App/Home/Home'
-import Trending from '@screen/App/Trending/Trending'
 import Bookmarks from '@screen/App/Bookmarks/Bookmarks'
 import Studio from '@screen/App/Studio/Studio'
 import PlayerView from '@screen/App/PlayerView/PlayerView'
@@ -16,12 +15,6 @@ export const Tabs = createBottomTabNavigator(
       screen: Home,
       navigationOptions: {
         tabBarLabel: 'Home',
-      },
-    },
-    Trending: {
-      screen: Trending,
-      navigationOptions: {
-        tabBarLabel: 'Trending',
       },
     },
     Bookmarks: {
