@@ -111,17 +111,7 @@ const UploadAudioForm: React.FC<Props> = ({ navigation, addAudio }) => {
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
-            {({
-              handleChange,
-              handleSubmit,
-              values,
-              setFieldTouched,
-              errors,
-              touched,
-              isSubmitting,
-              status,
-              setFieldValue,
-            }) => {
+            {({ handleChange, handleSubmit, values, setFieldTouched, errors, touched, isSubmitting, status }) => {
               return (
                 <Form style={styles.form}>
                   <UploadImage
