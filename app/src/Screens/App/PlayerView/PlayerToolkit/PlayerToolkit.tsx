@@ -14,7 +14,7 @@ import { capitalizeFirstWord } from '@util/helpers/methods'
 
 interface Props {
   audio: Audio
-  followingFlow: (user: string, following: string[]) => Promise<void>
+  followingFlow: (user: string, following: string[], isNew: boolean) => Promise<void>
   savedFlow: (user: string, saved: SavedAudio[]) => Promise<void>
   user?: User
   navigation: NavigationScreenProp<NavigationRoute<NavigationParams>, NavigationParams>
@@ -29,10 +29,11 @@ const PlayerToolkit: React.FC<Props> = ({ audio, followingFlow, user, savedFlow,
       await followingFlow(
         user.uid,
         user.following.filter(uid => uid !== audio.uid),
+        false,
       )
     } else if (user) {
       user.following.push(audio.uid)
-      await followingFlow(user.uid, user.following)
+      await followingFlow(user.uid, user.following, true)
     }
   }
 
@@ -74,6 +75,7 @@ const PlayerToolkit: React.FC<Props> = ({ audio, followingFlow, user, savedFlow,
           author={audio.name}
           isFollowed={isFollowed}
           followingFlow={onFollowPress}
+          followers={user?.followers}
         />
         <Text style={styles.description}>{audio.details.description}</Text>
       </Content>

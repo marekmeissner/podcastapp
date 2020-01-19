@@ -100,6 +100,7 @@ export const registerUser = (registerData: UserSignUpCredentials) => {
           uid: response.user.uid,
           email: registerData.email,
           accountName: registerData.name,
+          followers: 0,
           following: [],
           saved: [],
         })
@@ -134,13 +135,18 @@ export const logout = () => {
   }
 }
 
-export const followingFlow = (userId: string, followArray: string[]) => {
+export const followingFlow = (userId: string, followArray: string[], isNew: boolean) => {
   return async (dispatch: Dispatch) => {
     try {
       await firestore()
         .doc(`users/${userId}`)
         .update({
           following: followArray,
+        })
+      await firestore()
+        .doc(`users/${followArray[followArray.length - 1]}`)
+        .update({
+          followers: isNew ? firestore.FieldValue.increment(1) : firestore.FieldValue.increment(-1),
         })
       dispatch({ type: AUTH_ACTIONS.FOLLOWING_FLOW, followArray })
     } catch (e) {
