@@ -22,7 +22,7 @@ interface Props extends NavigationInjectedProps {
   setCurrentAudio: (selectedAudio: number) => void
   setPlayerTrack: (playerTrack: Audio[]) => void
   getUserAudios: (uid: string) => Promise<void>
-  followingFlow: (user: string, following: string[]) => Promise<void>
+  followingFlow: (user: string, following: string[], isNew: boolean) => Promise<void>
   editUser: (uid: string, user: Partial<User>) => Promise<void>
   authUser?: User
 }
@@ -60,10 +60,11 @@ const ProfileView: React.FC<Props> = ({
       await followingFlow(
         authUser.uid,
         authUser.following.filter(uid => uid !== user.uid),
+        false,
       )
     } else if (authUser) {
       authUser.following.push(user.uid)
-      await followingFlow(user.uid, authUser.following)
+      await followingFlow(user.uid, authUser.following, true)
     }
   }
 
@@ -116,7 +117,7 @@ const ProfileView: React.FC<Props> = ({
           }}
           onSubmit={handleEdit}
         >
-          {({ handleChange, handleSubmit, values, setFieldTouched, errors, touched, isSubmitting, status }) => {
+          {({ handleChange, handleSubmit, values, setFieldTouched, isSubmitting, status }) => {
             return (
               <>
                 <View style={styles.intro}>
@@ -135,7 +136,7 @@ const ProfileView: React.FC<Props> = ({
                     <View style={{ flexDirection: 'row' }}>
                       <View style={styles.introCounter}>
                         <Text style={styles.introCounterTitle}>Followers</Text>
-                        <Text>2</Text>
+                        <Text>{authUser && !user ? authUser.followers : user.followers}</Text>
                       </View>
                       <View style={[styles.introCounter, { paddingLeft: 20 }]}>
                         <Text style={styles.introCounterTitle}>Following</Text>

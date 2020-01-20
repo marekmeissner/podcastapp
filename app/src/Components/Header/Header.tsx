@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import styles from './styles'
 import { Image } from 'react-native'
 import {
@@ -19,7 +19,7 @@ import {
 import { NavigationInjectedProps } from 'react-navigation'
 
 import { connect } from 'react-redux'
-import { logout, selectUser } from '@service/Auth/authReducer'
+import { selectUser } from '@service/Auth/authReducer'
 
 import { SCREEN_NAMES } from '@navigation/constants'
 import { DEFAULT_AUDIO_IMAGE } from '@util/constants/constants'
@@ -28,17 +28,15 @@ import { User } from '@service/Auth/types'
 import { useAudiosSearch } from '@hook/useAudioSearch'
 
 interface Props extends NavigationInjectedProps {
-  logout: () => Promise<void>
   user?: User
 }
 
-const HeaderBar: React.FC<Props> = ({ logout, navigation, user }) => {
+const HeaderBar: React.FC<Props> = ({ navigation, user }) => {
   const [search, setSearch] = React.useState(false)
   const { query, changeQuery, audiosLoading, audios } = useAudiosSearch()
 
   const logoutPress = () => {
-    logout()
-    navigation.navigate(SCREEN_NAMES.AUTH_LOGIN)
+    navigation.navigate(SCREEN_NAMES.APP_HOME)
   }
 
   const navigatorControl = navigation.router!.getPathAndParamsForState(navigation.state)
@@ -125,4 +123,4 @@ const HeaderBar: React.FC<Props> = ({ logout, navigation, user }) => {
   )
 }
 
-export default connect((state: RootState) => ({ user: selectUser(state) }), { logout })(HeaderBar)
+export default connect((state: RootState) => ({ user: selectUser(state) }))(HeaderBar)

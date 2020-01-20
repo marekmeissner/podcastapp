@@ -9,9 +9,10 @@ interface Props {
   followingFlow: () => Promise<void>
   isFollowed: boolean
   onPress: () => void
+  followers?: number
 }
 
-const AvatarListItem: React.FC<Props> = ({ author, isFollowed, followingFlow, onPress }) => {
+const AvatarListItem: React.FC<Props> = ({ author, isFollowed, followingFlow, onPress, followers }) => {
   return (
     <ListItem avatar onPress={onPress}>
       <Left>
@@ -19,7 +20,7 @@ const AvatarListItem: React.FC<Props> = ({ author, isFollowed, followingFlow, on
       </Left>
       <Body>
         <Text>{author}</Text>
-        <Text note>123123123 followers</Text>
+        <Text note>{`${followers} follower${followers === 1 ? '' : 's'}`}</Text>
       </Body>
       <Right>
         <Button
