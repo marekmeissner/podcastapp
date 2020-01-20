@@ -2276,9 +2276,9 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-native-video@^3.1.5":
-  version "3.1.5"
-  resolved "https://registry.yarnpkg.com/@types/react-native-video/-/react-native-video-3.1.5.tgz#3617e7e96bd1cffb62e755c8b24fdd33329c843e"
+"@types/react-native-video@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@types/react-native-video/-/react-native-video-5.0.0.tgz#464cef936e53563d78dccbbc2ce6deded0b7f552"
   dependencies:
     "@types/react" "*"
     "@types/react-native" "*"
