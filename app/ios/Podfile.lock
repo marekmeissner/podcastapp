@@ -158,24 +158,6 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
-  - appcenter (2.6.0):
-    - AppCenterReactNativeShared
-    - React
-  - appcenter-analytics (2.6.0):
-    - AppCenter/Analytics
-    - AppCenterReactNativeShared
-    - React
-  - appcenter-crashes (2.6.0):
-    - AppCenter/Crashes
-    - AppCenterReactNativeShared
-    - React
-  - AppCenter/Analytics (2.5.1):
-    - AppCenter/Core
-  - AppCenter/Core (2.5.1)
-  - AppCenter/Crashes (2.5.1):
-    - AppCenter/Core
-  - AppCenterReactNativeShared (2.6.0):
-    - AppCenter/Core (= 2.5.1)
   - boost-for-react-native (1.63.0)
   - BoringSSL-GRPC (0.0.3):
     - BoringSSL-GRPC/Implementation (= 0.0.3)
@@ -548,16 +530,13 @@ PODS:
     - RNFBApp
   - RNGestureHandler (1.5.2):
     - React
-  - RNReanimated (1.4.0):
+  - RNReanimated (1.7.0):
     - React
   - RNScreens (1.0.0-alpha.23):
     - React
   - Yoga (1.14.0)
 
 DEPENDENCIES:
-  - appcenter (from `../node_modules/appcenter/ios`)
-  - appcenter-analytics (from `../node_modules/appcenter-analytics/ios`)
-  - appcenter-crashes (from `../node_modules/appcenter-crashes/ios`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
@@ -603,8 +582,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - abseil
-    - AppCenter
-    - AppCenterReactNativeShared
     - boost-for-react-native
     - BoringSSL-GRPC
     - Firebase
@@ -629,12 +606,6 @@ SPEC REPOS:
     - nanopb
 
 EXTERNAL SOURCES:
-  appcenter:
-    :path: "../node_modules/appcenter/ios"
-  appcenter-analytics:
-    :path: "../node_modules/appcenter-analytics/ios"
-  appcenter-crashes:
-    :path: "../node_modules/appcenter-crashes/ios"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   FBLazyVector:
@@ -712,11 +683,6 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   abseil: 18063d773f5366ff8736a050fe035a28f635fd27
-  AppCenter: fddcbac6e4baae3d93a196ceb0bfe0e4ce407dec
-  appcenter: dc687dcf81280ccab1dc938b0b974d265144a802
-  appcenter-analytics: fa8dba207d07733dcbda749d262fde3e7161258d
-  appcenter-crashes: fa97ffec69882486d7183193cc9394473757d1ad
-  AppCenterReactNativeShared: d5e360f8a4cb5126d29e31ab98051d2f070ba631
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
@@ -773,10 +739,10 @@ SPEC CHECKSUMS:
   RNFBFirestore: 5de4ae898df51a3ecc16a45db15019836c5cec87
   RNFBStorage: 336c47daa7ba460fcac8b61054f68130c618cfaa
   RNGestureHandler: 946a7691e41df61e2c4b1884deab41a4cdc3afff
-  RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
+  RNReanimated: 031fe8d9ea93c2bd689a40f05320ef9d96f74d7f
   RNScreens: f28b48b8345f2f5f39ed6195518291515032a788
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
 PODFILE CHECKSUM: c74e273445b2ebfa0de0afa0b00300ada97acd8e
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.0.beta.2

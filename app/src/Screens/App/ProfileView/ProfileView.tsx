@@ -194,7 +194,7 @@ const ProfileView: React.FC<Props> = ({
             )
           }}
         </Formik>
-        <View style={{ backgroundColor: COLORS.DARK_BLUE }}>
+        <View style={{ backgroundColor: COLORS.DARK_BLU, marginBottom: 20 }}>
           {userAudios.length > 0 ? (
             userAudios.map(audio => (
               <AudioTile
