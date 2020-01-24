@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './styles'
 import { connect } from 'react-redux'
-import { Container, Content } from 'native-base'
+import { Container, Content, Text } from 'native-base'
 import { AudioTile } from '@component/index'
 import { NavigationInjectedProps } from 'react-navigation'
 import { getFollowingAudios, sortAudiosByTimeOfCreation } from '@service/Audio/audioReducer'
@@ -52,19 +52,23 @@ class Home extends React.Component<Props> {
     return (
       <Container>
         <Content style={styles.content}>
-          {followingAudios.map(audio => {
-            return (
-              <AudioTile
-                key={audio.id}
-                onPress={() => this.runPlayer(followingAudios.indexOf(audio))}
-                thumbnail={audio.thumbnail}
-                title={audio.title}
-                views={audio.views}
-                name={audio.name}
-                created={audio.created}
-              />
-            )
-          })}
+          {followingAudios.length > 0 ? (
+            followingAudios.map(audio => {
+              return (
+                <AudioTile
+                  key={audio.id}
+                  onPress={() => this.runPlayer(followingAudios.indexOf(audio))}
+                  thumbnail={audio.thumbnail}
+                  title={audio.title}
+                  views={audio.views}
+                  name={audio.name}
+                  created={audio.created}
+                />
+              )
+            })
+          ) : (
+            <Text style={styles.infoText}>You're not following anyone,{'\n'} search for audios!</Text>
+          )}
         </Content>
       </Container>
     )
