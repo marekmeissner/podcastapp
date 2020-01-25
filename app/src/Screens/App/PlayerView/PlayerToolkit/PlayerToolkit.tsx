@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './styles'
 import { Content, Icon, Text, View, Button } from 'native-base'
 import moment from 'moment'
-import { ShareFab, AvatarListItem } from '@component/index'
+import { AvatarListItem } from '@component/index'
 import { Audio } from '@service/Audio/types'
 import { connect } from 'react-redux'
 import { RootState } from '@service/rootReducer'
@@ -79,7 +79,6 @@ const PlayerToolkit: React.FC<Props> = ({ audio, followingFlow, user, savedFlow,
         />
         <Text style={styles.description}>{audio.details.description}</Text>
       </Content>
-      <ShareFab />
     </View>
   )
 }
