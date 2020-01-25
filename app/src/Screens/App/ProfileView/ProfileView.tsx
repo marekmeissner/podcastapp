@@ -171,7 +171,9 @@ const ProfileView: React.FC<Props> = ({
                   </View>
                 </View>
                 <View style={styles.descriptionSection}>
-                  <Text style={styles.descriptionUser}>{authUser && isCurrentUser ? authUser.name : user.name}</Text>
+                  <Text style={styles.descriptionUser}>
+                    {authUser && isCurrentUser ? authUser.accountName : user.accountName}
+                  </Text>
                   {!editMode ? (
                     <Text style={styles.description}>
                       {authUser && isCurrentUser ? authUser.description : user.description}

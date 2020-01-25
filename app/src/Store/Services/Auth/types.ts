@@ -27,7 +27,7 @@ export interface UserSignUpCredentials {
 export interface User {
   uid: string
   email: string
-  name: string
+  accountName: string
   description?: string
   avatar?: string
   following: string[]
