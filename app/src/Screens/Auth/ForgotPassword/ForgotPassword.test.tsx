@@ -5,18 +5,16 @@ import ForgotPassword from './ForgotPassword'
 import { SCREEN_NAMES } from '@navigation/constants'
 
 describe('<ForgotPassword/>', () => {
-  const getProps = (navigate?: Function) => ({
-    navigation: {
-      navigate,
-    },
+  const getProps = (props?: any) => ({
+    ...props,
   })
 
   it('renders correctly', () => {
-    render(<ForgotPassword />)
+    render(<ForgotPassword {...getProps()} />)
   })
 
   it('should render info text', () => {
-    const { getByText } = render(<ForgotPassword />)
+    const { getByText } = render(<ForgotPassword {...getProps()} />)
 
     expect(
       getByText(
@@ -26,7 +24,7 @@ describe('<ForgotPassword/>', () => {
   })
 
   it('should validate field correctly', async () => {
-    const { getByText, getByTestId } = render(<ForgotPassword />)
+    const { getByText, getByTestId } = render(<ForgotPassword {...getProps()} />)
 
     fireEvent.press(getByTestId('submit'))
 
@@ -45,7 +43,7 @@ describe('<ForgotPassword/>', () => {
   it('switches to sign in page', async () => {
     const navigate = jest.fn()
 
-    const { getByTestId } = render(<ForgotPassword {...getProps(navigate)} />)
+    const { getByTestId } = render(<ForgotPassword {...getProps({ navigation: { navigate } })} />)
 
     fireEvent.press(getByTestId('signIn'))
 

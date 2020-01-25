@@ -5,18 +5,16 @@ import Register from './Register'
 import { SCREEN_NAMES } from '@navigation/constants'
 
 describe('<Register />', () => {
-  const getProps = (navigate?: Function) => ({
-    navigation: {
-      navigate,
-    },
+  const getProps = (props?: any) => ({
+    ...props,
   })
 
   it('renders correctly', () => {
-    render(<Register />)
+    render(<Register {...getProps()} />)
   })
 
   it('validates fields correctly', async () => {
-    const { getByTestId, getByText, getAllByText } = render(<Register />)
+    const { getByTestId, getByText, getAllByText } = render(<Register {...getProps()} />)
 
     fireEvent.press(getByTestId('submit'))
 
@@ -49,7 +47,7 @@ describe('<Register />', () => {
   it('switches to sign in page', async () => {
     const navigate = jest.fn()
 
-    const { getByTestId } = render(<Register {...getProps(navigate)} />)
+    const { getByTestId } = render(<Register {...getProps({ navigation: { navigate } })} />)
 
     fireEvent.press(getByTestId('signIn'))
 

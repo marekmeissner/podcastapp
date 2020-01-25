@@ -5,18 +5,16 @@ import Login from './Login'
 import { SCREEN_NAMES } from '@navigation/constants'
 
 describe('<Login/>', () => {
-  const getProps = (navigate?: Function) => ({
-    navigation: {
-      navigate,
-    },
+  const getProps = (props?: any) => ({
+    ...props,
   })
 
   it('renders correctly', () => {
-    render(<Login />)
+    render(<Login {...getProps()} />)
   })
 
   it('validates fields correctly', async () => {
-    const { getByTestId, getByText, getAllByText } = render(<Login />)
+    const { getByTestId, getByText, getAllByText } = render(<Login {...getProps()} />)
 
     fireEvent.press(getByTestId('submit'))
 
@@ -35,7 +33,7 @@ describe('<Login/>', () => {
   it('switches to sign up page', async () => {
     const navigate = jest.fn()
 
-    const { getByTestId } = render(<Login {...getProps(navigate)} />)
+    const { getByTestId } = render(<Login {...getProps({ navigation: { navigate } })} />)
 
     fireEvent.press(getByTestId('register'))
 
@@ -47,7 +45,7 @@ describe('<Login/>', () => {
   it('switches to forgot password page', async () => {
     const navigate = jest.fn()
 
-    const { getByTestId } = render(<Login {...getProps(navigate)} />)
+    const { getByTestId } = render(<Login {...getProps({ navigation: { navigate } })} />)
 
     fireEvent.press(getByTestId('forgotPassword'))
 
