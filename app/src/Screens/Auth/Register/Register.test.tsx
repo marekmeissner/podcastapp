@@ -1,22 +1,21 @@
 import React from 'react'
 import { renderWithRedux as render } from '@util/test/testRenderers'
 import { fireEvent, wait } from '@testing-library/react-native'
-import Register from './Register'
+import { Register } from './Register'
 import { SCREEN_NAMES } from '@navigation/constants'
+import { mockUser } from '../__mocks__/mockUser'
 
 describe('<Register />', () => {
-  const getProps = (navigate?: Function) => ({
-    navigation: {
-      navigate,
-    },
+  const getProps = (props?: any) => ({
+    ...props,
   })
 
   it('renders correctly', () => {
-    render(<Register />)
+    render(<Register {...getProps()} />)
   })
 
   it('validates fields correctly', async () => {
-    const { getByTestId, getByText, getAllByText } = render(<Register />)
+    const { getByTestId, getByText, getAllByText } = render(<Register {...getProps()} />)
 
     fireEvent.press(getByTestId('submit'))
 
@@ -49,12 +48,40 @@ describe('<Register />', () => {
   it('switches to sign in page', async () => {
     const navigate = jest.fn()
 
-    const { getByTestId } = render(<Register {...getProps(navigate)} />)
+    const { getByTestId } = render(<Register {...getProps({ navigation: { navigate } })} />)
 
     fireEvent.press(getByTestId('signIn'))
 
     await wait(() => {
       expect(navigate).toBeCalledWith(SCREEN_NAMES.AUTH_LOGIN)
+    })
+  })
+
+  it('should register user and redirect to tabs navigation', async () => {
+    const registerUser = jest.fn(),
+      navigate = jest.fn()
+    const { getByTestId, getByText, getAllByText } = render(
+      <Register {...getProps({ navigation: { navigate }, registerUser })} />,
+    )
+
+    registerUser.mockReturnValue(true)
+    const password = 'Password1'
+
+    fireEvent.changeText(getByTestId('name'), { target: { value: mockUser.accountName } })
+    fireEvent.changeText(getByTestId('email'), { target: { value: mockUser.email } })
+    fireEvent.changeText(getByTestId('password'), { target: { value: password } })
+    fireEvent.changeText(getByTestId('passwordRepeat'), { target: { value: password } })
+    fireEvent.press(getByTestId('submit'))
+
+    await wait(() => {
+      expect(registerUser).toBeCalledTimes(1)
+      expect(registerUser).toBeCalledWith({
+        email: mockUser.email,
+        name: mockUser.accountName,
+        password,
+        passwordRepeat: password,
+      })
+      expect(navigate).toBeCalledWith(SCREEN_NAMES.APP_TABS)
     })
   })
 })
