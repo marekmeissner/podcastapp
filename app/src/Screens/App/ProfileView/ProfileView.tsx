@@ -37,9 +37,9 @@ const ProfileView: React.FC<Props> = ({
   editUser,
 }) => {
   const [editMode, setEditMode] = React.useState(false)
-  const user = navigation.getParam('user') as User
+  const user = navigation && (navigation.getParam('user') as User)
   const [avatar, setAvatar] = React.useState()
-  const uid = authUser && !user ? authUser.uid : user.uid
+  const uid = authUser && !user ? authUser.uid : user && user.uid
   const isFollowed = authUser && authUser.following.find(id => id === uid)
   const isCurrentUser = authUser && authUser.uid === uid
 
@@ -112,8 +112,8 @@ const ProfileView: React.FC<Props> = ({
       <Content style={styles.content}>
         <Formik
           initialValues={{
-            avatar: (authUser && !user ? authUser.avatar : user.avatar) || DEFAULT_AUDIO_IMAGE.uri,
-            description: (authUser && isCurrentUser ? authUser.description : user.description) || '',
+            avatar: (authUser && !user ? authUser.avatar : user && user.avatar) || DEFAULT_AUDIO_IMAGE.uri,
+            description: (authUser && isCurrentUser ? authUser.description : user && user.description) || '',
           }}
           onSubmit={handleEdit}
         >
@@ -124,7 +124,7 @@ const ProfileView: React.FC<Props> = ({
                   <Avatar
                     uri={
                       (avatar && avatar.uri) ||
-                      (authUser && !user ? authUser.avatar : user.avatar) ||
+                      (authUser && !user ? authUser.avatar : user && user.avatar) ||
                       DEFAULT_AUDIO_IMAGE.uri
                     }
                     editMode={editMode}
@@ -136,11 +136,13 @@ const ProfileView: React.FC<Props> = ({
                     <View style={{ flexDirection: 'row' }}>
                       <View style={styles.introCounter}>
                         <Text style={styles.introCounterTitle}>Followers</Text>
-                        <Text>{authUser && !user ? authUser.followers : user.followers}</Text>
+                        <Text>{authUser && !user ? authUser.followers : user && user.followers}</Text>
                       </View>
                       <View style={[styles.introCounter, { paddingLeft: 20 }]}>
                         <Text style={styles.introCounterTitle}>Following</Text>
-                        <Text>{authUser && !user ? authUser.following.length : user.following.length || 0}</Text>
+                        <Text>
+                          {authUser && !user ? authUser.following.length : (user && user.following.length) || 0}
+                        </Text>
                       </View>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -172,11 +174,11 @@ const ProfileView: React.FC<Props> = ({
                 </View>
                 <View style={styles.descriptionSection}>
                   <Text style={styles.descriptionUser}>
-                    {authUser && isCurrentUser ? authUser.accountName : user.accountName}
+                    {authUser && isCurrentUser ? authUser.accountName : user && user.accountName}
                   </Text>
                   {!editMode ? (
                     <Text style={styles.description}>
-                      {authUser && isCurrentUser ? authUser.description : user.description}
+                      {authUser && isCurrentUser ? authUser.description : user && user.description}
                     </Text>
                   ) : (
                     <Input
