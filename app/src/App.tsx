@@ -28,9 +28,7 @@ class App extends React.Component {
   }
 
   onInitNavigatonService = (navigatorRef: NavigationContainerComponent | null) => {
-    if (navigatorRef) {
-      NavigationService.setTopLevelNavigator(navigatorRef)
-    }
+    navigatorRef && NavigationService.setTopLevelNavigator(navigatorRef)
   }
 
   render() {
