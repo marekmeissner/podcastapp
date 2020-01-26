@@ -1,6 +1,4 @@
 import React from 'react'
-import { renderWithRedux as render } from '@util/test/testRenderers'
-import PlayerView from './PlayerView'
 
 describe('<PlayerView />', () => {
   test.todo('renders correctly')

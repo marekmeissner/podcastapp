@@ -1,5 +1,4 @@
 import React from 'react'
-import { renderWithRedux as render } from '@util/test/testRenderers'
 
 describe('<SearchView />', () => {
   test.todo('renders correctly')
