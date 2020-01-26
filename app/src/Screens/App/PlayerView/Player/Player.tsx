@@ -4,7 +4,6 @@ import { Image, View, TouchableOpacity } from 'react-native'
 import Video, { OnProgressData, OnLoadData } from 'react-native-video'
 import PlayerSeekBar from '../PlayerSeekBar/PlayerSeekBar'
 import PlayerControls from '../PlayerControls/PlayerControls'
-import AudioService from '@service/Audio/audioService'
 
 interface Props {
   audio: string

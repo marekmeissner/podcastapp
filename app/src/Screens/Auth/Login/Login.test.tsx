@@ -55,9 +55,8 @@ describe('<Login/>', () => {
   it('should login user and redirect to tabs navigation', async () => {
     const navigate = jest.fn(),
       loginUser = jest.fn()
-    const { getByTestId } = render(<Login {...getProps({ navigation: { navigate }, loginUser })} />)
 
-    loginUser.mockReturnValue(true)
+    const { getByTestId } = render(<Login {...getProps({ navigation: { navigate }, loginUser })} />)
 
     const email = 'marek@test.com',
       password = 'Password1'
