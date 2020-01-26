@@ -6,6 +6,7 @@ describe('<Bookmarks/>', () => {
   const getProps = (props?: any) => ({
     ...props,
   })
+
   it('renders correctly', () => {
     render(<Bookmarks {...getProps()} />)
   })

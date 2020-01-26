@@ -3,8 +3,12 @@ import { renderWithRedux as render } from '@util/test/testRenderers'
 import ProfileView from './ProfileView'
 
 describe('<ProfileView />', () => {
+  const getProps = (props?: any) => ({
+    ...props,
+  })
+
   it('renders correctly', () => {
-    render(<ProfileView />)
+    render(<ProfileView {...getProps()} />)
   })
 
   test.todo('displays user informations')

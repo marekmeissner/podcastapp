@@ -3,8 +3,12 @@ import { renderWithRedux as render } from '@util/test/testRenderers'
 import UploadAudioForm from './UploadAudioForm'
 
 describe('<UploadAudioForm />', () => {
+  const getProps = (props?: any) => ({
+    ...props,
+  })
+
   it('renders correctly', () => {
-    render(<UploadAudioForm />)
+    render(<UploadAudioForm {...getProps()} />)
   })
 
   test.todo('validates fields correctly')
