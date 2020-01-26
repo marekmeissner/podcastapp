@@ -15,6 +15,7 @@ const FooterTabs: React.FC<NavigationInjectedProps> = ({ navigation }) => {
           .map(({ routeName }) => {
             return (
               <Button
+                testID={routeName}
                 key={routeName}
                 vertical
                 onPress={() => navigation.navigate(routeName)}

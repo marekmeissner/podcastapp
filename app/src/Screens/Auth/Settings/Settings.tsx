@@ -14,7 +14,7 @@ interface Props extends NavigationInjectedProps {
   forgotPassword: (email: string) => void
 }
 
-const Settings: React.FC<Props> = ({ logout, navigation, forgotPassword, user }) => {
+export const Settings: React.FC<Props> = ({ logout, navigation, forgotPassword, user }) => {
   const [resetLinkSent, setResetLinkSent] = useState(false)
 
   const userLogout = () => {
@@ -34,7 +34,9 @@ const Settings: React.FC<Props> = ({ logout, navigation, forgotPassword, user })
           <Text>Change Password</Text>
         </Button>
         {resetLinkSent && (
-          <Text style={{ color: COLORS.SUCCESS, fontSize: 13, textAlign: 'center' }}>Reset link has been sent!</Text>
+          <Text testID={'resetSuccessMessage'} style={{ color: COLORS.SUCCESS, fontSize: 13, textAlign: 'center' }}>
+            Reset link has been sent!
+          </Text>
         )}
         <Button testID={'logout'} style={!resetLinkSent ? { marginTop: 20 } : { marginTop: 10 }} onPress={userLogout}>
           <Text>Logout</Text>
