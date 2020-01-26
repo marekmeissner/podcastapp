@@ -5,7 +5,7 @@ import { NavigationInjectedProps } from 'react-navigation'
 import DocumentPicker from 'react-native-document-picker'
 import { SCREEN_NAMES } from '@navigation/constants'
 
-const Studio: React.FC<NavigationInjectedProps> = ({ navigation }) => {
+export const Studio: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   const pickFile = async () => {
     try {
       const res = await DocumentPicker.pick({
