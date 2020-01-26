@@ -59,6 +59,7 @@ const HeaderBar: React.FC<Props> = ({ navigation, user }) => {
     navigation.navigate(SCREEN_NAMES.APP_SEARCH_VIEW, { searchQuery: query })
   }
 
+  console.disableYellowBox = true
   return (
     <Header style={styles.header}>
       <Left style={{ flex: 0.2 }}>
