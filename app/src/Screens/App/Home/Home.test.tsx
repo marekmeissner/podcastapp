@@ -3,12 +3,16 @@ import { renderWithRedux as render } from '@util/test/testRenderers'
 import Home from './Home'
 
 describe('<Home/>', () => {
+  const getProps = (props?: any) => ({
+    ...props,
+  })
+
   it('renders correctly', () => {
-    render(<Home />)
+    render(<Home {...getProps()} />)
   })
 
   it('displays message when there is not audios', () => {
-    const { getByText } = render(<Home />)
+    const { getByText } = render(<Home {...getProps()} />)
 
     expect(getByText(/You're not following anyone, search for audios!/i))
   })
