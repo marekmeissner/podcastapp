@@ -10,6 +10,10 @@ import {
   LoadUser,
   User,
   EditUser,
+  SetUser,
+  SetLoggedOut,
+  FollowingFlow,
+  SavedFlow,
 } from './types'
 import { Dispatch } from 'redux'
 import { RootState } from '../rootReducer'
@@ -55,23 +59,14 @@ export const authReducer = (state: AuthState = AuthInitialState, action: AuthAct
   }
 }
 
-export const setUser = (user: any) => ({
-  type: AUTH_ACTIONS.SET_USER,
-  user,
-})
-
-export const setLoggedOut = () => ({
-  type: AUTH_ACTIONS.SET_LOGGED_OUT,
-})
-
 export const loginUser = (credentials: UserCredentials) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<SetUser>) => {
     try {
       const response = await auth().signInWithEmailAndPassword(credentials.email, credentials.password)
       const user = await AuthService.getUser(response.user.uid)
       const userToken = await response.user.getIdToken().then(idToken => idToken)
       await AuthService.setUserToken(userToken)
-      dispatch(setUser(user))
+      dispatch({ type: AUTH_ACTIONS.SET_USER, user })
     } catch (e) {
       throw new Error(e)
     }
@@ -79,10 +74,10 @@ export const loginUser = (credentials: UserCredentials) => {
 }
 
 export const getCurrentUser = (uid: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<SetUser>) => {
     try {
       const user = await AuthService.getUser(uid)
-      dispatch(setUser(user))
+      dispatch({ type: AUTH_ACTIONS.SET_USER, user })
     } catch (e) {
       throw new Error(e)
     }
@@ -90,7 +85,7 @@ export const getCurrentUser = (uid: string) => {
 }
 
 export const registerUser = (registerData: UserSignUpCredentials) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<SetUser>) => {
     try {
       const response = await auth().createUserWithEmailAndPassword(registerData.email, registerData.password)
       await firestore()
@@ -107,7 +102,7 @@ export const registerUser = (registerData: UserSignUpCredentials) => {
       const user = await AuthService.getUser(response.user.uid)
       const userToken = await response.user.getIdToken().then(idToken => idToken)
       await AuthService.setUserToken(userToken)
-      dispatch(setUser(user))
+      dispatch({ type: AUTH_ACTIONS.SET_USER, user })
     } catch (e) {
       throw new Error(e)
     }
@@ -125,18 +120,18 @@ export const forgotPassword = (email: string) => {
 }
 
 export const logout = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<SetLoggedOut>) => {
     try {
       await AuthService.removeUserToken()
-      dispatch(setLoggedOut())
+      dispatch({ type: AUTH_ACTIONS.SET_LOGGED_OUT })
     } catch (e) {
-      throw new Error('Cannot logout')
+      throw new Error(e)
     }
   }
 }
 
 export const followingFlow = (userId: string, followArray: string[], isNew: boolean) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<FollowingFlow>) => {
     try {
       await firestore()
         .doc(`users/${userId}`)
@@ -156,7 +151,7 @@ export const followingFlow = (userId: string, followArray: string[], isNew: bool
 }
 
 export const savedFlow = (userId: string, savedArray: SavedAudio[]) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<SavedFlow>) => {
     try {
       await firestore()
         .doc(`users/${userId}`)

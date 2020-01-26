@@ -26,11 +26,11 @@ export const playerReducer = (state: PlayerState = PlayerInitialState, action: P
 }
 
 export const setCurrentAudio = (currentAudio: number) => {
-  return (dispatch: Dispatch) => dispatch({ type: PLAYER_ACTIONS.SET_CURRENT_AUDIO, currentAudio })
+  return { type: PLAYER_ACTIONS.SET_CURRENT_AUDIO, currentAudio }
 }
 
 export const setPlayerTrack = (playerTrack: Audio[]) => {
-  return (dispatch: Dispatch) => dispatch({ type: PLAYER_ACTIONS.SET_PLAYER_TRACK, playerTrack })
+  return { type: PLAYER_ACTIONS.SET_PLAYER_TRACK, playerTrack }
 }
 
 export const selectCurrentAudio = (state: RootState) => state.player.currentAudio

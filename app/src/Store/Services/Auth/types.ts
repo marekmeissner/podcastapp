@@ -37,7 +37,7 @@ export interface User {
 
 export interface SetUser {
   type: AUTH_ACTIONS.SET_USER
-  user: any
+  user: User
 }
 export interface SetLoggedOut {
   type: AUTH_ACTIONS.SET_LOGGED_OUT

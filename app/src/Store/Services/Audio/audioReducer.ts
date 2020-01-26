@@ -1,8 +1,17 @@
 import firestore from '@react-native-firebase/firestore'
 import { Dispatch } from 'redux'
 import { createSelector } from 'reselect'
-import { AudioState, AUDIO_ACTIONS, AudioActions, Audio, GetAudiosSearchParams } from './types'
-import { merge, uniqBy } from 'lodash'
+import {
+  AudioState,
+  AUDIO_ACTIONS,
+  AudioActions,
+  Audio,
+  GetAudiosSearchParams,
+  AudioSave,
+  GetSelectedAudios,
+  IncrementAudioViews,
+} from './types'
+import { uniqBy } from 'lodash'
 import AudioService from './audioService'
 import { RootState } from '@service/rootReducer'
 import { SavedAudio } from '@service/Auth/types'
@@ -34,7 +43,7 @@ export const audioReducer = (state: AudioState = AudioInitialState, action: Audi
 }
 
 export const getAudiosSearch = ({ limit, searchPhrase, orderBy }: GetAudiosSearchParams = {}) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<GetSelectedAudios>) => {
     let audios: Audio[] = []
 
     searchPhrase &&
@@ -53,7 +62,7 @@ export const getAudiosSearch = ({ limit, searchPhrase, orderBy }: GetAudiosSearc
 }
 
 export const getUserAudios = (uid: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<GetSelectedAudios>) => {
     try {
       let audios: Audio[] = []
 
@@ -73,7 +82,7 @@ export const getUserAudios = (uid: string) => {
 }
 
 export const addAudio = (audio: Audio) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<AudioSave>) => {
     try {
       await firestore()
         .doc(`audios/${audio.id}`)
@@ -87,7 +96,7 @@ export const addAudio = (audio: Audio) => {
 }
 
 export const getFollowingAudios = (uids: string[]) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<GetSelectedAudios>) => {
     let audios: Audio[] = []
 
     try {
@@ -111,7 +120,7 @@ export const getFollowingAudios = (uids: string[]) => {
 }
 
 export const getSavedAudios = (saved: SavedAudio[]) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<GetSelectedAudios>) => {
     let audios: Audio[] = []
 
     try {
@@ -135,7 +144,7 @@ export const getSavedAudios = (saved: SavedAudio[]) => {
 }
 
 export const incrementAudioViews = (userId: string, audioId: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<IncrementAudioViews>) => {
     try {
       await firestore()
         .doc(`audios/${audioId}`)
