@@ -1304,9 +1304,9 @@
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-6.2.0.tgz#f31438c1b103052b1e70840b42d8bba785af603d"
 
-"@react-native-firebase/firestore@^6.2.0":
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-6.2.0.tgz#9060ccd9289c1cbd421dc6708066bfe3fd1a2e76"
+"@react-native-firebase/firestore@^6.3.4":
+  version "6.3.4"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-6.3.4.tgz#5c42c3c35548824db90543330fc2ffde20aa3d52"
 
 "@react-native-firebase/storage@^6.2.0":
   version "6.2.0"
