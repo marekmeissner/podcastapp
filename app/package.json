@@ -59,7 +59,7 @@
     "@types/node": "^13.7.0",
     "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
-    "@types/react-native": "^0.61.10",
+    "@types/react-native": "^0.61.19",
     "@types/react-native-video": "^5.0.0",
     "@types/react-navigation": "^3.4.0",
     "@types/react-redux": "^7.1.7",
