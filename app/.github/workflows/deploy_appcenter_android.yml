@@ -1,0 +1,33 @@
+name: Android-develop
+
+on:
+  push:
+    tags:
+      - betaAndroid*
+
+jobs:
+  build:
+
+    runs-on: macOS-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10'
+
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            yarn-${{ hashFiles('**/yarn.lock') }}
+      - name: install packages
+        run: |
+          yarn
+      - name: run fastlane
+        run: |
+          yarn deploy:android
