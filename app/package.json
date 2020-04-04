@@ -11,7 +11,8 @@
     "ios:5s": "react-native run-ios --simulator='iPhone 5s'",
     "lint": "eslint src -c .eslintrc --ext .ts,.tsx,.js",
     "format": "prettier \"**/*.+(ts|tsx|js)\" --write --list-different",
-    "storybook": "start-storybook -p 6006"
+    "storybook": "start-storybook -p 6006",
+    "deploy:android": "cd android && fastlane android beta"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.7.1",
