@@ -18,6 +18,10 @@ jobs:
         with:
           node-version: '10'
 
+      - name: Move to app dir
+        run: |
+          cd app
+
       - name: Cache node modules
         uses: actions/cache@v1
         with:
@@ -25,9 +29,11 @@ jobs:
           key: yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             yarn-${{ hashFiles('**/yarn.lock') }}
+
       - name: install packages
         run: |
           yarn
+
       - name: run fastlane
         run: |
           yarn deploy:android
