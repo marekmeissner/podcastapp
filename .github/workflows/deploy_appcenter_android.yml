@@ -1,4 +1,4 @@
-name: Android-develop
+name: Android-beta-deploy
 
 on:
   push:
