@@ -1551,9 +1551,9 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@types/yup@^0.26.27":
-  version "0.26.27"
-  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.26.27.tgz#b928b1d644ffe98766e1440131222aefd3ca8f89"
+"@types/yup@^0.26.35":
+  version "0.26.35"
+  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.26.35.tgz#3264139671b5221b511593fa738b3c1d4b3e9189"
 
 "@typescript-eslint/eslint-plugin@^1.5.0":
   version "1.13.0"
