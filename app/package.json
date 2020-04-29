@@ -24,7 +24,7 @@
     "@types/uuid": "^7.0.3",
     "babel-plugin-module-resolver": "^4.0.0",
     "firebase": "^7.7.0",
-    "formik": "^2.1.2",
+    "formik": "^2.1.4",
     "moment": "^2.24.0",
     "native-base": "^2.13.8",
     "react": "^16.12.0",
