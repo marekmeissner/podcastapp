@@ -6468,9 +6468,9 @@ react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
 
-react-native-document-picker@^3.2.4:
-  version "3.2.4"
-  resolved "https://registry.yarnpkg.com/react-native-document-picker/-/react-native-document-picker-3.2.4.tgz#8e1801ba9b81f42f928e8e5e519c3d8e1320cfab"
+react-native-document-picker@^3.5.3:
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/react-native-document-picker/-/react-native-document-picker-3.5.3.tgz#f749d329b8a85a4a599253dafe8c5c1c0602388b"
 
 react-native-drawer@2.5.1:
   version "2.5.1"
